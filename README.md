@@ -42,8 +42,12 @@ npx vercel login
 npx vercel --prod --yes
 ```
 
-Deployment execution and any account blockers are recorded in `qa/RELEASE_ACCEPTANCE.md`.
+Production: https://moya-glow-commerce.vercel.app
+
+Repository: https://github.com/tmohoboko/moya-glow-commerce
+
+Production deployed through the authenticated Vercel CLI. Automatic GitHub deployments are not connected; use `npx vercel --prod --yes` for releases. Deployment evidence is recorded in `qa/RELEASE_ACCEPTANCE.md`.
 
 ## QA status
 
-See `qa/TEST_EVIDENCE.md` for executed checks, `qa/RELEASE_ACCEPTANCE.md` for release gates, and `qa/DEFECT_LOG.csv` for unresolved defects. Browser coverage is Chromium; manual exploratory QA is still required.
+All ten production Chromium smoke checks passed on 2026-09-26. See `qa/TEST_EVIDENCE.md` for executed checks, `qa/RELEASE_ACCEPTANCE.md` for release gates, and `qa/DEFECT_LOG.csv` for unresolved defects. Browser coverage is Chromium; manual exploratory QA is still required.
