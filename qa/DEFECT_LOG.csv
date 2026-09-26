@@ -1,2 +1,2 @@
 ID,Date,Severity,Area,Title,Steps,Expected,Actual,Status,Root Cause,Fix Commit,Evidence
-BUG-001,,,,,,,,OPEN,,,
+BUG-001,2026-09-26,Minor,Accessibility,Category select label ambiguous,Locate category select by exact accessible label,Select has accessible name Category,Initial smoke locator timed out,FIXED,Nested option text included in implicit label,See commit containing explicit Category aria-label,qa/TEST_EVIDENCE.md

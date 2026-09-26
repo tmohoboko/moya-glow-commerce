@@ -31,7 +31,7 @@ npx playwright install chromium
 npm test
 ```
 
-Tests run against the production preview on port 4173. To test a deployed site, run `BASE_URL=https://your-site.vercel.app npm test`. Results are written to `qa/smoke-results.json`; mobile and desktop screenshots are saved in `qa/`. No lint script is configured.
+Tests run against the production preview on port 4173. To test a deployed site, run `BASE_URL=https://your-site.vercel.app npm test`. Results are written to `qa/smoke-results.json`; mobile and desktop screenshots are saved in `qa/`. No lint script is configured. If using an existing Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/absolute/path/to/chrome` when running `npm test`.
 
 ## Deployment
 

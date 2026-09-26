@@ -1,24 +1,37 @@
-# Manual QA Test Evidence
+# Test evidence
 
-Production URL: 
-Commit SHA: 
-Tester: 
-Date: 
-Browser/device: 
+Date: 2026-09-26. Executor: Codex / Playwright 1.63.0.
+Target: local Vite production preview, http://127.0.0.1:4173.
+Browser: installed Chromium 148.0.7778.96 (explicit executable override).
+Viewports: desktop 1280×720 and mobile 375×812.
 
-| ID | Scenario | Expected | Actual | PASS/FAIL | Evidence / Defect ID |
-|---|---|---|---|---|---|
-| EC-001 | Open homepage | Page loads without fatal error | | | |
-| EC-002 | Browse catalog | Product cards render correctly | | | |
-| EC-003 | Open product detail | Correct product information is shown | | | |
-| EC-004 | Add item to cart | Cart count/content updates | | | |
-| EC-005 | Change quantity | Quantity and total update correctly | | | |
-| EC-006 | Remove item | Item removed and totals update | | | |
-| EC-007 | Refresh critical pages | No fatal crash/data corruption | | | |
-| EC-008 | Mobile viewport | Core journey remains usable | | | |
-| EC-009 | Invalid route | Graceful 404/fallback behavior | | | |
-| EC-010 | Production console | No uncaught critical JS errors | | | |
+Commands executed:
 
-## Exploratory charter
+```sh
+npm install
+npm run build
+PLAYWRIGHT_CHROMIUM_EXECUTABLE=/home/tmdev012/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome npm test
+```
 
-Spend 15–20 minutes trying to break: navigation, cart state, empty states, long product names, rapid clicks, refresh/back button, mobile width, and network failure behavior.
+Install passed (20 packages, zero reported vulnerabilities). Build passed with Vite 7.3.6. No lint script exists.
+Final suite: **10 passed in 10.0 seconds**. Initial run: 9 passed, 1 failed due to category label ambiguity; fixed by explicitly naming the select and reran all checks successfully.
+
+| ID | Executed check | Result |
+|---|---|---|
+| SMOKE-001 | Homepage heading visible; no captured page errors | PASS |
+| SMOKE-002 | 30 product cards and usable detail page | PASS |
+| SMOKE-003 | Vitamin C search returns one product; no-result state | PASS |
+| SMOKE-004 | Makeup filter returns eight matching products | PASS |
+| SMOKE-005 | Add item and retain cart after refresh | PASS |
+| SMOKE-006 | Increase to two and decrease to one | PASS |
+| SMOKE-007 | Remove item; empty bag and zero count | PASS |
+| SMOKE-008 | Subtotal 149 → 298 → 427 with second product | PASS |
+| SMOKE-009 | Mobile catalogue and cart visible; no horizontal overflow | PASS |
+| SMOKE-010 | Unknown page/product and home recovery | PASS |
+
+Machine results: [smoke-results.json](smoke-results.json).
+Screenshots: [mobile](mobile-home.png), [desktop](desktop-home.png). Mobile screenshot visually inspected for clipping and structure.
+
+The current default Chromium download was slow and reset once; stopped it after the existing installed Chromium completed all tests. For a fresh machine use `npx playwright install chromium`, or set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to an existing Chrome binary.
+
+Not executed: production smoke tests, Safari/Firefox, real-device checks, manual exploratory session, accessibility audit. Screenshots are initial QA evidence, not full design acceptance.
