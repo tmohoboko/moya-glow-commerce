@@ -1,0 +1,11 @@
+Risk ID,Requirement,Failure Risk,Likelihood,Impact,Priority,Status,Notes
+RISK-001,REQ-007,Subtotal calculated incorrectly,Medium,High,Critical,Open,
+RISK-002,REQ-005,Cart quantity enters invalid state,Medium,High,High,Open,
+RISK-003,REQ-002,Search fails to return valid matching products,Medium,Medium,Medium,Open,
+RISK-004,REQ-003,Filtering hides valid products or shows wrong category,Medium,Medium,Medium,Open,
+RISK-005,REQ-004,Repeated add action creates inconsistent cart state,Medium,High,High,Open,
+RISK-006,REQ-006,Removing one product affects another cart item,Low,High,High,Open,
+RISK-007,REQ-009,Cart or navigation becomes unusable on mobile,Medium,High,High,Open,
+RISK-008,REQ-008,Cart does not return to correct empty state after final removal,Medium,Medium,Medium,Open,
+RISK-009,REQ-002,Search and category filter interact incorrectly,Medium,Medium,Medium,Open,
+RISK-010,REQ-010,Invalid URL crashes or exposes broken application state,Low,Medium,Medium,Open,
