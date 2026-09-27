@@ -7,6 +7,9 @@ services:
     environment:
       MOYA_DATABASE: /app/data/moya.sqlite3
       MOYA_SEED_DEMO: "true"
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-}
     volumes:
       - enterprise-data:/app/data
     healthcheck:

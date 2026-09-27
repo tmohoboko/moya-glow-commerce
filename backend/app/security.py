@@ -39,3 +39,10 @@ def require(resource):
 def audit(db, user, request, action, resource, resource_id):
     db.execute('INSERT INTO audit_events(actor_id,action,resource,resource_id,request_id) VALUES (?,?,?,?,?)',
                (user['id'], action, resource, resource_id, request.state.request_id))
+
+
+def issue_session(db, user_id):
+    token = secrets.token_urlsafe(32)
+    db.execute('DELETE FROM sessions WHERE expires_at<=?', (int(time.time()),))
+    db.execute('INSERT INTO sessions VALUES (?,?,?)', (token_hash(token), user_id, int(time.time())+28800))
+    return {'access_token': token, 'token_type': 'bearer', 'expires_in': 28800}

@@ -37,3 +37,9 @@ SQLite needs one persistent instance and backups. Serverless ephemeral filesyste
 ## Recommended next release
 
 Deploy the existing Docker artifact to an authorized persistent HTTPS host, configure backups and trusted edge limits, provision staff users, import operator-supplied catalogue, connect the new Vercel project through same-origin API rewrites, then repeat authenticated hosted E2E and manual QA. Keep all payment and order-placement paths disabled until separately designed and approved. Complete this release before stretch features.
+
+## Google login patch — 2026-09-28
+
+Google sign-in is now implemented behind backend configuration; it is no longer deferred implementation work. Password authentication and server RBAC remain intact. Verified identities initially map by normalized email, then bind to Google subject; newly provisioned users are customers, and existing staff retain their database roles. State/browser binding, expiry/replay protection, PKCE, nonce and signed-token verification are covered with mocked provider traffic. No Google access/refresh tokens are persisted.
+
+Real Google Console credentials/consent-screen integration and public hosted OAuth are **not validated**. Public backend hosting remains the blocker. The existing 14–22 hour QA estimate still applies; reserve 1–2 hours of its deployment/security allocation for real-provider login, consent cancellation, HTTPS cookie behavior and proxy redaction. External callback query logging must be redacted by the operator. Authlib's pinned JOSE compatibility API emits a deprecation warning; migrate before any Authlib 2.x upgrade. No existing deployment has been overwritten or redeployed by this patch.

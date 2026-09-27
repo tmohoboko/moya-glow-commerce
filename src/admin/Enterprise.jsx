@@ -9,6 +9,21 @@ export default function Enterprise({path, link}) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
+  useEffect(()=>{
+    let active = true;
+    api('/auth/providers').then(result=>{if(active)setGoogleEnabled(result.providers.includes('google'));}).catch(()=>{});
+    if(new URLSearchParams(location.search).get('google') === 'complete') {
+      history.replaceState({}, '', location.pathname);
+      setBusy(true);
+      api('/auth/google/session', {method:'POST', headers:{'X-Moya-OAuth':'1'}})
+        .then(result=>{setToken(result.access_token);return api('/auth/me');})
+        .then(account=>{if(active)setUser(account);})
+        .catch(e=>{setToken(null);if(active)setError(e.message);})
+        .finally(()=>{if(active)setBusy(false);});
+    }
+    return ()=>{active=false;};
+  }, []);
   async function login(event) {
     event.preventDefault(); setBusy(true); setError('');
     const data = new FormData(event.currentTarget);
@@ -24,7 +39,7 @@ export default function Enterprise({path, link}) {
     catch (e) { setError(e.message); }
     finally { setToken(null); setUser(null); }
   }
-  if (!user) return <section className="enterprise"><p className="eyebrow">MOYA GLOW ACCOUNT</p><h1>Welcome back</h1><p>Sign in to your account or staff workspace.</p><form className="panel form" onSubmit={login}><label>Email<input required type="email" name="email" autoComplete="username"/></label><label>Password<input required type="password" name="password" maxLength="128" autoComplete="current-password"/></label><button disabled={busy}>{busy?'Signing in…':'Sign in'}</button><p role="alert">{error}</p></form><p>Accounts are currently issued by the Moya Glow team.</p><a href="/shop" onClick={link('/shop')}>Return to shop →</a></section>;
+  if (!user) return <section className="enterprise"><p className="eyebrow">MOYA GLOW ACCOUNT</p><h1>Welcome back</h1><p>Sign in to your account or staff workspace.</p><form className="panel form" onSubmit={login}><label>Email<input required type="email" name="email" autoComplete="username"/></label><label>Password<input required type="password" name="password" maxLength="128" autoComplete="current-password"/></label><button disabled={busy}>{busy?'Signing in…':'Sign in'}</button><button type="button" disabled={!googleEnabled||busy} onClick={()=>{window.location.assign('/api/auth/google/start');}}>Continue with Google</button>{!googleEnabled&&<small>Google sign-in is currently unavailable.</small>}<p role="alert">{error}</p></form><p>{googleEnabled?'New Google accounts are created as customers. Staff access is issued by the Moya Glow team.':'Accounts are currently issued by the Moya Glow team.'}</p><a href="/shop" onClick={link('/shop')}>Return to shop →</a></section>;
   const allowed = sections.filter(s => user.permissions.includes(s) || s === 'support');
   const requested = path.split('/')[2];
   const section = requested || (path.startsWith('/admin') ? allowed[0] : 'support');

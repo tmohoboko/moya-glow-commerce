@@ -70,3 +70,11 @@ Without Docker: install `backend/requirements.txt` into `.venv`, build with `VIT
 Catalogue replacement: [validated import instructions](docs/CATALOGUE_IMPORT.md). The original mock catalogue is an explicit temporary seed. Published API results preserve the existing product shape.
 
 The separate Vercel enterprise project serves the static storefront/account shell until persistent backend hosting is configured. Static preview does not provide account/admin mutations or maintenance propagation. Do not deploy from the root `.vercel` linkage: it belongs to the original production site.
+
+### Google sign-in (optional)
+
+Password login remains available. Configure `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GOOGLE_REDIRECT_URI` on the backend only; all three must be present and the redirect URI must be valid. `/api/auth/providers` exposes enabled provider names only. With missing configuration, the account page disables **Continue with Google**, including on the static Vercel fallback.
+
+The browser starts at `/api/auth/google/start`, returns through `/api/auth/google/callback`, and exchanges a short-lived HttpOnly handoff cookie at `/api/auth/google/session` for the existing in-memory Moya bearer session. New Google identities create customers only. Initial linking uses normalized verified email; subsequent sign-ins use Google's stable subject ID. Existing active staff keep their operator-assigned roles; no Google claim can grant a staff role. Google access/refresh tokens are not stored.
+
+See [Google Console and local setup](docs/DEPLOYMENT.md#google-oidc-setup). Tests mock Google network traffic and require no real credentials. Real hosted Google login is still blocked until a persistent backend is available and configured; no live deployment was changed by this patch.

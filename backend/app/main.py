@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import re
-import secrets
 import sqlite3
 import time
 import uuid
@@ -15,7 +14,7 @@ from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from .db import connection, migrate
-from .security import audit, current_user, password_hash, password_matches, require, token_hash
+from .security import audit, current_user, password_hash, password_matches, require, token_hash, issue_session
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger('moya')
@@ -25,6 +24,11 @@ DUMMY_HASH = password_hash('unused-password-for-timing')
 async def lifespan(app):
     migrate()
     yield
+
+# Avoid provider HTTP request logging; correlation logs never include query strings.
+logging.getLogger('httpx').setLevel(logging.WARNING)
+logging.getLogger('httpcore').setLevel(logging.WARNING)
+logging.getLogger('uvicorn.access').disabled = True
 
 app = FastAPI(title='Moya Glow Enterprise Prototype', version='0.1.0', lifespan=lifespan)
 
@@ -92,10 +96,7 @@ def login(body: Login, request: Request):
         valid = password_matches(body.password, row['password_hash'] if row else DUMMY_HASH)
         if not row or not valid:
             raise HTTPException(401, 'Invalid email or password')
-        token = secrets.token_urlsafe(32)
-        db.execute('DELETE FROM sessions WHERE expires_at<=?', (int(time.time()),))
-        db.execute('INSERT INTO sessions VALUES (?,?,?)', (token_hash(token), row['id'], int(time.time())+28800))
-        return {'access_token':token, 'token_type':'bearer', 'expires_in':28800}
+        return issue_session(db, row['id'])
 
 @app.get('/api/auth/me')
 def me(user=Depends(current_user)):
@@ -305,6 +306,9 @@ def update_settings(body: Settings, request: Request, user=Depends(require('sett
         db.execute("UPDATE app_settings SET value=? WHERE key='maintenance'",(json.dumps(body.maintenance),))
         audit(db,user,request,'update','settings','maintenance')
     return body.model_dump()
+
+from .google_auth import router as google_auth_router
+app.include_router(google_auth_router)
 
 # Same-origin production hosting; API misses must never become HTML successes.
 DIST = Path(os.getenv('MOYA_DIST', 'dist')).resolve()

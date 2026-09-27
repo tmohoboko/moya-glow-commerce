@@ -91,3 +91,43 @@ test('database storefront preserves original catalogue and cart',async({page})=>
   await expect(page.getByTestId('subtotal')).toContainText('149');
   await expect(page.getByText('Demo storefront. Orders and payments are not available.')).toBeVisible();
 });
+
+test('Google is safely disabled without configuration; password login remains',async({page})=>{
+  await page.goto('/account');
+  await expect(page.getByRole('button',{name:'Continue with Google'})).toBeDisabled();
+  await expect(page.getByText('Google sign-in is currently unavailable.')).toBeVisible();
+  await expect(page.getByRole('button',{name:'Sign in',exact:true})).toBeEnabled();
+});
+test('Google button is offered only for an enabled provider',async({page})=>{
+  await page.route('**/api/auth/providers',route=>route.fulfill({json:{providers:['password','google']}}));
+  await page.goto('/login');
+  await expect(page.getByRole('button',{name:'Continue with Google'})).toBeEnabled();
+});
+test('Google return exchanges handoff without URL tokens',async({page})=>{
+  await page.route('**/api/auth/google/session',async route=>{
+    expect(route.request().headers()['x-moya-oauth']).toBe('1');
+    await route.fulfill({status:401,json:{detail:'Google sign-in expired; please try again'}});
+  });
+  await page.goto('/account?google=complete');
+  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole('alert')).toContainText('Google sign-in expired');
+});
+test('static fallback keeps password form and Google disabled',async({page})=>{
+  for(const endpoint of ['providers','login']) await page.route(`**/api/auth/${endpoint}`,route=>route.fulfill({contentType:'text/html',body:'<html>Static fallback</html>'}));
+  await page.goto('/account');
+  await expect(page.getByRole('button',{name:'Continue with Google'})).toBeDisabled();
+  await page.getByLabel('Email',{exact:true}).fill('customer@example.test');
+  await page.getByLabel('Password',{exact:true}).fill('browser-test-only-pass');
+  await page.getByRole('button',{name:'Sign in',exact:true}).click();
+  await expect(page.getByRole('alert')).toContainText('Account services are unavailable on this host');
+});
+test('successful Google return uses ordinary Moya account session',async({page})=>{
+  const session=await page.request.post('/api/auth/login',{data:{email:'customer@example.test',password:'browser-test-only-pass'}});
+  expect(session.status()).toBe(200);
+  const data=await session.json();
+  await page.route('**/api/auth/google/session',route=>route.fulfill({json:data}));
+  await page.goto('/account?google=complete');
+  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole('button',{name:'Sign out'})).toBeVisible();
+  await expect(page.getByText('customer@example.test · customer')).toBeVisible();
+});

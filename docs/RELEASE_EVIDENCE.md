@@ -57,3 +57,27 @@ No remaining failures in the executed final automated gates. GitHub Actions also
 - Source decisions, Flutter compatibility, import/deployment instructions, test plan, defect/gap report and screenshots/results.
 
 Purchased donor: AdFund 3.6.0, Laravel ^12.60/Flutter reference. No PHP, Flutter runtime, fundraising, wallet, crypto or new payment behavior entered the product.
+
+## Google login patch — 2026-09-28
+
+Bounded patch on `port/adfund-enterprise-prototype`; no live deployment or original Vercel linkage changed. Adds Google start/callback/provider-capabilities endpoints and same-origin session handoff; password login uses the same shared Moya session issuer. Adds forward migration `002_google_oidc.sql` for one-time OAuth states, stable social identities and one-time handoffs. Google credentials are backend environment settings only; provider is disabled without them. New users are customers; existing active users preserve roles. No provider access/refresh tokens are persisted.
+
+Changed modules: `backend/app/google_auth.py`, `security.py`, `main.py`, forward SQL migration, pinned Authlib/dependencies, Compose environment, React account component, API/browser tests and deployment/QA documentation.
+
+The first API run passed 40 tests and failed the signed-token success fixture. The test had replaced `httpx.Client` globally, interfering with Authlib's HTTP client initialization. HTTP client injection is now isolated; signature/issuer/audience/nonce/expiry/algorithm failures exercise actual signed-token validation with mocked network calls. No verification assertions were weakened.
+
+Real Google login has not been attempted without operator credentials. Automated tests require neither Google credentials nor network. Public hosted OAuth remains blocked by missing persistent backend hosting. See the patch's final gate results below.
+
+Google patch local gates:
+
+| Gate | Result |
+|---|---|
+| Backend API/OIDC/security | **45 passed** (Google token/JWKS network mocked; real generated JWT signatures validated) |
+| Enterprise browser | **12 passed**; `qa/google-auth-enterprise-results.json` |
+| Original storefront regression | **10 passed**; `qa/google-auth-storefront-results.json` |
+| Frontend unit / lint | **2 passed** / PASS |
+| Static and API frontend builds | PASS |
+| Docker rebuild/start / health / readiness | PASS, HTTP 200; existing volume migrated to 002 without resetting data |
+| Docker provider capabilities without credentials | PASS: password only |
+
+No unresolved local test failures. Non-failing HTTPX and Authlib JOSE deprecation warnings remain. CI executes the same required gates on the pushed implementation commit; its final run result is linked in the operator handoff. No real Google credentials were used, and no public hosted OAuth verification is claimed.
