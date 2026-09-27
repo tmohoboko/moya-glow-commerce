@@ -2,7 +2,7 @@
 
 Repository: `/home/tmdev012/Reception/moya-glow-commerce`.
 Branch: `port/adfund-enterprise-prototype`; baseline `d2a9f03`.
-Release commit is the commit containing this evidence; obtain its SHA with `git log -1 --format=%H` after checkout. Commit message: `feat: port enterprise commerce capabilities into Moya Glow`.
+Implementation commit: `f5d1759b0566dae92f6f707ff851207e5cc15e84`. A subsequent documentation-only commit records the completed CI result. Implementation commit message: `feat: port enterprise commerce capabilities into Moya Glow`.
 
 ## Live result
 
@@ -35,6 +35,7 @@ Original https://moya-glow-commerce.vercel.app returned HTTP 200 after the new d
 | Health/readiness | PASS | HTTP 200 `/api/health` (`payments: disabled`), `/api/readiness` (`ready`) on port 8013 |
 | Catalogue import command | PASS | 30 records dry-run validated locally and inside final Docker container |
 | Catalogue replacement gate | REACHED | `CATALOG_READY_FOR_REPLACEMENT`; atomic import/unpublish/audit tested |
+| GitHub Actions | PASS | https://github.com/tmohoboko/moya-glow-commerce/actions/runs/36349077173; implementation commit f5d1759 |
 | Secret scan / whitespace | PASS | Staged `scripts/secret-scan.py`; `git diff --check` |
 
 ## Failures encountered and resolved
@@ -45,7 +46,7 @@ Original https://moya-glow-commerce.vercel.app returned HTTP 200 after the new d
 - Initial live run: 9 pass, one `net::ERR_NETWORK_CHANGED` navigation failure. Complete rerun: 10 pass. No automatic retries or assertion weakening was added.
 - Non-failing deprecation notices remain for HTTPX TestClient and parts of lint/Newman tooling; Docker also warned that optional buildx/Bake was absent, then built successfully.
 
-No remaining failures in the executed final automated gates. Remote GitHub Actions, Safari/Firefox, real devices, accessibility, load/abuse, hosted backend E2E and backup/restore have not been certified. QA debt is **14–22 engineer-hours**; see GAP_REPORT.md and DEFECT_LOG.md. This release is a prototype, and full hosted enterprise acceptance remains blocked on backend hosting.
+No remaining failures in the executed final automated gates. GitHub Actions also passed lint, unit/API checks, both frontend builds, both browser suites, secret-scan step and artifact upload. Safari/Firefox, real devices, accessibility, load/abuse, hosted backend E2E and backup/restore have not been certified. QA debt is **14–22 engineer-hours**; see GAP_REPORT.md and DEFECT_LOG.md. This release is a prototype, and full hosted enterprise acceptance remains blocked on backend hosting.
 
 ## Scope of changes
 

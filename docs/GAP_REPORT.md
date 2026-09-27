@@ -24,7 +24,7 @@ No hardcoded runtime accounts, no real payment credentials, no tokens persisted 
 
 ## Deployment concerns
 
-SQLite needs one persistent instance and backups. Serverless ephemeral filesystems cannot safely host this backend. Docker uses a dedicated named volume and nonroot process. No existing backend deployment mechanism or backend credentials were found. The Vercel deployment is an explicitly limited static fallback. No original host was redeployed. CI configuration was added; remote CI results are not inferred from local results.
+SQLite needs one persistent instance and backups. Serverless ephemeral filesystems cannot safely host this backend. Docker uses a dedicated named volume and nonroot process. No existing backend deployment mechanism or backend credentials were found. The Vercel deployment is an explicitly limited static fallback. No original host was redeployed. CI configuration was added; remote GitHub Actions run 36349077173 independently passed on implementation commit f5d1759.
 
 ## Remaining QA estimate
 
