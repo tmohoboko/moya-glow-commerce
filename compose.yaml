@@ -1,0 +1,19 @@
+name: moya-enterprise-port
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8013:8000"
+    environment:
+      MOYA_DATABASE: /app/data/moya.sqlite3
+      MOYA_SEED_DEMO: "true"
+    volumes:
+      - enterprise-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/readiness')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+volumes:
+  enterprise-data:

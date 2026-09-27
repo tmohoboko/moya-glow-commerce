@@ -1,0 +1,12 @@
+.git
+.vercel
+.deploy-enterprise
+node_modules
+.venv
+data
+dist
+qa
+test-results
+.env*
+__pycache__
+.pytest_cache

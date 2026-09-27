@@ -1,0 +1,18 @@
+CREATE TABLE roles (name TEXT PRIMARY KEY);
+CREATE TABLE permissions (role TEXT REFERENCES roles(name), resource TEXT, PRIMARY KEY(role, resource));
+CREATE TABLE users (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL REFERENCES roles(name), active INTEGER NOT NULL DEFAULT 1);
+CREATE TABLE sessions (token_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id), expires_at INTEGER NOT NULL);
+CREATE TABLE categories (id TEXT PRIMARY KEY, name TEXT UNIQUE NOT NULL);
+CREATE TABLE products (id TEXT PRIMARY KEY, name TEXT NOT NULL, price REAL NOT NULL CHECK(price>=0), category_id TEXT NOT NULL REFERENCES categories(id), image TEXT NOT NULL, description TEXT NOT NULL, stock INTEGER NOT NULL DEFAULT 0 CHECK(stock>=0), published INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE orders (id TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id), status TEXT NOT NULL DEFAULT 'pending', total REAL NOT NULL CHECK(total>=0), currency TEXT NOT NULL DEFAULT 'ZAR', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE order_items (id INTEGER PRIMARY KEY, order_id TEXT NOT NULL REFERENCES orders(id), product_id TEXT REFERENCES products(id), name TEXT NOT NULL, quantity INTEGER NOT NULL CHECK(quantity>0), unit_price REAL NOT NULL CHECK(unit_price>=0));
+CREATE TABLE payments (id TEXT PRIMARY KEY, order_id TEXT NOT NULL REFERENCES orders(id), provider TEXT NOT NULL, transaction_reference TEXT, status TEXT NOT NULL DEFAULT 'unpaid');
+CREATE TABLE support_tickets (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id), subject TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'open', created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE support_messages (id INTEGER PRIMARY KEY, ticket_id TEXT NOT NULL REFERENCES support_tickets(id), user_id TEXT NOT NULL REFERENCES users(id), body TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE audit_events (id INTEGER PRIMARY KEY, actor_id TEXT NOT NULL REFERENCES users(id), action TEXT NOT NULL, resource TEXT NOT NULL, resource_id TEXT NOT NULL, request_id TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE app_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+CREATE TABLE rate_limits (key TEXT PRIMARY KEY, started_at INTEGER NOT NULL, count INTEGER NOT NULL);
+INSERT INTO app_settings VALUES ('maintenance','false');
+CREATE INDEX idx_ticket_user ON support_tickets(user_id);
+CREATE INDEX idx_sessions_expiry ON sessions(expires_at);
+CREATE INDEX idx_order_created ON orders(created_at);

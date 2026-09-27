@@ -1,0 +1,152 @@
+npm warn deprecated har-validator@5.1.5: this library is no longer supported
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated uuid@3.4.0: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated @faker-js/faker@5.5.3: Please update to a newer version.
+newman
+
+Moya Glow Enterprise QA (isolated test database only)
+
+→ Health
+  GET http://127.0.0.1:8015/api/health [200 OK, 290B, 51ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Readiness
+  GET http://127.0.0.1:8015/api/readiness [200 OK, 249B, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Catalogue contract
+  GET http://127.0.0.1:8015/api/products [200 OK, 9.98kB, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Anonymous admin rejected
+  GET http://127.0.0.1:8015/api/admin/products [401 Unauthorized, 325B, 4ms]
+  ✓  HTTP 401
+  ✓  Correlation ID
+
+→ Login
+  POST http://127.0.0.1:8015/api/auth/login [200 OK, 335B, 79ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Account
+  GET http://127.0.0.1:8015/api/auth/me [200 OK, 380B, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Dashboard
+  GET http://127.0.0.1:8015/api/admin/dashboard [200 OK, 328B, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Create category
+  POST http://127.0.0.1:8015/api/admin/categories [201 Created, 306B, 10ms]
+  ✓  HTTP 201
+  ✓  Correlation ID
+
+→ Edit category
+  PUT http://127.0.0.1:8015/api/admin/categories/863388b11fca4826adb7c37896c2c24f [200 OK, 309B, 11ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Create product
+  POST http://127.0.0.1:8015/api/admin/products [201 Created, 436B, 9ms]
+  ✓  HTTP 201
+  ✓  Correlation ID
+
+→ Publish product
+  PUT http://127.0.0.1:8015/api/admin/products/bbc53c41f0f642cfaf19720af58ce3f0 [200 OK, 430B, 10ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Published product visible
+  GET http://127.0.0.1:8015/api/products/bbc53c41f0f642cfaf19720af58ce3f0 [200 OK, 395B, 5ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Products admin
+  GET http://127.0.0.1:8015/api/admin/products [200 OK, 11.72kB, 5ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Orders
+  GET http://127.0.0.1:8015/api/admin/orders [200 OK, 353B, 5ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Create support ticket
+  POST http://127.0.0.1:8015/api/support/tickets [201 Created, 316B, 16ms]
+  ✓  HTTP 201
+  ✓  Correlation ID
+
+→ Support list
+  GET http://127.0.0.1:8015/api/support/tickets [200 OK, 367B, 5ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Support reply
+  POST http://127.0.0.1:8015/api/support/tickets/273653dddf1e4956ad55672146b15afc/messages [201 Created, 256B, 14ms]
+  ✓  HTTP 201
+  ✓  Correlation ID
+
+→ Support detail
+  GET http://127.0.0.1:8015/api/support/tickets/273653dddf1e4956ad55672146b15afc [200 OK, 643B, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Close ticket
+  PATCH http://127.0.0.1:8015/api/support/tickets/273653dddf1e4956ad55672146b15afc/status [200 OK, 250B, 10ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Settings
+  GET http://127.0.0.1:8015/api/admin/settings [200 OK, 252B, 6ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Audit
+  GET http://127.0.0.1:8015/api/admin/audit [200 OK, 1.64kB, 8ms]
+  ✓  HTTP 200
+  ✓  Correlation ID
+
+→ Delete product
+  DELETE http://127.0.0.1:8015/api/admin/products/bbc53c41f0f642cfaf19720af58ce3f0 [204 No Content, 219B, 12ms]
+  ✓  HTTP 204
+  ✓  Correlation ID
+
+→ Delete category
+  DELETE http://127.0.0.1:8015/api/admin/categories/863388b11fca4826adb7c37896c2c24f [204 No Content, 219B, 9ms]
+  ✓  HTTP 204
+  ✓  Correlation ID
+
+→ Logout
+  POST http://127.0.0.1:8015/api/auth/logout [204 No Content, 219B, 9ms]
+  ✓  HTTP 204
+  ✓  Correlation ID
+
+→ Revoked session rejected
+  GET http://127.0.0.1:8015/api/auth/me [401 Unauthorized, 328B, 11ms]
+  ✓  HTTP 401
+  ✓  Correlation ID
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │               25 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │               25 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                0 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │               50 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 817ms                                     │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 24.75kB (approx)                         │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 12ms [min: 4ms, max: 79ms, s.d.: 16ms] │
+└───────────────────────────────────────────────────────────────┘

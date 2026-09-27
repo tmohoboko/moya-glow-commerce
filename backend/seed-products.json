@@ -1,0 +1,242 @@
+[
+  {
+    "id": "gentle-cream-cleanser",
+    "name": "Gentle Cream Cleanser",
+    "price": 149,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make gentle cream cleanser part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "hydrating-gel-cleanser",
+    "name": "Hydrating Gel Cleanser",
+    "price": 159,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make hydrating gel cleanser part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "rosewater-toner",
+    "name": "Rosewater Toner",
+    "price": 129,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make rosewater toner part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "vitamin-c-serum",
+    "name": "Vitamin C Serum",
+    "price": 249,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make vitamin c serum part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "hyaluronic-dew-serum",
+    "name": "Hyaluronic Dew Serum",
+    "price": 229,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make hyaluronic dew serum part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "everyday-face-cream",
+    "name": "Everyday Face Cream",
+    "price": 199,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make everyday face cream part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "nourishing-night-cream",
+    "name": "Nourishing Night Cream",
+    "price": 239,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make nourishing night cream part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "mineral-spf-30-lotion",
+    "name": "Mineral SPF 30 Lotion",
+    "price": 259,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make mineral spf 30 lotion part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "clay-face-mask",
+    "name": "Clay Face Mask",
+    "price": 179,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make clay face mask part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "soft-lip-balm",
+    "name": "Soft Lip Balm",
+    "price": 69,
+    "category": "Skincare",
+    "image": "/product.svg",
+    "description": "Make soft lip balm part of your everyday beauty ritual. A thoughtfully curated skincare essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "skin-tint-foundation",
+    "name": "Skin Tint Foundation",
+    "price": 279,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make skin tint foundation part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "cream-concealer",
+    "name": "Cream Concealer",
+    "price": 149,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make cream concealer part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "peach-cream-blush",
+    "name": "Peach Cream Blush",
+    "price": 169,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make peach cream blush part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "golden-hour-highlighter",
+    "name": "Golden Hour Highlighter",
+    "price": 189,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make golden hour highlighter part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "everyday-mascara",
+    "name": "Everyday Mascara",
+    "price": 179,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make everyday mascara part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "brow-defining-pencil",
+    "name": "Brow Defining Pencil",
+    "price": 99,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make brow defining pencil part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "nude-rose-lipstick",
+    "name": "Nude Rose Lipstick",
+    "price": 139,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make nude rose lipstick part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "clear-lip-gloss",
+    "name": "Clear Lip Gloss",
+    "price": 109,
+    "category": "Makeup",
+    "image": "/product.svg",
+    "description": "Make clear lip gloss part of your everyday beauty ritual. A thoughtfully curated makeup essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "shea-body-butter",
+    "name": "Shea Body Butter",
+    "price": 189,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make shea body butter part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "citrus-body-wash",
+    "name": "Citrus Body Wash",
+    "price": 129,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make citrus body wash part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "vanilla-body-lotion",
+    "name": "Vanilla Body Lotion",
+    "price": 159,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make vanilla body lotion part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "sugar-body-polish",
+    "name": "Sugar Body Polish",
+    "price": 179,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make sugar body polish part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "soft-hands-cream",
+    "name": "Soft Hands Cream",
+    "price": 89,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make soft hands cream part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "botanical-bath-soak",
+    "name": "Botanical Bath Soak",
+    "price": 149,
+    "category": "Body care",
+    "image": "/product.svg",
+    "description": "Make botanical bath soak part of your everyday beauty ritual. A thoughtfully curated body care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "daily-gentle-shampoo",
+    "name": "Daily Gentle Shampoo",
+    "price": 159,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make daily gentle shampoo part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "moisture-rich-conditioner",
+    "name": "Moisture Rich Conditioner",
+    "price": 169,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make moisture rich conditioner part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "argan-hair-oil",
+    "name": "Argan Hair Oil",
+    "price": 199,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make argan hair oil part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "deep-conditioning-mask",
+    "name": "Deep Conditioning Mask",
+    "price": 219,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make deep conditioning mask part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "curl-defining-cream",
+    "name": "Curl Defining Cream",
+    "price": 179,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make curl defining cream part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  },
+  {
+    "id": "leave-in-detangling-mist",
+    "name": "Leave-in Detangling Mist",
+    "price": 149,
+    "category": "Hair care",
+    "image": "/product.svg",
+    "description": "Make leave-in detangling mist part of your everyday beauty ritual. A thoughtfully curated hair care essential for your shelf. Mock product for the Moya Glow demo catalogue; packaging is illustrative."
+  }
+]
