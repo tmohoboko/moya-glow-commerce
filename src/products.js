@@ -1,3 +1,4 @@
+import {serviceArtworkPath} from './service-artwork.js';
 // L Beauty supplied price list, 2026-09-28. Prices are ZAR base amounts.
 export const products = [
   {
@@ -5,7 +6,6 @@ export const products = [
     "name": "Full Body",
     "price": 450,
     "category": "Massage",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Massage. 60 min."
   },
   {
@@ -13,7 +13,6 @@ export const products = [
     "name": "Back and Neck",
     "price": 250,
     "category": "Massage",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Massage. 30 min."
   },
   {
@@ -21,7 +20,6 @@ export const products = [
     "name": "Colon Cleans",
     "price": 150,
     "category": "Massage",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Massage. 30 min."
   },
   {
@@ -29,7 +27,6 @@ export const products = [
     "name": "Aromatherapy Massage",
     "price": 500,
     "category": "Massage",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Massage. 60 min."
   },
   {
@@ -37,7 +34,6 @@ export const products = [
     "name": "Hand Exfoliation & Massage",
     "price": 120,
     "category": "Hand and Foot Treatments",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Hand and Foot Treatments."
   },
   {
@@ -45,7 +41,6 @@ export const products = [
     "name": "Leg Exfoliation & Massage",
     "price": 150,
     "category": "Hand and Foot Treatments",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Hand and Foot Treatments."
   },
   {
@@ -53,7 +48,6 @@ export const products = [
     "name": "Full Manicure",
     "price": 200,
     "category": "Hand and Foot Treatments",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Hand and Foot Treatments."
   },
   {
@@ -61,7 +55,6 @@ export const products = [
     "name": "Full Pedicure",
     "price": 220,
     "category": "Hand and Foot Treatments",
-    "image": "/catalogue/lbeauty/massage-hand-foot.jpg",
     "description": "L Beauty · Hand and Foot Treatments."
   },
   {
@@ -69,7 +62,6 @@ export const products = [
     "name": "Full Arm",
     "price": 180,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -77,7 +69,6 @@ export const products = [
     "name": "Half Arm",
     "price": 130,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -85,7 +76,6 @@ export const products = [
     "name": "Full Leg",
     "price": 200,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -93,7 +83,6 @@ export const products = [
     "name": "Half Leg",
     "price": 150,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -101,7 +90,6 @@ export const products = [
     "name": "Back",
     "price": 190,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -109,7 +97,6 @@ export const products = [
     "name": "Chest",
     "price": 165,
     "category": "Body Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Body Wax."
   },
   {
@@ -117,7 +104,6 @@ export const products = [
     "name": "Underarms",
     "price": 180,
     "category": "Intimate Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Intimate Wax."
   },
   {
@@ -125,7 +111,6 @@ export const products = [
     "name": "Bikini",
     "price": 200,
     "category": "Intimate Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Intimate Wax."
   },
   {
@@ -133,7 +118,6 @@ export const products = [
     "name": "Hollywood",
     "price": 260,
     "category": "Intimate Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Intimate Wax."
   },
   {
@@ -141,7 +125,6 @@ export const products = [
     "name": "Buttock",
     "price": 85,
     "category": "Intimate Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Intimate Wax."
   },
   {
@@ -149,7 +132,6 @@ export const products = [
     "name": "Brow / Lip / Chin / Sideburns",
     "price": 80,
     "category": "Facial Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Facial Wax."
   },
   {
@@ -157,7 +139,6 @@ export const products = [
     "name": "Brow & Lip / Chin / Sideburns COMBO",
     "price": 120,
     "category": "Facial Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Facial Wax."
   },
   {
@@ -165,7 +146,6 @@ export const products = [
     "name": "Full Face",
     "price": 200,
     "category": "Facial Wax",
-    "image": "/catalogue/lbeauty/wax.jpg",
     "description": "L Beauty · Facial Wax."
   },
   {
@@ -173,7 +153,6 @@ export const products = [
     "name": "Classic",
     "price": 250,
     "category": "Lash Extensions",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash Extensions."
   },
   {
@@ -181,7 +160,6 @@ export const products = [
     "name": "Hybrid",
     "price": 290,
     "category": "Lash Extensions",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash Extensions."
   },
   {
@@ -189,7 +167,6 @@ export const products = [
     "name": "Volume",
     "price": 330,
     "category": "Lash Extensions",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash Extensions."
   },
   {
@@ -197,7 +174,6 @@ export const products = [
     "name": "Clusters",
     "price": 180,
     "category": "Lash Extensions",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash Extensions."
   },
   {
@@ -205,7 +181,6 @@ export const products = [
     "name": "Cat eye (for both) EXTRA",
     "price": 15,
     "category": "Lash Extensions",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash Extensions."
   },
   {
@@ -213,7 +188,6 @@ export const products = [
     "name": "Brow tint",
     "price": 75,
     "category": "Lash and Brow",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash and Brow."
   },
   {
@@ -221,7 +195,6 @@ export const products = [
     "name": "Lash tint",
     "price": 70,
     "category": "Lash and Brow",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash and Brow."
   },
   {
@@ -229,7 +202,6 @@ export const products = [
     "name": "Lash & Brow tint COMBO",
     "price": 120,
     "category": "Lash and Brow",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash and Brow."
   },
   {
@@ -237,7 +209,6 @@ export const products = [
     "name": "Brow Shaping (Tweeze)",
     "price": 60,
     "category": "Lash and Brow",
-    "image": "/catalogue/lbeauty/lash-brow.jpg",
     "description": "L Beauty · Lash and Brow."
   },
   {
@@ -245,7 +216,6 @@ export const products = [
     "name": "Gel overlay (1 / Any colour)",
     "price": 120,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement."
   },
   {
@@ -253,7 +223,6 @@ export const products = [
     "name": "Tips (Any Length)",
     "price": 200,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement."
   },
   {
@@ -261,7 +230,6 @@ export const products = [
     "name": "French",
     "price": 250,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement."
   },
   {
@@ -269,7 +237,6 @@ export const products = [
     "name": "Acrylic Overlay (1 / Any colour)",
     "price": 150,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement."
   },
   {
@@ -277,7 +244,6 @@ export const products = [
     "name": "Tips (Any size)",
     "price": 230,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement."
   },
   {
@@ -285,7 +251,6 @@ export const products = [
     "name": "French",
     "price": 280,
     "category": "Gel & Acrylic Nail Enhancements",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement."
   },
   {
@@ -293,7 +258,6 @@ export const products = [
     "name": "Gel Overlay (1 / Any colour)",
     "price": 150,
     "category": "Toes",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Toes."
   },
   {
@@ -301,7 +265,6 @@ export const products = [
     "name": "French",
     "price": 170,
     "category": "Toes",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Toes."
   },
   {
@@ -309,7 +272,6 @@ export const products = [
     "name": "Art / Per nail",
     "price": 5,
     "category": "Others / Nails (Per Nail)",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Others / Nails (Per Nail). Price per nail."
   },
   {
@@ -317,7 +279,6 @@ export const products = [
     "name": "Chrome",
     "price": 2,
     "category": "Others / Nails (Per Nail)",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Others / Nails (Per Nail). Price per nail."
   },
   {
@@ -325,7 +286,6 @@ export const products = [
     "name": "Charms / Rhinestones",
     "price": 7,
     "category": "Others / Nails (Per Nail)",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Others / Nails (Per Nail). Price per nail."
   },
   {
@@ -333,7 +293,6 @@ export const products = [
     "name": "3D",
     "price": 10,
     "category": "Others / Nails (Per Nail)",
-    "image": "/catalogue/lbeauty/nails.jpg",
     "description": "L Beauty · Others / Nails (Per Nail). Price per nail."
   },
   {
@@ -341,7 +300,6 @@ export const products = [
     "name": "Classic Nude / Natural",
     "price": 350,
     "category": "Makeup Looks",
-    "image": "/catalogue/lbeauty/makeup.jpg",
     "description": "L Beauty · Makeup Looks."
   },
   {
@@ -349,7 +307,6 @@ export const products = [
     "name": "Full Glam",
     "price": 400,
     "category": "Makeup Looks",
-    "image": "/catalogue/lbeauty/makeup.jpg",
     "description": "L Beauty · Makeup Looks."
   },
   {
@@ -357,7 +314,6 @@ export const products = [
     "name": "Special Effects",
     "price": 600,
     "category": "Makeup Looks",
-    "image": "/catalogue/lbeauty/makeup.jpg",
     "description": "L Beauty · Makeup Looks. Starting price; final service price may vary. Bag totals use the base price.",
     "priceFrom": true
   },
@@ -366,10 +322,9 @@ export const products = [
     "name": "Bridal",
     "price": 1000,
     "category": "Makeup Looks",
-    "image": "/catalogue/lbeauty/makeup.jpg",
     "description": "L Beauty · Makeup Looks. Starting price; final service price may vary. Bag totals use the base price.",
     "priceFrom": true
   }
-];
+].map(product => ({...product, image: serviceArtworkPath(product)}));
 export const money = value => new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(value);
 export const servicePrice = (product, quantity = 1) => `${product.priceFrom ? "From " : ""}${money(product.price * quantity)}`;

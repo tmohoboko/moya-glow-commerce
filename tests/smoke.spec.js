@@ -46,3 +46,45 @@ test('SMOKE-012 starting prices remain visible through detail and cart',async({p
   await expect(page.getByRole('heading',{name:'Your bag is empty'})).toBeVisible();
  }
 });
+test('SMOKE-013 every service has readable unique artwork retained in the bag',async({page,request})=>{
+ const {products,money}=await import('../src/products.js');
+ expect(products).toHaveLength(46);
+ expect(new Set(products.map(p=>p.image)).size).toBe(46);
+ expect(products.find(p=>p.name==='Full Body').image).not.toBe(products.find(p=>p.name==='Back and Neck').image);
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto('/shop');
+ for(const product of products){
+  expect(product.image).toMatch(/^\/catalogue\/services\/[a-z0-9-]+\.svg$/);
+  const response=await request.get(product.image);
+  expect(response.ok()).toBe(true);
+  expect(response.headers()['content-type']).toContain('image/svg+xml');
+  const svg=await response.text();
+  const validation=await page.evaluate(source=>{
+   const documentSvg=new DOMParser().parseFromString(source,'image/svg+xml');
+   if(documentSvg.querySelector('parsererror')) return {valid:false};
+   const element=document.importNode(documentSvg.documentElement,true);
+   document.body.append(element);
+   const labels=[...element.querySelectorAll('text')];
+   const result={valid:element.tagName==='svg',text:labels.map(label=>label.textContent).join(' '),bounds:labels.map(label=>({text:label.textContent,x:label.getBBox().x,width:label.getBBox().width,y:label.getBBox().y,height:label.getBBox().height})),fits:labels.every(label=>{const box=label.getBBox();return box.x>=32&&box.x+box.width<=448&&box.y>=32&&box.y+box.height<=452})};
+   element.remove();return result;
+  },svg);
+  expect(validation.valid).toBe(true);expect(validation.fits,JSON.stringify(validation.bounds)).toBe(true);
+  expect(validation.text).toContain(product.name.toUpperCase());
+  expect(validation.text).toContain(product.category.toUpperCase());
+  expect(validation.text).toContain(`${product.priceFrom?'FROM ':''}R ${String(product.price).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}`);
+  const card=page.locator('.product').filter({has:page.locator(`a[href="/product/${product.id}"]`)});
+  await expect(card.locator('img')).toHaveAttribute('src',product.image);
+  await expect(card.locator('strong')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)}`);
+  await card.getByRole('button').click();
+ }
+ await page.getByRole('link',{name:'Bag (46)'}).click();
+ await expect(page.locator('.cart-item')).toHaveCount(46);
+ for(const product of products){
+  const item=page.locator('.cart-item').filter({has:page.locator(`img[src="${product.image}"]`)});
+  await expect(item.locator('h2')).toHaveText(product.name);
+  await expect(item.locator('p')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)} each`);
+ }
+ await expect.poll(()=>page.locator('.cart-item img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
+ await expect(page.getByTestId('subtotal')).toHaveText(`From ${money(products.reduce((sum,p)=>sum+p.price,0))}`);
+ expect(errors).toEqual([]);
+});
