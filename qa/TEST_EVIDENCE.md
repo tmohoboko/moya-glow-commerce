@@ -1,7 +1,21 @@
 # Test evidence
 
+## Current evidence index — 2026-10-09
+
+- [L Beauty catalogue patch](LBEAUTY_CATALOGUE_PATCH.md): 2026-09-28 local build PASS and 12/12 local Playwright PASS.
+- [L Beauty artwork verification](LBEAUTY_SERVICE_ARTWORK.md): 2026-09-30 local build PASS and 13/13 local Playwright PASS; limited desktop/mobile/cart visual review.
+- [Current machine report](smoke-results.json): starts 2026-09-30T16:55:45.502Z, production preview on port 4173, 13 passed, zero unexpected/skipped/flaky results, approximately 16.1 seconds. This replaces the older report; it is not a hosted run.
+- Final branding and vector-wordmark commits were made after this recorded run. A fresh run is required to certify application commit `0089e4e4da04141f53a0ab803c5c2495e301c543`.
+- Hosted L Beauty, completed manual exploratory and cross-browser acceptance remain unverified. See [release acceptance](RELEASE_ACCEPTANCE.md).
+
+No test execution was performed during this documentation review.
+
+## Historical Moya Glow execution — 2026-09-26
+
+The following records the earlier 30-product application and its hosted run. Current JSON/screenshots were later refreshed for L Beauty and must not be used as machine proof of this historical run.
+
 Date: 2026-09-26. Executor: Codex / Playwright 1.63.0.
-Latest target: https://moya-glow-commerce.vercel.app (public production).
+Historical production target: https://moya-glow-commerce.vercel.app (public production).
 Deployed application commit: a400eff043587ce6ee6050c6c915ac27ff55b3a1.
 Deployment: dpl_EyLyux87MruETfA3vbtgGgJwWUvn.
 Earlier local target: http://127.0.0.1:4173.
@@ -32,8 +46,8 @@ Production suite: **10 passed in 14.4 seconds**. Earlier local suite: **10 passe
 | SMOKE-009 | Mobile catalogue and cart visible; no horizontal overflow | PASS |
 | SMOKE-010 | Unknown page/product and home recovery | PASS |
 
-Machine results: [smoke-results.json](smoke-results.json).
-Screenshots: [mobile](mobile-home.png), [desktop](desktop-home.png). Mobile screenshot visually inspected for clipping and structure.
+Historical machine results: [smoke-results.json at the release-evidence commit](https://github.com/tmohoboko/moya-glow-commerce/blob/2c8260fe86e3481be07648973b1d866482f5fb26/qa/smoke-results.json).
+Historical screenshots: [mobile](https://github.com/tmohoboko/moya-glow-commerce/blob/2c8260fe86e3481be07648973b1d866482f5fb26/qa/mobile-home.png), [desktop](https://github.com/tmohoboko/moya-glow-commerce/blob/2c8260fe86e3481be07648973b1d866482f5fb26/qa/desktop-home.png). Mobile screenshot visually inspected for clipping and structure.
 
 The current default Chromium download was slow and reset once; stopped it after the existing installed Chromium completed all tests. For a fresh machine use `npx playwright install chromium`, or set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to an existing Chrome binary.
 
@@ -45,4 +59,4 @@ Not executed: Safari/Firefox, real-device checks, manual exploratory session, ac
 BASE_URL=https://moya-glow-commerce.vercel.app PLAYWRIGHT_CHROMIUM_EXECUTABLE=/home/tmdev012/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome npm test
 ```
 
-All SMOKE-001 through SMOKE-010 checks above were rerun against production and passed. The committed JSON report and both screenshots now reflect production. Direct requests to unknown page/product routes recovered correctly through the Vercel SPA rewrite. No login or deployment protection bypass was needed.
+All SMOKE-001 through SMOKE-010 checks above were rerun against production and passed. At the historical release-evidence commit, the JSON report and both screenshots reflected that production run. Current files have since been replaced with local L Beauty evidence. Direct requests to unknown page/product routes recovered correctly through the Vercel SPA rewrite. No login or deployment protection bypass was needed.
