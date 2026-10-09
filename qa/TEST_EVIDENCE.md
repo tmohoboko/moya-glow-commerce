@@ -1,14 +1,20 @@
 # Test evidence
 
-## Current evidence index — 2026-10-09
+## Current patch execution — 2026-10-09
+
+Fresh npm ci and Vite production build: PASS. Local Chromium regression: **16/16 PASS**, zero unexpected/skipped/flaky results. [Machine report](release-local-results.json) · [Execution details and tested source fingerprints](FRONTEND_RELEASE_PATCH.md).
+
+Current screenshots: [mobile](release-local/mobile-home.png), [desktop](release-local/desktop-home.png). Reviewed visually for clipping and branding. Hosted regression and full manual acceptance are pending.
+
+## Prior evidence index — reviewed 2026-10-09
 
 - [L Beauty catalogue patch](LBEAUTY_CATALOGUE_PATCH.md): 2026-09-28 local build PASS and 12/12 local Playwright PASS.
 - [L Beauty artwork verification](LBEAUTY_SERVICE_ARTWORK.md): 2026-09-30 local build PASS and 13/13 local Playwright PASS; limited desktop/mobile/cart visual review.
-- [Current machine report](smoke-results.json): starts 2026-09-30T16:55:45.502Z, production preview on port 4173, 13 passed, zero unexpected/skipped/flaky results, approximately 16.1 seconds. This replaces the older report; it is not a hosted run.
+- [Prior machine report](smoke-results.json): starts 2026-09-30T16:55:45.502Z, production preview on port 4173, 13 passed, zero unexpected/skipped/flaky results, approximately 16.1 seconds. This replaces the older report; it is not a hosted run.
 - Final branding and vector-wordmark commits were made after this recorded run. A fresh run is required to certify application commit `0089e4e4da04141f53a0ab803c5c2495e301c543`.
 - Hosted L Beauty, completed manual exploratory and cross-browser acceptance remain unverified. See [release acceptance](RELEASE_ACCEPTANCE.md).
 
-No test execution was performed during this documentation review.
+The prior index describes earlier runs; it is preserved for traceability. The current patch execution is recorded above.
 
 ## Historical Moya Glow execution — 2026-09-26
 

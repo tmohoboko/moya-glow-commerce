@@ -2,16 +2,16 @@
 
 ## Current decision — 2026-10-09
 
-**HOLD full release sign-off.** Local storefront demonstration is supported by recorded evidence; current production storefront and integrated backend acceptance remain unverified. This review updates documentation only and does not certify a new build, test run or deployment.
+**HOLD full release sign-off.** Local storefront demonstration is supported by recorded evidence; current production storefront and integrated backend acceptance remain unverified. The 2026-10-09 frontend patch has a passing local build and 16/16 regression run; production deployment remains unverified. See [patch evidence](FRONTEND_RELEASE_PATCH.md).
 
-Latest reviewed application commit: [0089e4e4da04141f53a0ab803c5c2495e301c543](https://github.com/tmohoboko/moya-glow-commerce/commit/0089e4e4da04141f53a0ab803c5c2495e301c543), 2026-09-30. Subsequent documentation commits do not change application behavior.
+Previous application baseline: [0089e4e4da04141f53a0ab803c5c2495e301c543](https://github.com/tmohoboko/moya-glow-commerce/commit/0089e4e4da04141f53a0ab803c5c2495e301c543), 2026-09-30. The current patch changes route titles and deployment/QA tooling; its tested source fingerprints are recorded in the patch evidence.
 
 | Gate | Recorded evidence | Current acceptance |
 |---|---|---|
 | Catalogue | 46 services, 11 categories, price/source review; [catalogue patch](LBEAUTY_CATALOGUE_PATCH.md) | Implemented |
-| Artwork / branding | 46 individual SVG cards, L Beauty hero, vector header/footer wordmark; [artwork evidence](LBEAUTY_SERVICE_ARTWORK.md) | Implemented; final branding commits require fresh regression |
-| Build | Local Vite build PASS recorded for catalogue/artwork patches | Latest application source build pending |
-| Local Playwright | [Committed report](smoke-results.json): 13/13 PASS, 2026-09-30, local production preview, zero failures/skips/flaky results | Recorded run predates final branding/vector changes |
+| Artwork / branding | 46 individual SVG cards, L Beauty hero, vector header/footer wordmark; [artwork evidence](LBEAUTY_SERVICE_ARTWORK.md) | Implemented; vector branding regression PASS |
+| Build | Fresh npm ci and Vite build PASS for this patch | Local PASS |
+| Local Playwright | [Current report](release-local-results.json): 16/16 PASS, 2026-10-09, local production preview, zero failures/skips/flaky results | Local PASS; hosted run pending |
 | Hosted storefront | Historical 10/10 PASS on 2026-09-26 for Moya Glow | L Beauty deployment identity and hosted regression pending |
 | Manual QA | Catalogue/price review and desktop/mobile/cart visual inspection documented | Full manual acceptance not verified |
 | Cross-browser / real devices | Chromium checks only; mobile viewport is emulated | Pending |
@@ -25,14 +25,14 @@ On the separate enterprise prototype branch, [Cycle 01 test cases](https://githu
 
 ### Required release gates
 
-- [ ] Record a fresh build and complete regression run against the reviewed application source, with commit SHA and target.
+- [x] Record a fresh build and complete regression run against this patch, with source fingerprints and local target in [patch evidence](FRONTEND_RELEASE_PATCH.md).
 - [ ] Confirm the L Beauty production deployment identity, then run the complete hosted storefront suite.
 - [ ] Record completed manual exploratory acceptance, responsive checks, supported-browser coverage and defect dispositions.
 - [ ] For integrated enterprise acceptance, provision persistent HTTPS FastAPI hosting, verify health/readiness and frontend API connectivity, and run hosted catalogue/auth/admin E2E checks.
 
 The backend belongs to `port/adfund-enterprise-prototype`, not the static `main` storefront. Its [release evidence](https://github.com/tmohoboko/moya-glow-commerce/blob/port/adfund-enterprise-prototype/docs/RELEASE_EVIDENCE.md) identifies the public enterprise host as a static fallback with unavailable account/admin APIs. Local backend passes do not certify hosted functionality. Backend hosting blocks integrated release, while the static catalogue can be assessed separately with its explicit no-booking/no-orders/no-payments scope.
 
-Automatic GitHub deployment is not enabled according to the recorded evidence; a push alone is not deployment confirmation. No deployment or hosting change was performed in this review.
+Automatic GitHub deployment is not enabled according to the recorded evidence; a push alone is not deployment confirmation. Vercel configuration and a guarded release command are prepared in this patch. No production deployment or backend hosting was performed; the CLI is logged out and the Vercel plugin is not connected.
 
 ## Historical Moya Glow acceptance — 2026-09-26
 

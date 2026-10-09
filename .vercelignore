@@ -1,0 +1,12 @@
+node_modules
+qa
+test-results
+tests
+prompts
+templates
+docs
+backend
+.venv
+.deploy-enterprise
+scripts
+.git

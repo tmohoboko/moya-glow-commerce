@@ -38,8 +38,9 @@ Tests run against the production preview on port 4173. To test a deployed site, 
 Vercel settings: Vite, build command `npm run build`, output directory `dist`. SPA rewrites are provided in `vercel.json`.
 
 ```sh
-npx vercel login
-npx vercel --prod --yes
+npx --yes vercel@61.1.0 login
+npx --yes vercel@61.1.0 link --yes --project moya-glow-commerce --scope tmdev
+npm run release:vercel
 ```
 
 Production: https://moya-glow-commerce.vercel.app
@@ -50,13 +51,13 @@ The original Moya Glow production deployment is recorded for 2026-09-26. Deploym
 
 ## QA status
 
-Evidence review: 2026-10-09. **Full release sign-off: HOLD.**
+Release patch: 2026-10-09. **Full release sign-off: HOLD.**
 
-- Recorded L Beauty build: PASS. Latest committed local Chromium report: **13/13 PASS** on 2026-09-30, against production preview on port 4173, with zero failures, skips or flaky results. This run predates the final storefront-branding and vector-wordmark commits; it does not certify application commit `0089e4e4da04141f53a0ab803c5c2495e301c543`.
+- Current patch: clean npm ci and production build **PASS**; local Playwright **16/16 PASS**, zero failures, skips or flaky results. New checks cover page titles/history, 320/375/768px layouts and vector branding. [Executed patch evidence](qa/FRONTEND_RELEASE_PATCH.md) · [Current machine report](qa/release-local-results.json).
 - Historical production Chromium result: **10/10 PASS** on 2026-09-26 for the earlier 30-product Moya Glow release; not current L Beauty hosted acceptance.
 - Limited visual review is documented. Completed manual exploratory, cross-browser and real-device acceptance is not verified. Relevant Google Drive QA evidence was not found during the 2026-10-09 connected search.
-- Pending: fresh build/regression for the latest application source, deployment identity and hosted regression, completed manual acceptance; persistent HTTPS FastAPI hosting and hosted integration checks for the enterprise scope.
+- Pending: deployment identity and hosted regression, completed manual acceptance; persistent HTTPS FastAPI hosting and hosted integration checks for the enterprise scope.
 
 Evidence: [test evidence](qa/TEST_EVIDENCE.md), [catalogue patch](qa/LBEAUTY_CATALOGUE_PATCH.md), [artwork verification](qa/LBEAUTY_SERVICE_ARTWORK.md), [machine report](qa/smoke-results.json), [release gates](qa/RELEASE_ACCEPTANCE.md), [defect log](qa/DEFECT_LOG.csv).
 
-No tests, deployments or backend provisioning were executed during this documentation review.
+Build and local regression were executed for this patch. Production deployment is blocked by missing Vercel authentication; backend provisioning and hosted regression were not performed. The new CI workflow runs build/regression on main and PRs; check its Actions result separately.

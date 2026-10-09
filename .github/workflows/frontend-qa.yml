@@ -1,0 +1,34 @@
+name: L Beauty frontend QA
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+        env:
+          QA_RESULTS_PATH: qa/ci-results.json
+          QA_SCREENSHOT_DIR: qa/ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-qa-${{ github.sha }}
+          path: |
+            qa/ci-results.json
+            qa/ci/
+            test-results/
