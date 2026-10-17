@@ -32,3 +32,13 @@ This file is a cross-repository *tracking record*; it does not change deployment
 - [Portfolio release acceptance](https://github.com/tmohoboko/software-delivery-portfolio/blob/main/qa/RELEASE_ACCEPTANCE.md)
 
 This inventory covers three repositories returned by the connected tmohoboko GitHub account; Vercel account contents were not independently enumerated.
+
+## DAH PRINT fast-delivery work item — 2026-10-17
+
+**Current state:** standalone React/Vite/Tailwind/GSAP/Three.js storefront source prepared with **33 collection slots**: exactly one ROOTED / STATEMENT TEE artwork system using existing Dah Print mockups plus 32 visibly unreleased placeholders. Includes hero, About, Lookbook, Shop and Contact; enquiry bag and quote request only (no pricing, orders or payment).
+
+**Evidence in the October 17 working session:** JSX transpilation syntax check (zero diagnostics); offline static visual fallback rendered in Chromium at 1440px and 390px, 33/33 slots, filters 1/32, gallery switching and mobile nav; zero browser errors/overflow. The preview is **not** proof of a React runtime pass.
+
+**Blockers:** npm registry DNS blocked source dependency installation, so actual Vite build / Playwright React suite were NOT RUN. No separate tmohoboko/dahprint GitHub repo created; no Vercel project connected or release performed. Source ZIP, offline preview ZIP and screenshots were generated as ChatGPT conversation artifacts (not published GitHub files). Do not claim a live URL until deployment is independently verified.
+
+**Next gate (P0):** create a separate tmohoboko Dah Print repository or authorize an existing correctly scoped one; install and build in a network-enabled runner, execute Playwright; connect authorized Vercel and deploy to a *new* Dah Print project (never overwrite L Beauty). Record commit, immutable URL, regression result and working contact channel.
