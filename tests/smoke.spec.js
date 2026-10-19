@@ -54,9 +54,14 @@ test('SMOKE-013 every service has readable unique artwork retained in the bag',a
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('/shop');
  for(const product of products){
-  expect(product.image).toMatch(/^\/catalogue\/services\/[a-z0-9-]+\.svg$/);
+  expect(product.image).toMatch(/^\/catalogue\/services\/[a-z0-9-]+\.(svg|jpg)$/);
   const response=await request.get(product.image);
   expect(response.ok()).toBe(true);
+  if(product.image.endsWith('.jpg')){
+   expect(response.headers()['content-type']).toContain('image/jpeg');
+   const photo=page.locator(`.product img[src="${product.image}"]`);
+   await expect.poll(()=>photo.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+  }else{
   expect(response.headers()['content-type']).toContain('image/svg+xml');
   const svg=await response.text();
   const validation=await page.evaluate(source=>{
@@ -72,6 +77,7 @@ test('SMOKE-013 every service has readable unique artwork retained in the bag',a
   expect(validation.text).toContain(product.name.toUpperCase());
   expect(validation.text).toContain(product.category.toUpperCase());
   expect(validation.text).toContain(`${product.priceFrom?'FROM ':''}R ${String(product.price).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}`);
+  }
   const card=page.locator('.product').filter({has:page.locator(`a[href="/product/${product.id}"]`)});
   await expect(card.locator('img')).toHaveAttribute('src',product.image);
   await expect(card.locator('strong')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)}`);
