@@ -36,6 +36,15 @@ Built-in image generation was used. Shared direction: square candid smartphone s
 
 ## Verification
 
-Production build: PASS. Catalogue integrity and all referenced files: PASS. Local Playwright execution is blocked before browser launch by missing Chromium; the existing GitHub Actions regression workflow validates the committed change. Inspect its run and the deployed page before recording release acceptance.
+Production build: PASS. Catalogue integrity and all referenced files: PASS. Local Chromium is unavailable; GitHub Actions ran all 17 existing/new regression cases successfully in 15.1 seconds.
+
+- Application commit: `7f1f0234124c17a810247ad7446995e27d9c410f`.
+- CI: https://github.com/tmohoboko/moya-glow-commerce/actions/runs/39292144630 — 17 passed, zero failures.
+- Vercel production deployment: `dpl_6uATSMAbMjzgv2hiAzLHBmfp9ojE`, READY for that application commit.
+- Live browser: all 46 service-card images decoded successfully; Makeup Looks showed four services and 17 gallery images; nail enhancements showed six services and 14 gallery images.
+- Live bag: Special Effects retained its generated image and “From R 600,00” price; test item removed afterwards.
+- All 39 new public JPEGs matched the committed file hashes and returned `image/jpeg`.
+- Screenshot: `qa/photo-batch-live.jpg` (Makeup Looks review).
+- Representative photo-to-technique assignments remain a visual-review choice, as documented above.
 
 Review on `/shop#photos`; the existing category selector filters both services and photos. Clicking a gallery photo opens the original JPEG.
