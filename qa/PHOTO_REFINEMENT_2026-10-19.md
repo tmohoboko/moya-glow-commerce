@@ -23,3 +23,18 @@ There are 46 distinct primary service paths; final verification must also establ
 Production build, existing functional regression, all service images retained with the correct title/price in the bag, gallery filtering, absence of removed captions, hover and keyboard interactions, reduced-motion behavior, and deployed-page visual review.
 
 Application commit, CI result and Vercel deployment are reported with the completed release.
+
+
+## Release evidence
+
+- Application commit: `c4d99abdea251a0802b38f9cee582e7894183619`.
+- Local production build: PASS.
+- Asset integrity: 46 distinct primary paths and 46 distinct SHA-256 file hashes.
+- GitHub Actions: 18/18 PASS in 15.3 seconds, including source-caption removal, hover, keyboard focus and reduced motion.
+- CI run: https://github.com/tmohoboko/moya-glow-commerce/actions/runs/39305194051.
+- Deployment: `dpl_FRPPWeLUyWnbjdWu9VTapJS7NQGT`.
+- No catalogue data, prices, package manifests or dependencies changed.
+- Production deployment: READY for the tested application commit.
+- Live browser: 46/46 images decoded, 46 distinct service image URLs, 50 gallery entries, no removed source-label text.
+- All 24 new production JPEGs match the committed bytes and return image/jpeg.
+- Live photo focus cue visually accepted; screenshot: `qa/service-photo-refinement-live.jpg`.
