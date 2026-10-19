@@ -46,20 +46,21 @@ test('SMOKE-012 starting prices remain visible through detail and cart',async({p
   await expect(page.getByRole('heading',{name:'Your bag is empty'})).toBeVisible();
  }
 });
-test('SMOKE-013 every service has readable unique artwork retained in the bag',async({page,request})=>{
+test('SMOKE-013 every service retains its photo, identity and price in the bag',async({page,request})=>{
  const {products,money}=await import('../src/products.js');
  expect(products).toHaveLength(46);
- expect(new Set(products.map(p=>p.image)).size).toBe(46);
- expect(products.find(p=>p.name==='Full Body').image).not.toBe(products.find(p=>p.name==='Back and Neck').image);
+ expect(products.every(p=>p.image.endsWith('.jpg'))).toBe(true);
+ expect(new Set(products.map(p=>p.category)).size).toBe(11);
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('/shop');
  for(const product of products){
   expect(product.image).toMatch(/^\/catalogue\/services\/[a-z0-9-]+\.(svg|jpg)$/);
+  const card=page.locator(`.product[data-service-id="${product.id}"]`);
   const response=await request.get(product.image);
   expect(response.ok()).toBe(true);
   if(product.image.endsWith('.jpg')){
    expect(response.headers()['content-type']).toContain('image/jpeg');
-   const photo=page.locator(`.product img[src="${product.image}"]`);
+   const photo=card.locator('img');
    await expect.poll(()=>photo.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
   }else{
   expect(response.headers()['content-type']).toContain('image/svg+xml');
@@ -78,7 +79,6 @@ test('SMOKE-013 every service has readable unique artwork retained in the bag',a
   expect(validation.text).toContain(product.category.toUpperCase());
   expect(validation.text).toContain(`${product.priceFrom?'FROM ':''}R ${String(product.price).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}`);
   }
-  const card=page.locator('.product').filter({has:page.locator(`a[href="/product/${product.id}"]`)});
   await expect(card.locator('img')).toHaveAttribute('src',product.image);
   await expect(card.locator('strong')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)}`);
   await card.getByRole('button').click();
@@ -86,11 +86,38 @@ test('SMOKE-013 every service has readable unique artwork retained in the bag',a
  await page.getByRole('link',{name:'Bag (46)'}).click();
  await expect(page.locator('.cart-item')).toHaveCount(46);
  for(const product of products){
-  const item=page.locator('.cart-item').filter({has:page.locator(`img[src="${product.image}"]`)});
+  const item=page.locator(`.cart-item[data-service-id="${product.id}"]`);
+  await expect(item.locator('img')).toHaveAttribute('src',product.image);
   await expect(item.locator('h2')).toHaveText(product.name);
   await expect(item.locator('p')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)} each`);
  }
  await expect.poll(()=>page.locator('.cart-item img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
  await expect(page.getByTestId('subtotal')).toHaveText(`From ${money(products.reduce((sum,p)=>sum+p.price,0))}`);
  expect(errors).toEqual([]);
+});
+
+
+test('SMOKE-014 supplied and generated gallery photos stay distinguishable and filter with category',async({page,request})=>{
+ const {portfolioPhotos}=await import('../src/photo-library.js');
+ const {generatedPhotos}=await import('../src/service-artwork.js');
+ expect(portfolioPhotos).toHaveLength(30);
+ expect(generatedPhotos).toHaveLength(9);
+ await page.goto('/shop#photos');
+ await expect(page.locator('.portfolio figure')).toHaveCount(39);
+ await expect(page.locator('.portfolio figcaption small').filter({hasText:'Client portfolio'})).toHaveCount(30);
+ await expect(page.locator('.portfolio figcaption small').filter({hasText:'AI-generated illustration'})).toHaveCount(9);
+ for(const photo of [...portfolioPhotos,...generatedPhotos]){
+  const response=await request.get(photo.src);
+  expect(response.ok(),photo.src).toBe(true);
+  expect(response.headers()['content-type']).toContain('image/jpeg');
+ }
+ for(const [category,count] of [['Makeup Looks',17],['Gel & Acrylic Nail Enhancements',14],['Others / Nails (Per Nail)',14],['Massage',1]]){
+  await page.getByLabel('Category',{exact:true}).selectOption(category);
+  await expect(page.locator('.portfolio figure')).toHaveCount(count);
+ }
+ await page.getByLabel('Category',{exact:true}).selectOption('Massage');
+ await expect(page.locator('.product .photo-caption')).toHaveText(Array(4).fill('AI-generated illustration'));
+ await page.getByRole('heading',{name:'Full Body',exact:true}).click();
+ await expect(page.locator('.detail .photo-caption')).toHaveText('AI-generated illustration');
+ await expect.poll(()=>page.locator('.detail img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
 });
