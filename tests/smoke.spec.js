@@ -50,6 +50,7 @@ test('SMOKE-013 every service retains its photo, identity and price in the bag',
  const {products,money}=await import('../src/products.js');
  expect(products).toHaveLength(46);
  expect(products.every(p=>p.image.endsWith('.jpg'))).toBe(true);
+ expect(new Set(products.map(p=>p.image)).size).toBe(46);
  expect(new Set(products.map(p=>p.category)).size).toBe(11);
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('/shop');
@@ -97,27 +98,47 @@ test('SMOKE-013 every service retains its photo, identity and price in the bag',
 });
 
 
-test('SMOKE-014 supplied and generated gallery photos stay distinguishable and filter with category',async({page,request})=>{
- const {portfolioPhotos}=await import('../src/photo-library.js');
- const {generatedPhotos}=await import('../src/service-artwork.js');
+test('SMOKE-014 gallery filters categories and source captions are absent',async({page,request})=>{
+ const {portfolioPhotos,featuredPortfolioPhotos}=await import('../src/photo-library.js');
+ const {galleryInspiration}=await import('../src/service-artwork.js');
+ const {products}=await import('../src/products.js');
+ const inspiration=galleryInspiration(products);
  expect(portfolioPhotos).toHaveLength(30);
- expect(generatedPhotos).toHaveLength(9);
+ expect(inspiration).toHaveLength(33);
+ expect(featuredPortfolioPhotos).toHaveLength(17);
  await page.goto('/shop#photos');
- await expect(page.locator('.portfolio figure')).toHaveCount(39);
- await expect(page.locator('.portfolio figcaption small').filter({hasText:'Client portfolio'})).toHaveCount(30);
- await expect(page.locator('.portfolio figcaption small').filter({hasText:'AI-generated illustration'})).toHaveCount(9);
- for(const photo of [...portfolioPhotos,...generatedPhotos]){
+ await expect(page.locator('.portfolio figure')).toHaveCount(50);
+ await expect(page.locator('body')).not.toContainText(/AI[ -]?generated/i);
+ await expect(page.locator('.photo-caption')).toHaveCount(0);
+ for(const photo of [...featuredPortfolioPhotos,...inspiration]){
   const response=await request.get(photo.src);
   expect(response.ok(),photo.src).toBe(true);
   expect(response.headers()['content-type']).toContain('image/jpeg');
  }
- for(const [category,count] of [['Makeup Looks',17],['Gel & Acrylic Nail Enhancements',14],['Others / Nails (Per Nail)',14],['Massage',1]]){
+ for(const [category,count] of [['Makeup Looks',7],['Gel & Acrylic Nail Enhancements',11],['Others / Nails (Per Nail)',12],['Massage',4]]){
   await page.getByLabel('Category',{exact:true}).selectOption(category);
   await expect(page.locator('.portfolio figure')).toHaveCount(count);
  }
- await page.getByLabel('Category',{exact:true}).selectOption('Massage');
- await expect(page.locator('.product .photo-caption')).toHaveText(Array(4).fill('AI-generated illustration'));
  await page.getByRole('heading',{name:'Full Body',exact:true}).click();
- await expect(page.locator('.detail .photo-caption')).toHaveText('AI-generated illustration');
+ await expect(page.locator('body')).not.toContainText(/AI[ -]?generated/i);
  await expect.poll(()=>page.locator('.detail img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+});
+
+test('SMOKE-015 photo interactions support hover, keyboard and reduced motion',async({page})=>{
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.goto('/shop');
+ const card=page.locator('.product').first();
+ const image=card.locator('.photo-frame img');
+ const cue=card.locator('.photo-action');
+ await expect(cue).toHaveCSS('opacity','0');
+ await card.hover();
+ await expect(cue).toHaveCSS('opacity','1');
+ await expect.poll(()=>image.evaluate(img=>getComputedStyle(img).transform)).not.toBe('none');
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await expect(image).toHaveCSS('transform','none');
+ await expect(image).toHaveCSS('transition-duration','0s');
+ await page.mouse.move(0,0);
+ await card.locator('a').focus();
+ await expect(cue).toHaveCSS('opacity','1');
+ await expect(image).toHaveCSS('transform','none');
 });

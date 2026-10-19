@@ -1,3 +1,4 @@
+import {servicePhotoUpdates} from './service-photo-updates.js';
 // Photos are representative portfolio examples; IDs and prices remain authoritative.
 const supplied = number => `/catalogue/services/portfolio-${String(number).padStart(2, '0')}.jpg`;
 const illustration = slug => `/catalogue/services/illustrative-${slug}.jpg`;
@@ -9,14 +10,14 @@ const servicePhotos = {
   'gel-acrylic-nail-enhancements-gel-overlay-1-any-colour-120': supplied(7),
   'gel-acrylic-nail-enhancements-tips-any-length-200': supplied(30),
   'nails-french-250': supplied(29),
-  'gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150': supplied(6),
+  'gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150': supplied(10),
   'gel-acrylic-nail-enhancements-tips-any-size-230': supplied(28),
   'nails-french-280': supplied(24),
   'others-nails-per-nail-art-per-nail-5': supplied(11),
   'others-nails-per-nail-chrome-2': supplied(25),
   'others-nails-per-nail-charms-rhinestones-7': supplied(4),
   'others-nails-per-nail-3d-10': supplied(5),
-  'hand-and-foot-treatments-full-pedicure-220': illustration('toes'),
+  'hand-and-foot-treatments-full-manicure-200': supplied(2),
 };
 export const categoryPhotos = {
   'Massage': illustration('massage'),
@@ -28,9 +29,10 @@ export const categoryPhotos = {
   'Lash and Brow': illustration('lash-brow'),
   'Toes': illustration('toes'),
 };
-export const serviceArtworkPath = product => servicePhotos[product.id] ?? categoryPhotos[product.category] ?? `/catalogue/services/${product.id.normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.svg`;
-export const photoCaption = product => serviceArtworkPath(product).includes('/illustrative-') ? 'AI-generated illustration' : 'Portfolio example';
-export const generatedPhotos = [
-  ...Object.entries(categoryPhotos).map(([category,src]) => ({id:category,src,label:category,categories:[category],source:'AI-generated illustration'})),
-  {id:'special-effects',src:illustration('special-effects'),label:'Special Effects makeup',categories:['Makeup Looks'],source:'AI-generated illustration'},
+export const serviceArtworkPath = product => servicePhotoUpdates[product.id] ?? servicePhotos[product.id] ?? categoryPhotos[product.category] ?? `/catalogue/services/${product.id.normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.svg`;
+const categoryInspiration = [
+  ...Object.entries(categoryPhotos).map(([category,src]) => ({id:category,src,label:category,categories:[category],source:'Service inspiration'})),
+  {id:'special-effects',src:illustration('special-effects'),label:'Special Effects makeup',categories:['Makeup Looks'],source:'Service inspiration'},
 ];
+
+export const galleryInspiration = products => [...categoryInspiration,...Object.entries(servicePhotoUpdates).map(([id,src])=>{const product=products.find(p=>p.id===id);return {id,src,label:product.name,categories:[product.category],source:'Service inspiration'};})];

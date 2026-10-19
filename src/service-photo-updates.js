@@ -1,0 +1,27 @@
+// Each service receives its own photograph instead of a shared category image.
+export const servicePhotoUpdates = {
+  "massage-full-body-450": "/catalogue/services/service-full-body.jpg",
+  "massage-colon-cleans-150": "/catalogue/services/service-colon-care.jpg",
+  "massage-aromatherapy-massage-500": "/catalogue/services/service-aromatherapy.jpg",
+  "hand-and-foot-treatments-leg-exfoliation-massage-150": "/catalogue/services/service-leg-exfoliation.jpg",
+  "hand-and-foot-treatments-full-pedicure-220": "/catalogue/services/service-full-pedicure.jpg",
+  "toes-gel-overlay-1-any-colour-150": "/catalogue/services/service-toes-colour.jpg",
+  "body-wax-full-arm-180": "/catalogue/services/service-full-arm-wax.jpg",
+  "body-wax-half-arm-130": "/catalogue/services/service-half-arm-wax.jpg",
+  "body-wax-half-leg-150": "/catalogue/services/service-half-leg-wax.jpg",
+  "body-wax-back-190": "/catalogue/services/service-back-wax.jpg",
+  "body-wax-chest-165": "/catalogue/services/service-chest-wax.jpg",
+  "intimate-wax-underarms-180": "/catalogue/services/service-underarm-care.jpg",
+  "intimate-wax-bikini-200": "/catalogue/services/service-bikini-care.jpg",
+  "intimate-wax-buttock-85": "/catalogue/services/service-body-care.jpg",
+  "facial-wax-brow-lip-chin-sideburns-combo-120": "/catalogue/services/service-face-wax-combo.jpg",
+  "facial-wax-full-face-200": "/catalogue/services/service-full-face-wax.jpg",
+  "lash-extensions-classic-250": "/catalogue/services/service-classic-lashes.jpg",
+  "lash-extensions-hybrid-290": "/catalogue/services/service-hybrid-lashes.jpg",
+  "lash-extensions-clusters-180": "/catalogue/services/service-cluster-lashes.jpg",
+  "lash-extensions-cat-eye-for-both-extra-15": "/catalogue/services/service-cat-eye-lashes.jpg",
+  "lash-and-brow-lash-tint-70": "/catalogue/services/service-lash-tint.jpg",
+  "lash-and-brow-lash-brow-tint-combo-120": "/catalogue/services/service-lash-brow-combo.jpg",
+  "lash-and-brow-brow-shaping-tweeze-60": "/catalogue/services/service-brow-shaping.jpg",
+  "others-nails-per-nail-charms-rhinestones-7": "/catalogue/services/service-nail-charms.jpg"
+};

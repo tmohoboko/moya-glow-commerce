@@ -15,6 +15,7 @@ export const portfolioPhotos = [
     "label": "Yellow and gold nail details",
     "source": "Client portfolio",
     "categories": [
+      "Hand and Foot Treatments",
       "Gel & Acrylic Nail Enhancements",
       "Others / Nails (Per Nail)"
     ],
@@ -313,4 +314,12 @@ export const portfolioPhotos = [
     ],
     "originalFilename": "WhatsApp Image 2026-10-18 at 23.40.56 (1).jpeg"
   }
+];
+
+// Keep alternate uploads in the asset collection; show the strongest distinct looks.
+const featuredIds = new Set([2,3,5,7,10,11,13,15,23,24,25,27,28,29,30].map(number=>`portfolio-${String(number).padStart(2,'0')}`));
+export const featuredPortfolioPhotos = [
+ ...portfolioPhotos.filter(photo=>featuredIds.has(photo.id)),
+ {id:'approved-natural',src:'/catalogue/services/makeup-classic-nude-natural.jpg',label:'Classic Nude / Natural',categories:['Makeup Looks'],source:'Client portfolio'},
+ {id:'approved-full-glam',src:'/catalogue/services/makeup-full-glam.jpg',label:'Full Glam',categories:['Makeup Looks'],source:'Client portfolio'},
 ];

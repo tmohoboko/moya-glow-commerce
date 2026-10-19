@@ -6,7 +6,6 @@
 .product img{aspect-ratio:1;object-fit:cover;object-position:center}
 .cart-item img{aspect-ratio:1;object-fit:cover}
 .detail-photo img{aspect-ratio:1;object-fit:contain;background:#f0eee8;max-height:560px}
-.photo-caption{display:block;font-size:10px;color:#687365;margin-top:6px;line-height:1.5}
 .catalogue-meta{display:grid;gap:10px;text-align:right;font-size:12px;flex-shrink:0}
 .catalogue-meta a{text-decoration:underline;text-underline-offset:3px}
 .portfolio{margin-top:55px;padding-top:30px;border-top:1px solid #ddd;scroll-margin-top:20px}
@@ -16,6 +15,30 @@
 .portfolio figure{margin:0;min-width:0}
 .portfolio img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:6px}
 .portfolio figcaption{font-size:13px;line-height:1.5;margin-top:9px}
-.portfolio figcaption small{display:block;color:#687365;font-size:11px}
 @media(max-width:800px){.portfolio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.detail-photo img{max-height:360px}.catalogue-meta{max-width:110px}}
+
+/* Subtle photo interactions, with equivalent keyboard feedback. */
+.photo-frame{position:relative;display:block;overflow:hidden;border-radius:8px;background:#eceee4;isolation:isolate}
+.photo-frame img{transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .4s ease}
+.photo-frame:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(18,42,31,.52));opacity:0;transition:opacity .3s ease;pointer-events:none}
+.photo-action{position:absolute;z-index:1;bottom:16px;left:16px;color:white;font-size:12px;letter-spacing:.3px;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+.product{transition:transform .3s ease}
+.product>a:focus-visible .photo-frame img{transform:scale(1.045)}
+.product>a:focus-visible .photo-frame:after,.product>a:focus-visible .photo-action{opacity:1;transform:none}
+.product-bottom button{transition:background .2s ease,box-shadow .2s ease,transform .2s ease}
+.product-bottom button:active{transform:scale(.97)}
+.portfolio figure>a{display:block;border-radius:8px;overflow:hidden;background:#eceee4}
+.portfolio figure img{transition:transform .5s ease,filter .3s ease}
+.portfolio figure>a:focus-visible img{transform:scale(1.04)}
+@media(hover:hover) and (pointer:fine){
+ .product:hover{transform:translateY(-4px)}
+ .product:hover .photo-frame img{transform:scale(1.055);filter:saturate(1.07)}
+ .product:hover .photo-frame:after,.product:hover .photo-action{opacity:1;transform:none}
+ .product-bottom button:hover{box-shadow:0 5px 12px rgba(32,63,50,.15)}
+ .portfolio figure>a:hover img{transform:scale(1.045);filter:saturate(1.06)}
+}
+@media(prefers-reduced-motion:reduce){
+ .product,.photo-frame img,.photo-frame:after,.photo-action,.product-bottom button,.portfolio figure img{transition:none!important;animation:none!important}
+ .product:hover,.product:hover .photo-frame img,.product>a:focus-visible .photo-frame img,.portfolio figure>a:hover img,.portfolio figure>a:focus-visible img,.product-bottom button:active{transform:none!important}
+}

@@ -1,0 +1,126 @@
+{
+  "mode": "built-in image generation",
+  "sharedDirection": "One distinct square service photograph; candid smartphone salon portfolio photography in South Africa; warm welcoming natural light, natural skin texture, realistic anatomy, soft background blur, modest working salon; different activity, angle or arrangement; no lettering, logos, watermarks, collage or borders.",
+  "images": [
+    {
+      "id": "massage-full-body-450",
+      "path": "public/catalogue/services/service-full-body.jpg",
+      "scene": "An adult Black woman resting on a professional massage bed, fully and securely covered by an opaque white towel, only shoulders visible, therapist working on shoulders. Wide view, sage wall, warm afternoon light."
+    },
+    {
+      "id": "massage-colon-cleans-150",
+      "path": "public/catalogue/services/service-colon-care.jpg",
+      "scene": "A quiet consultation-ready treatment room, neatly made massage bed, folded cream towels, small sealed bottles, plant and a glass of water. No people, no medical equipment, no text. Airy cream and terracotta room."
+    },
+    {
+      "id": "massage-aromatherapy-massage-500",
+      "path": "public/catalogue/services/service-aromatherapy.jpg",
+      "scene": "A Black female therapist pouring a drop of botanical massage oil from a small amber bottle into her palm over clean folded towels, rosemary sprigs nearby, lively working salon, warm light."
+    },
+    {
+      "id": "hand-and-foot-treatments-leg-exfoliation-massage-150",
+      "path": "public/catalogue/services/service-leg-exfoliation.jpg",
+      "scene": "Close view of a therapist's hands gently massaging exfoliating scrub over the calf and ankle of an adult dark-skinned woman. Leg supported on a folded white towel, bright natural window light, modest salon."
+    },
+    {
+      "id": "hand-and-foot-treatments-full-pedicure-220",
+      "path": "public/catalogue/services/service-full-pedicure.jpg",
+      "scene": "A Black pedicurist seated on a small stool, carefully filing the toenails of an adult dark-skinned client with feet resting on a clean white towel beside a pedicure bowl. Wide candid salon photograph, pale peach walls."
+    },
+    {
+      "id": "toes-gel-overlay-1-any-colour-150",
+      "path": "public/catalogue/services/service-toes-colour.jpg",
+      "scene": "Close-up of an adult dark-skinned woman's two feet on a cream pedicure cushion, fresh glossy rich berry-red toenail polish, realistic ten toes, sunlit salon tile background. Top-down composition."
+    },
+    {
+      "id": "body-wax-full-arm-180",
+      "path": "public/catalogue/services/service-full-arm-wax.jpg",
+      "scene": "An adult Black woman seated in a salon in an opaque short-sleeve top, one arm stretched straight over a white towel from upper arm to wrist. Gloved therapist applies a small amount of wax to outer arm. Show full arm, bright window light."
+    },
+    {
+      "id": "body-wax-half-arm-130",
+      "path": "public/catalogue/services/service-half-arm-wax.jpg",
+      "scene": "Close-up of a gloved professional therapist pressing a white waxing strip onto the forearm of an adult dark-skinned client. Crop only elbow to fingertips and gloved hands, wooden salon desk, soft sage background."
+    },
+    {
+      "id": "body-wax-half-leg-150",
+      "path": "public/catalogue/services/service-half-leg-wax.jpg",
+      "scene": "Close-up of a professional's gloved hands lifting the edge of a white waxing strip from an adult dark-skinned client's shin. Frame knee to ankle only, cotton towels, salon trolley blurred behind, realistic candid snapshot."
+    },
+    {
+      "id": "body-wax-back-190",
+      "path": "public/catalogue/services/service-back-wax.jpg",
+      "scene": "A male adult Black client seated facing away in a professional beauty treatment room, opaque towel wrapped below his shoulder blades, therapist wearing gloves carefully applies a small wax strip on his upper back near the shoulder. Professional neutral treatment photo, no lower body visible."
+    },
+    {
+      "id": "body-wax-chest-165",
+      "path": "public/catalogue/services/service-chest-wax.jpg",
+      "scene": "Professional waxing service still life: close-up of gloved therapist's hands preparing fresh golden wax on a broad wooden spatula above a plain wax pot, stack of large white body waxing strips, clean salon worktop. No people beyond hands, lively warm side lighting."
+    },
+    {
+      "id": "intimate-wax-underarms-180",
+      "path": "public/catalogue/services/service-underarm-care.jpg",
+      "scene": "An adult Black woman in an opaque sleeveless sports top seated in a clean beauty salon, one arm lifted as a gloved therapist gently places a narrow waxing strip on the underarm. Frame shoulder and underarm, calm professional context, no torso exposed."
+    },
+    {
+      "id": "intimate-wax-bikini-200",
+      "path": "public/catalogue/services/service-bikini-care.jpg",
+      "scene": "Tasteful beauty salon waxing preparation still life, folded blush towels, sealed disposable treatment supplies, small bowl of pink hard-wax beads and plain wax warmer, sunlit peach wall. No people, no anatomy, no writing."
+    },
+    {
+      "id": "intimate-wax-buttock-85",
+      "path": "public/catalogue/services/service-body-care.jpg",
+      "scene": "Clean salon waxing station from overhead, deep blue nitrile gloves, individually wrapped wooden spatulas, a shallow bowl of green wax beads, white cotton towels and a small fern. No people, no body parts, no lettering."
+    },
+    {
+      "id": "facial-wax-brow-lip-chin-sideburns-combo-120",
+      "path": "public/catalogue/services/service-face-wax-combo.jpg",
+      "scene": "Adult Black woman reclining in a salon chair wearing an opaque dark cape, head angled to camera, a gloved therapist gently applying a tiny amount of wax beside the upper lip, natural expression and skin texture. Close portrait, neutral professional beauty treatment."
+    },
+    {
+      "id": "facial-wax-full-face-200",
+      "path": "public/catalogue/services/service-full-face-wax.jpg",
+      "scene": "Adult Black woman in a white headband and salon cape, gloved therapist applying a small amount of wax to the outer cheek near the sideburn with a small wooden spatula. Distinct three-quarter angle, cream salon, soft bright daylight."
+    },
+    {
+      "id": "lash-extensions-classic-250",
+      "path": "public/catalogue/services/service-classic-lashes.jpg",
+      "scene": "Beauty close-up of an adult dark-skinned woman's open eyes with a subtle single-length natural classic lash extension finish, understated and separated lashes, neat brows, genuine skin texture. Salon portrait, bright daylight, straight-on eye-level crop."
+    },
+    {
+      "id": "lash-extensions-hybrid-290",
+      "path": "public/catalogue/services/service-hybrid-lashes.jpg",
+      "scene": "Three-quarter close portrait of an adult Black woman with medium-density wispy hybrid eyelash extensions, visibly mixed lengths, a soft smile, black salon cape. Honey-coloured salon wall, natural window light, candid phone photo."
+    },
+    {
+      "id": "lash-extensions-clusters-180",
+      "path": "public/catalogue/services/service-cluster-lashes.jpg",
+      "scene": "Macro professional beauty-service photograph of a therapist holding a tiny fan-shaped lash cluster with tweezers beside a plain lash tray, adult dark-skinned client's closed eye softly in background, realistic careful workmanship, clean salon surface."
+    },
+    {
+      "id": "lash-extensions-cat-eye-for-both-extra-15",
+      "path": "public/catalogue/services/service-cat-eye-lashes.jpg",
+      "scene": "Close portrait focusing on an adult dark-skinned woman's eyes, elegant cat-eye lash extensions visibly longer toward the outer corners, face turned slightly sideways, neutral makeup, pale lilac salon background, warm phone photograph."
+    },
+    {
+      "id": "lash-and-brow-lash-tint-70",
+      "path": "public/catalogue/services/service-lash-tint.jpg",
+      "scene": "Professional beauty close-up of adult Black woman reclining with closed eyes and protective under-eye pads, beautician holding a small lash-tint brush near the eyelashes, tiny plain bowl on salon tray, careful clean treatment, no text."
+    },
+    {
+      "id": "lash-and-brow-lash-brow-tint-combo-120",
+      "path": "public/catalogue/services/service-lash-brow-combo.jpg",
+      "scene": "Finished beauty portrait of an adult Black woman with defined softly tinted eyebrows and dark natural-looking lashes, clear spectacles held in her hand below chin, light salon cape, warm olive salon wall, relaxed confident smile."
+    },
+    {
+      "id": "lash-and-brow-brow-shaping-tweeze-60",
+      "path": "public/catalogue/services/service-brow-shaping.jpg",
+      "scene": "Macro close-up of a gloved beautician's precision tweezers carefully shaping the outer eyebrow of an adult dark-skinned woman, eyebrow and closed eye in focus, natural hair-by-hair detail, bright clean salon, no text."
+    },
+    {
+      "id": "others-nails-per-nail-charms-rhinestones-7",
+      "path": "public/catalogue/services/service-nail-charms.jpg",
+      "scene": "Close-up of adult dark-skinned woman's hand with glossy nude short almond nails, tiny clear rhinestones and delicate gold star charms on two accent nails, hand resting naturally on a white manicure towel, bright cheerful daylight, realistic five fingers."
+    }
+  ]
+}
