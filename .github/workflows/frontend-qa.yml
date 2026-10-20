@@ -11,6 +11,31 @@ concurrency:
 permissions:
   contents: read
 jobs:
+  hosted:
+    if: github.event_name == 'pull_request' && github.head_ref == 'feat/hosted-login-stripe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+        env:
+          BASE_URL: https://moya-glow-commerce.vercel.app
+          QA_RESULTS_PATH: qa/hosted-results.json
+          QA_SCREENSHOT_DIR: qa/hosted
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hosted-qa-${{ github.sha }}
+          path: |
+            qa/hosted-results.json
+            qa/hosted/
+            test-results/
   regression:
     runs-on: ubuntu-latest
     timeout-minutes: 15

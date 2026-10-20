@@ -5,6 +5,10 @@ from urllib.parse import urlsplit
 import stripe
 from fastapi import HTTPException
 
+# Match the deployed snapshot webhook. Endive (2026-09-30) removes the
+# payment_method_types request parameter used by this card-only integration.
+STRIPE_API_VERSION = "2025-10-29.clover"
+
 
 def configured():
     return os.getenv("STRIPE_SECRET_KEY", "").startswith("sk_test_") and os.getenv("STRIPE_WEBHOOK_SECRET", "").startswith("whsec_")
@@ -13,7 +17,7 @@ def configured():
 def client():
     if not configured():
         raise HTTPException(503, "Test checkout is not configured yet.")
-    return stripe.StripeClient(os.environ["STRIPE_SECRET_KEY"], max_network_retries=1,
+    return stripe.StripeClient(os.environ["STRIPE_SECRET_KEY"], stripe_version=STRIPE_API_VERSION, max_network_retries=1,
                                http_client=stripe.RequestsClient(timeout=15))
 
 

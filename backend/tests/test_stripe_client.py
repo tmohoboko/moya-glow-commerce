@@ -16,13 +16,16 @@ def test_current_sdk_checkout_payload_and_idempotency(monkeypatch):
             captured.append((method, url, headers, parse_qs(post_data)))
             return json.dumps({"object": "checkout.session", "id": "cs_test_fixture", "livemode": False,
                                "url": "https://checkout.stripe.com/c/pay/cs_test_fixture"}), 200, {}
-    sdk = stripe.StripeClient("sk_test_fixture", http_client=Transport(), max_network_retries=0)
-    monkeypatch.setattr(payments, "client", lambda: sdk)
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_fixture")
+    monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_fixture")
+    monkeypatch.setattr(stripe, "RequestsClient", lambda **kwargs: Transport())
     order = {"id": "order-fixture", "items": [{"name": "Full Body", "quantity": 2, "unit_amount": 45000}]}
     assert payments.create_checkout(order, "customer@example.com", "https://preview.example")["id"] == "cs_test_fixture"
     method, url, headers, body = captured[0]
     assert method.lower() == "post" and url == "https://api.stripe.com/v1/checkout/sessions"
     assert headers["Idempotency-Key"] == "lb-checkout-order-fixture"
+    assert headers["Stripe-Version"] == "2025-10-29.clover"
+    assert body["payment_method_types[0]"] == ["card"]
     assert body["line_items[0][price_data][currency]"] == ["zar"]
     assert body["line_items[0][price_data][unit_amount]"] == ["45000"]
     assert body["line_items[0][quantity]"] == ["2"]
