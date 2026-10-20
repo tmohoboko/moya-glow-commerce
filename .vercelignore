@@ -5,7 +5,8 @@ tests
 prompts
 templates
 docs
-backend
+backend/tests
+**/__pycache__
 .venv
 .deploy-enterprise
 scripts
