@@ -1,6 +1,6 @@
 # L Beauty — persistence, entities and browser state
 
-Status: implemented model on `feat/hosted-login-stripe`; hosted database provisioning is pending account connection. The user accepted the header login action and login/register UI on 2026-10-20. This document records the implementation, not a claim that hosted database acceptance has passed.
+Status: implemented model on `feat/hosted-login-stripe`; Neon production and preview databases are provisioned and schema v1 is verified. Vercel secret binding awaits explicit credential-transfer approval. The user accepted the header login action and login/register UI on 2026-10-20. This document records the implementation, not a claim that hosted database acceptance has passed.
 
 ## Entity relationship diagram
 
