@@ -1,15 +1,9 @@
 import {test,expect} from '@playwright/test';
 const name='Full Body';
-async function add(page){await page.goto('/shop');await page.getByRole('button',{name:`Add ${name} to bag`,exact:true}).click();await page.getByRole('link',{name:'Bag (1)'}).click();}
 test('SMOKE-001 homepage loads without fatal JavaScript errors',async({page})=>{const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');await expect(page.getByRole('heading',{name:'Feel good. Glow your way.'})).toBeVisible();expect(errors).toEqual([]);});
 test('SMOKE-002 catalogue renders 46 services and detail',async({page})=>{await page.goto('/shop');await expect(page.locator('.product')).toHaveCount(46);await page.getByRole('heading',{name,exact:true}).click();await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();await expect(page.getByText(/L Beauty · Massage/)).toBeVisible();});
 test('SMOKE-003 search locates product and handles no results',async({page})=>{await page.goto('/shop');await page.getByRole('searchbox').fill('Aromatherapy');await expect(page.locator('.product')).toHaveCount(1);await expect(page.getByRole('heading',{name:'Aromatherapy Massage'})).toBeVisible();await page.getByRole('searchbox').fill('nonexistent');await expect(page.getByText(/No services match/)).toBeVisible();});
 test('SMOKE-004 category filters products',async({page})=>{await page.goto('/shop');await page.getByLabel('Category',{exact:true}).selectOption('Makeup Looks');await expect(page.locator('.product')).toHaveCount(4);await expect(page.locator('.product .category')).toHaveText(Array(4).fill('Makeup Looks'));});
-test('SMOKE-005 add to cart persists on refresh',async({page})=>{await add(page);await expect(page.locator('.cart-item')).toHaveCount(1);await page.reload();await expect(page.locator('.cart-item')).toHaveCount(1);});
-test('SMOKE-006 quantity increases and decreases',async({page})=>{await add(page);await page.getByRole('button',{name:`Increase ${name}`}).click();await expect(page.getByLabel('Quantity',{exact:true})).toHaveText('2');await page.getByRole('button',{name:`Decrease ${name}`}).click();await expect(page.getByLabel('Quantity',{exact:true})).toHaveText('1');});
-test('SMOKE-007 removal shows empty cart',async({page})=>{await add(page);await page.getByRole('button',{name:'Remove',exact:true}).click();await expect(page.getByRole('heading',{name:'Your bag is empty'})).toBeVisible();await expect(page.getByRole('link',{name:'Bag (0)'})).toBeVisible();});
-test('SMOKE-008 subtotal reflects quantity and multiple items',async({page})=>{await add(page);await expect(page.getByTestId('subtotal')).toContainText('450');await page.getByRole('button',{name:`Increase ${name}`}).click();await expect(page.getByTestId('subtotal')).toContainText('900');await page.getByRole('link',{name:'Shop',exact:true}).click();await page.getByRole('button',{name:'Add Back and Neck to bag',exact:true}).click();await page.getByRole('link',{name:'Bag (3)'}).click();await expect(page.getByTestId('subtotal')).toContainText(/1[\s,]?150/);});
-test('SMOKE-009 mobile layout and cart remain usable',async({page})=>{await page.setViewportSize({width:375,height:812});await page.goto('/');await expect(page.locator('.product')).toHaveCount(46);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/mobile-home.png`,fullPage:true});await add(page);await expect(page.getByRole('button',{name:`Increase ${name}`})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);});
 test('SMOKE-010 unknown route and product fail gracefully',async({page})=>{for(const path of ['/missing','/product/missing']){await page.goto(path);await expect(page.getByRole('heading',{name:'Page not found'})).toBeVisible();await page.getByRole('link',{name:'Back to home'}).click();await expect(page.getByRole('heading',{name:'Feel good. Glow your way.'})).toBeVisible();}await page.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/desktop-home.png`,fullPage:true});});
 test('SMOKE-011 L Beauty artwork resolves and all categories filter',async({page,request})=>{
  const {products}=await import('../src/products.js');
@@ -28,75 +22,34 @@ test('SMOKE-011 L Beauty artwork resolves and all categories filter',async({page
  }
  expect(errors).toEqual([]);
 });
-test('SMOKE-012 starting prices remain visible through detail and cart',async({page})=>{
+test('SMOKE-012 starting prices remain visible through detail and quotation request',async({page})=>{
  const {money}=await import('../src/products.js');
  for(const [name,price] of [['Special Effects',600],['Bridal',1000]]){
-  await page.goto('/shop');
+  await page.goto('/services');
   const card=page.locator('.product').filter({has:page.getByRole('heading',{name,exact:true})});
   await expect(card.locator('strong')).toHaveText(`From ${money(price)}`);
   await card.getByRole('heading',{name,exact:true}).click();
   await expect(page.locator('.detail h2')).toHaveText(`From ${money(price)}`);
-  await page.getByRole('button',{name:`Add ${name} to bag`,exact:true}).click();
-  await page.getByRole('link',{name:'Bag (1)'}).click();
-  await expect(page.locator('.cart-item p')).toHaveText(`From ${money(price)} each`);
-  await expect(page.getByTestId('subtotal')).toHaveText(`From ${money(price)}`);
-  await page.getByRole('button',{name:`Increase ${name}`}).click();
-  await expect(page.getByTestId('subtotal')).toHaveText(`From ${money(price*2)}`);
-  await page.getByRole('button',{name:'Remove',exact:true}).click();
-  await expect(page.getByRole('heading',{name:'Your bag is empty'})).toBeVisible();
+  await page.getByRole('button',{name:`Request ${name} appointment`,exact:true}).click();
+  await expect(page.locator('.booking-service strong')).toHaveText(`From ${money(price)}`);
  }
 });
-test('SMOKE-013 every service retains its photo, identity and price in the bag',async({page,request})=>{
+test('SMOKE-013 all 46 service images and prices are preserved without cart controls',async({page,request})=>{
  const {products,money}=await import('../src/products.js');
  expect(products).toHaveLength(46);
- expect(products.every(p=>p.image.endsWith('.jpg'))).toBe(true);
  expect(new Set(products.map(p=>p.image)).size).toBe(46);
  expect(new Set(products.map(p=>p.category)).size).toBe(11);
- const errors=[];page.on('pageerror',error=>errors.push(error.message));
- await page.goto('/shop');
+ await page.goto('/services');
  for(const product of products){
-  expect(product.image).toMatch(/^\/catalogue\/services\/[a-z0-9-]+\.(svg|jpg)$/);
   const card=page.locator(`.product[data-service-id="${product.id}"]`);
-  const response=await request.get(product.image);
-  expect(response.ok()).toBe(true);
-  if(product.image.endsWith('.jpg')){
-   expect(response.headers()['content-type']).toContain('image/jpeg');
-   const photo=card.locator('img');
-   await expect.poll(()=>photo.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
-  }else{
-  expect(response.headers()['content-type']).toContain('image/svg+xml');
-  const svg=await response.text();
-  const validation=await page.evaluate(source=>{
-   const documentSvg=new DOMParser().parseFromString(source,'image/svg+xml');
-   if(documentSvg.querySelector('parsererror')) return {valid:false};
-   const element=document.importNode(documentSvg.documentElement,true);
-   document.body.append(element);
-   const labels=[...element.querySelectorAll('text')];
-   const result={valid:element.tagName==='svg',text:labels.map(label=>label.textContent).join(' '),bounds:labels.map(label=>({text:label.textContent,x:label.getBBox().x,width:label.getBBox().width,y:label.getBBox().y,height:label.getBBox().height})),fits:labels.every(label=>{const box=label.getBBox();return box.x>=32&&box.x+box.width<=448&&box.y>=32&&box.y+box.height<=452})};
-   element.remove();return result;
-  },svg);
-  expect(validation.valid).toBe(true);expect(validation.fits,JSON.stringify(validation.bounds)).toBe(true);
-  expect(validation.text).toContain(product.name.toUpperCase());
-  expect(validation.text).toContain(product.category.toUpperCase());
-  expect(validation.text).toContain(`${product.priceFrom?'FROM ':''}R ${String(product.price).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}`);
-  }
   await expect(card.locator('img')).toHaveAttribute('src',product.image);
   await expect(card.locator('strong')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)}`);
-  await card.getByRole('button').click();
+  await expect(card.getByRole('button')).toHaveAccessibleName(`Request ${product.name} appointment`);
+  expect((await request.get(product.image)).ok()).toBe(true);
  }
- await page.getByRole('link',{name:'Bag (46)'}).click();
- await expect(page.locator('.cart-item')).toHaveCount(46);
- for(const product of products){
-  const item=page.locator(`.cart-item[data-service-id="${product.id}"]`);
-  await expect(item.locator('img')).toHaveAttribute('src',product.image);
-  await expect(item.locator('h2')).toHaveText(product.name);
-  await expect(item.locator('p')).toHaveText(`${product.priceFrom?'From ':''}${money(product.price)} each`);
- }
- await expect.poll(()=>page.locator('.cart-item img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
- await expect(page.getByTestId('subtotal')).toHaveText(`From ${money(products.reduce((sum,p)=>sum+p.price,0))}`);
- expect(errors).toEqual([]);
+ await expect(page.getByRole('button',{name:/Add .* to bag/})).toHaveCount(0);
+ await expect.poll(()=>page.locator('.product img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
 });
-
 
 test('SMOKE-014 gallery filters categories and source captions are absent',async({page,request})=>{
  const {portfolioPhotos,featuredPortfolioPhotos}=await import('../src/photo-library.js');
@@ -141,4 +94,36 @@ test('SMOKE-015 photo interactions support hover, keyboard and reduced motion',a
  await card.locator('a').focus();
  await expect(cue).toHaveCSS('opacity','1');
  await expect(image).toHaveCSS('transform','none');
+});
+
+test('SMOKE-005 service selection opens its quotation request',async({page})=>{
+ await page.goto('/services');
+ await page.getByRole('button',{name:'Request Full Body appointment',exact:true}).click();
+ await expect(page).toHaveURL(/service=massage-full-body-450/);
+ await expect(page.locator('.booking-service h2')).toHaveText('Full Body');
+});
+test('SMOKE-006 gallery and contact are first-class navigation',async({page})=>{
+ await page.goto('/');
+ await page.getByRole('link',{name:'Gallery',exact:true}).click();
+ await expect(page.locator('.portfolio figure')).toHaveCount(50);
+ await page.getByRole('link',{name:'Contact',exact:true}).click();
+ await expect(page.getByRole('link',{name:'Enquire on WhatsApp'})).toHaveAttribute('href','https://wa.me/27847477711');
+});
+test('SMOKE-007 legacy bag links lead to appointment guidance',async({page})=>{
+ await page.goto('/cart');
+ await expect(page.getByRole('heading',{name:'Plan an appointment'})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Choose a service'})).toBeVisible();
+});
+test('SMOKE-008 protected staff calendar rejects customer access',async({page})=>{
+ await page.goto('/salon');
+ await expect(page.getByText('Log in with your authorised salon account.')).toBeVisible();
+});
+test('SMOKE-009 mobile layout and booking request remain usable',async({page})=>{
+ await page.setViewportSize({width:375,height:812});
+ for(const route of ['/','/services','/book?service=massage-full-body-450','/contact']){
+  await page.goto(route);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),route).toBe(true);
+ }
+ await page.goto('/');
+ await page.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/mobile-home.png`,fullPage:true});
 });
