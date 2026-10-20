@@ -3,11 +3,13 @@ import {money} from './products';
 import {api} from './api';
 
 export function Account({session,go}){
- const {user,status,message,onUser=session.setUser}=session;
+ const {user,status,message,setUser:onUser}=session;
  const [register,setRegister]=useState(false),[error,setError]=useState(''),[busy,setBusy]=useState(false),[orders,setOrders]=useState(null);
  useEffect(()=>{if(!user)return;let active=true;api('/api/orders').then(value=>{if(active)setOrders(value)}).catch(e=>{if(active){setError(e.message);if(e.status===401)onUser(null)}});return()=>{active=false}},[user,onUser]);
  async function submit(event){
-  event.preventDefault();setError('');setBusy(true);
+  event.preventDefault();
+  if(status==='checking'||status==='unavailable')return;
+  setError('');setBusy(true);
   const fields=new FormData(event.currentTarget);
   try{onUser(await api(`/api/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:fields.get('email'),password:fields.get('password')})}));if(new URLSearchParams(location.search).get('next')==='cart')go('/cart')}
   catch(e){setError(e.message)}finally{setBusy(false)}
@@ -17,7 +19,7 @@ export function Account({session,go}){
  {status==='checking'&&<p role="status">Checking your session…</p>}
  {status==='unavailable'&&<div><p className="form-error" role="alert">{message}</p><button className="text-button" onClick={session.refresh}>Retry connection</button></div>}
  {error&&<p className="form-error" role="alert">{error}</p>}
- {user?<><p>Signed in as <strong>{user.email}</strong></p><button disabled={busy} onClick={logout}>Log out</button><div className="order-history"><h2>Your test orders</h2>{orders===null?<p>Loading orders…</p>:orders.length?orders.map(order=><article className="order-row" key={order.id}><div><strong>{money(order.amount/100)}</strong><p>{new Date(order.created_at*1000).toLocaleDateString('en-ZA')} · {order.items.map(item=>`${item.name} × ${item.quantity}`).join(', ')}</p><small>Reference: {order.id}</small></div><span className="order-status">{order.status==='paid'?'Test payment confirmed':order.status==='pending'?'Awaiting payment':order.status==='expired'?'Checkout expired':'Payment failed'}</span></article>):<p>No orders yet. Explore the services and add something to your bag.</p>}</div></>:<><p>{register?'Create an account to try our test checkout and see your orders.':'Log in to view your orders or continue to test checkout.'}</p><form onSubmit={submit} className="account-form"><label>Email<input type="email" name="email" autoComplete="email" required maxLength={254}/></label><label>Password<input type="password" name="password" autoComplete={register?'new-password':'current-password'} required minLength={12} maxLength={128} aria-describedby="password-help"/></label><small id="password-help">Use at least 12 characters.</small><button disabled={busy} type="submit">{busy?'Please wait…':register?'Create account':'Log in'}</button></form><button className="text-button" onClick={()=>{setRegister(!register);setError('')}}>{register?'Already have an account? Log in':'New here? Create an account'}</button></>}
+ {user?<><p>Signed in as <strong>{user.email}</strong></p><button disabled={busy} onClick={logout}>Log out</button><div className="order-history"><h2>Your test orders</h2>{orders===null?<p>Loading orders…</p>:orders.length?orders.map(order=><article className="order-row" key={order.id}><div><strong>{money(order.amount/100)}</strong><p>{new Date(order.created_at*1000).toLocaleDateString('en-ZA')} · {order.items.map(item=>`${item.name} × ${item.quantity}`).join(', ')}</p><small>Reference: {order.id}</small></div><span className="order-status">{order.status==='paid'?'Test payment confirmed':order.status==='pending'?'Awaiting payment':order.status==='expired'?'Checkout expired':'Payment failed'}</span></article>):<p>No orders yet. Explore the services and add something to your bag.</p>}</div></>:<><p>{register?'Create an account to try our test checkout and see your orders.':'Log in to view your orders or continue to test checkout.'}</p><form onSubmit={submit} className="account-form"><label>Email<input type="email" name="email" autoComplete="email" required maxLength={254}/></label><label>Password<input type="password" name="password" autoComplete={register?'new-password':'current-password'} required minLength={12} maxLength={128} aria-describedby="password-help"/></label><small id="password-help">Use at least 12 characters.</small><button disabled={busy||status==='checking'||status==='unavailable'} type="submit">{busy?'Please wait…':register?'Create account':'Log in'}</button></form><button className="text-button" onClick={()=>{setRegister(!register);setError('')}}>{register?'Already have an account? Log in':'New here? Create an account'}</button></>}
  </section>;
 }
 
@@ -26,6 +28,7 @@ export function CheckoutButton({cart,session,go}){
  const [busy,setBusy]=useState(false),[error,setError]=useState('');
  const [attempt,setAttempt]=useState(null);
  async function checkout(){
+  if(status==='checking'||status==='unavailable')return;
   if(!user){go('/account?next=cart');return}
   setError('');setBusy(true);
   const items=Object.entries(cart).sort(([a],[b])=>a.localeCompare(b)).map(([id,quantity])=>({id,quantity}));
@@ -40,7 +43,7 @@ export function CheckoutButton({cart,session,go}){
    location.assign(target.href);
   }catch(e){setError(e.message);if(e.status===409)setAttempt(null);if(e.status===401)session.setUser(null)}finally{setBusy(false)}
  }
- return <><p className="test-badge">Test checkout · No real charge</p>{error&&<p className="form-error" role="alert">{error}</p>}<button disabled={busy} onClick={checkout}>{busy?'Opening checkout…':user?'Continue to Stripe test checkout':'Log in to test checkout'}</button></>;
+ return <><p className="test-badge">Test checkout · No real charge</p>{error&&<p className="form-error" role="alert">{error}</p>}<button disabled={busy||status==='checking'||status==='unavailable'} onClick={checkout}>{busy?'Opening checkout…':status==='checking'?'Checking your session…':status==='unavailable'?'Account service unavailable':user?'Continue to Stripe test checkout':'Log in to test checkout'}</button></>;
 }
 
 export function CheckoutResult({cancelled,onPaid,go}){
