@@ -61,3 +61,7 @@ Production: https://moya-glow-commerce.vercel.app
 Repository: https://github.com/tmohoboko/moya-glow-commerce
 
 Official references: [Vercel Services](https://vercel.com/docs/services), [Neon integration](https://vercel.com/marketplace/neon), [Stripe Checkout](https://docs.stripe.com/checkout/quickstart), [webhook fulfillment](https://docs.stripe.com/checkout/fulfillment), [Stripe testing](https://docs.stripe.com/testing), [Stripe availability](https://stripe.com/global).
+
+## Data model and state management
+
+[Implemented ERD, state transitions and CORS/cookie decisions](docs/DATA_AND_STATE.md) document the actual Postgres tables and distinguish server persistence from browser bag state. The account UI uses explicit checking/authenticated/anonymous/unavailable states, with retry and stale-request cancellation. Persistence verification includes restoring an existing session from a fresh API process against the same database.

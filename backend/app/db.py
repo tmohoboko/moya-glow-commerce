@@ -6,7 +6,7 @@ from functools import lru_cache
 
 from fastapi import HTTPException
 from sqlalchemy import (JSON, BigInteger, Column, ForeignKey, Integer, MetaData,
-                        String, Table, UniqueConstraint, create_engine, text)
+                        String, Table, UniqueConstraint, create_engine, event, text)
 from sqlalchemy.exc import SQLAlchemyError
 
 metadata = MetaData()
@@ -50,6 +50,10 @@ def engine():
     options = {"connect_args": {"check_same_thread": False, "timeout": 15}} if url.startswith("sqlite:") else {
         "connect_args": {"connect_timeout": 10}, "pool_size": 2, "max_overflow": 1, "pool_pre_ping": True}
     result = create_engine(url, **options)
+    if result.dialect.name == "sqlite":
+        @event.listens_for(result, "connect")
+        def enable_foreign_keys(connection, record):
+            connection.execute("PRAGMA foreign_keys=ON")
     # Version 1 is additive and serialized across serverless instances. Future
     # schema changes need explicit versioned migrations, never drop/recreate.
     with _lock, result.begin() as connection:

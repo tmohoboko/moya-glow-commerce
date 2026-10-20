@@ -1,5 +1,28 @@
 import {test,expect} from '@playwright/test';
 
+test('ACCOUNT-004 session lookup has an explicit loading state',async({page})=>{
+ let release;
+ const gate=new Promise(resolve=>{release=resolve});
+ await page.route('**/api/auth/me',async route=>{await gate;await route.fulfill({status:401,contentType:'application/json',body:JSON.stringify({detail:'Please log in to continue.'})})});
+ await page.goto('/account');
+ await expect(page.getByText('Checking your session…',{exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Log in',exact:true})).toBeDisabled();
+ release();
+ await expect(page.getByRole('button',{name:'Log in',exact:true})).toBeEnabled();
+});
+
+test('ACCOUNT-005 service unavailability is distinct from logged out and can recover',async({page})=>{
+ let available=false;
+ await page.route('**/api/auth/me',route=>route.fulfill({status:available?401:503,contentType:'application/json',body:JSON.stringify({detail:available?'Please log in to continue.':'Account service temporarily unavailable.'})}));
+ await page.goto('/account');
+ await expect(page.getByRole('alert')).toHaveText('Account service temporarily unavailable.');
+ await expect(page.getByRole('button',{name:'Log in',exact:true})).toBeDisabled();
+ available=true;
+ await page.getByRole('button',{name:'Retry connection',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Log in',exact:true})).toBeEnabled();
+ await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
 test.beforeEach(async({request})=>{
  await expect.poll(async()=>{try{return(await request.get('/api/health')).status()}catch{return 0}}).toBe(200);
 });
