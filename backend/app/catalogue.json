@@ -1,0 +1,372 @@
+[
+  {
+    "id": "massage-full-body-450",
+    "name": "Full Body",
+    "price": 450,
+    "category": "Massage",
+    "description": "L Beauty · Massage. 60 min.",
+    "image": "/catalogue/services/service-full-body.jpg"
+  },
+  {
+    "id": "massage-back-and-neck-250",
+    "name": "Back and Neck",
+    "price": 250,
+    "category": "Massage",
+    "description": "L Beauty · Massage. 30 min.",
+    "image": "/catalogue/services/illustrative-massage.jpg"
+  },
+  {
+    "id": "massage-colon-cleans-150",
+    "name": "Colon Cleans",
+    "price": 150,
+    "category": "Massage",
+    "description": "L Beauty · Massage. 30 min.",
+    "image": "/catalogue/services/service-colon-care.jpg"
+  },
+  {
+    "id": "massage-aromatherapy-massage-500",
+    "name": "Aromatherapy Massage",
+    "price": 500,
+    "category": "Massage",
+    "description": "L Beauty · Massage. 60 min.",
+    "image": "/catalogue/services/service-aromatherapy.jpg"
+  },
+  {
+    "id": "hand-and-foot-treatments-hand-exfoliation-massage-120",
+    "name": "Hand Exfoliation & Massage",
+    "price": 120,
+    "category": "Hand and Foot Treatments",
+    "description": "L Beauty · Hand and Foot Treatments.",
+    "image": "/catalogue/services/illustrative-hand-foot.jpg"
+  },
+  {
+    "id": "hand-and-foot-treatments-leg-exfoliation-massage-150",
+    "name": "Leg Exfoliation & Massage",
+    "price": 150,
+    "category": "Hand and Foot Treatments",
+    "description": "L Beauty · Hand and Foot Treatments.",
+    "image": "/catalogue/services/service-leg-exfoliation.jpg"
+  },
+  {
+    "id": "hand-and-foot-treatments-full-manicure-200",
+    "name": "Full Manicure",
+    "price": 200,
+    "category": "Hand and Foot Treatments",
+    "description": "L Beauty · Hand and Foot Treatments.",
+    "image": "/catalogue/services/portfolio-02.jpg"
+  },
+  {
+    "id": "hand-and-foot-treatments-full-pedicure-220",
+    "name": "Full Pedicure",
+    "price": 220,
+    "category": "Hand and Foot Treatments",
+    "description": "L Beauty · Hand and Foot Treatments.",
+    "image": "/catalogue/services/service-full-pedicure.jpg"
+  },
+  {
+    "id": "body-wax-full-arm-180",
+    "name": "Full Arm",
+    "price": 180,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/service-full-arm-wax.jpg"
+  },
+  {
+    "id": "body-wax-half-arm-130",
+    "name": "Half Arm",
+    "price": 130,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/service-half-arm-wax.jpg"
+  },
+  {
+    "id": "body-wax-full-leg-200",
+    "name": "Full Leg",
+    "price": 200,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/illustrative-body-wax.jpg"
+  },
+  {
+    "id": "body-wax-half-leg-150",
+    "name": "Half Leg",
+    "price": 150,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/service-half-leg-wax.jpg"
+  },
+  {
+    "id": "body-wax-back-190",
+    "name": "Back",
+    "price": 190,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/service-back-wax.jpg"
+  },
+  {
+    "id": "body-wax-chest-165",
+    "name": "Chest",
+    "price": 165,
+    "category": "Body Wax",
+    "description": "L Beauty · Body Wax.",
+    "image": "/catalogue/services/service-chest-wax.jpg"
+  },
+  {
+    "id": "intimate-wax-underarms-180",
+    "name": "Underarms",
+    "price": 180,
+    "category": "Intimate Wax",
+    "description": "L Beauty · Intimate Wax.",
+    "image": "/catalogue/services/service-underarm-care.jpg"
+  },
+  {
+    "id": "intimate-wax-bikini-200",
+    "name": "Bikini",
+    "price": 200,
+    "category": "Intimate Wax",
+    "description": "L Beauty · Intimate Wax.",
+    "image": "/catalogue/services/service-bikini-care.jpg"
+  },
+  {
+    "id": "intimate-wax-hollywood-260",
+    "name": "Hollywood",
+    "price": 260,
+    "category": "Intimate Wax",
+    "description": "L Beauty · Intimate Wax.",
+    "image": "/catalogue/services/illustrative-intimate-wax.jpg"
+  },
+  {
+    "id": "intimate-wax-buttock-85",
+    "name": "Buttock",
+    "price": 85,
+    "category": "Intimate Wax",
+    "description": "L Beauty · Intimate Wax.",
+    "image": "/catalogue/services/service-body-care.jpg"
+  },
+  {
+    "id": "facial-wax-brow-lip-chin-sideburns-80",
+    "name": "Brow / Lip / Chin / Sideburns",
+    "price": 80,
+    "category": "Facial Wax",
+    "description": "L Beauty · Facial Wax.",
+    "image": "/catalogue/services/illustrative-facial-wax.jpg"
+  },
+  {
+    "id": "facial-wax-brow-lip-chin-sideburns-combo-120",
+    "name": "Brow & Lip / Chin / Sideburns COMBO",
+    "price": 120,
+    "category": "Facial Wax",
+    "description": "L Beauty · Facial Wax.",
+    "image": "/catalogue/services/service-face-wax-combo.jpg"
+  },
+  {
+    "id": "facial-wax-full-face-200",
+    "name": "Full Face",
+    "price": 200,
+    "category": "Facial Wax",
+    "description": "L Beauty · Facial Wax.",
+    "image": "/catalogue/services/service-full-face-wax.jpg"
+  },
+  {
+    "id": "lash-extensions-classic-250",
+    "name": "Classic",
+    "price": 250,
+    "category": "Lash Extensions",
+    "description": "L Beauty · Lash Extensions.",
+    "image": "/catalogue/services/service-classic-lashes.jpg"
+  },
+  {
+    "id": "lash-extensions-hybrid-290",
+    "name": "Hybrid",
+    "price": 290,
+    "category": "Lash Extensions",
+    "description": "L Beauty · Lash Extensions.",
+    "image": "/catalogue/services/service-hybrid-lashes.jpg"
+  },
+  {
+    "id": "lash-extensions-volume-330",
+    "name": "Volume",
+    "price": 330,
+    "category": "Lash Extensions",
+    "description": "L Beauty · Lash Extensions.",
+    "image": "/catalogue/services/illustrative-lash-extensions.jpg"
+  },
+  {
+    "id": "lash-extensions-clusters-180",
+    "name": "Clusters",
+    "price": 180,
+    "category": "Lash Extensions",
+    "description": "L Beauty · Lash Extensions.",
+    "image": "/catalogue/services/service-cluster-lashes.jpg"
+  },
+  {
+    "id": "lash-extensions-cat-eye-for-both-extra-15",
+    "name": "Cat eye (for both) EXTRA",
+    "price": 15,
+    "category": "Lash Extensions",
+    "description": "L Beauty · Lash Extensions.",
+    "image": "/catalogue/services/service-cat-eye-lashes.jpg"
+  },
+  {
+    "id": "lash-and-brow-brow-tint-75",
+    "name": "Brow tint",
+    "price": 75,
+    "category": "Lash and Brow",
+    "description": "L Beauty · Lash and Brow.",
+    "image": "/catalogue/services/illustrative-lash-brow.jpg"
+  },
+  {
+    "id": "lash-and-brow-lash-tint-70",
+    "name": "Lash tint",
+    "price": 70,
+    "category": "Lash and Brow",
+    "description": "L Beauty · Lash and Brow.",
+    "image": "/catalogue/services/service-lash-tint.jpg"
+  },
+  {
+    "id": "lash-and-brow-lash-brow-tint-combo-120",
+    "name": "Lash & Brow tint COMBO",
+    "price": 120,
+    "category": "Lash and Brow",
+    "description": "L Beauty · Lash and Brow.",
+    "image": "/catalogue/services/service-lash-brow-combo.jpg"
+  },
+  {
+    "id": "lash-and-brow-brow-shaping-tweeze-60",
+    "name": "Brow Shaping (Tweeze)",
+    "price": 60,
+    "category": "Lash and Brow",
+    "description": "L Beauty · Lash and Brow.",
+    "image": "/catalogue/services/service-brow-shaping.jpg"
+  },
+  {
+    "id": "gel-acrylic-nail-enhancements-gel-overlay-1-any-colour-120",
+    "name": "Gel overlay (1 / Any colour)",
+    "price": 120,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement.",
+    "image": "/catalogue/services/portfolio-07.jpg"
+  },
+  {
+    "id": "gel-acrylic-nail-enhancements-tips-any-length-200",
+    "name": "Tips (Any Length)",
+    "price": 200,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement.",
+    "image": "/catalogue/services/portfolio-30.jpg"
+  },
+  {
+    "id": "nails-french-250",
+    "name": "French",
+    "price": 250,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement.",
+    "image": "/catalogue/services/portfolio-29.jpg"
+  },
+  {
+    "id": "gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150",
+    "name": "Acrylic Overlay (1 / Any colour)",
+    "price": 150,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement.",
+    "image": "/catalogue/services/portfolio-10.jpg"
+  },
+  {
+    "id": "gel-acrylic-nail-enhancements-tips-any-size-230",
+    "name": "Tips (Any size)",
+    "price": 230,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement.",
+    "image": "/catalogue/services/portfolio-28.jpg"
+  },
+  {
+    "id": "nails-french-280",
+    "name": "French",
+    "price": 280,
+    "category": "Gel & Acrylic Nail Enhancements",
+    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement.",
+    "image": "/catalogue/services/portfolio-24.jpg"
+  },
+  {
+    "id": "toes-gel-overlay-1-any-colour-150",
+    "name": "Gel Overlay (1 / Any colour)",
+    "price": 150,
+    "category": "Toes",
+    "description": "L Beauty · Toes.",
+    "image": "/catalogue/services/service-toes-colour.jpg"
+  },
+  {
+    "id": "toes-french-170",
+    "name": "French",
+    "price": 170,
+    "category": "Toes",
+    "description": "L Beauty · Toes.",
+    "image": "/catalogue/services/illustrative-toes.jpg"
+  },
+  {
+    "id": "others-nails-per-nail-art-per-nail-5",
+    "name": "Art / Per nail",
+    "price": 5,
+    "category": "Others / Nails (Per Nail)",
+    "description": "L Beauty · Others / Nails (Per Nail). Price per nail.",
+    "image": "/catalogue/services/portfolio-11.jpg"
+  },
+  {
+    "id": "others-nails-per-nail-chrome-2",
+    "name": "Chrome",
+    "price": 2,
+    "category": "Others / Nails (Per Nail)",
+    "description": "L Beauty · Others / Nails (Per Nail). Price per nail.",
+    "image": "/catalogue/services/portfolio-25.jpg"
+  },
+  {
+    "id": "others-nails-per-nail-charms-rhinestones-7",
+    "name": "Charms / Rhinestones",
+    "price": 7,
+    "category": "Others / Nails (Per Nail)",
+    "description": "L Beauty · Others / Nails (Per Nail). Price per nail.",
+    "image": "/catalogue/services/service-nail-charms.jpg"
+  },
+  {
+    "id": "others-nails-per-nail-3d-10",
+    "name": "3D",
+    "price": 10,
+    "category": "Others / Nails (Per Nail)",
+    "description": "L Beauty · Others / Nails (Per Nail). Price per nail.",
+    "image": "/catalogue/services/portfolio-05.jpg"
+  },
+  {
+    "id": "makeup-looks-classic-nude-natural-350",
+    "name": "Classic Nude / Natural",
+    "price": 350,
+    "category": "Makeup Looks",
+    "description": "L Beauty · Makeup Looks.",
+    "image": "/catalogue/services/makeup-classic-nude-natural.jpg"
+  },
+  {
+    "id": "makeup-looks-full-glam-400",
+    "name": "Full Glam",
+    "price": 400,
+    "category": "Makeup Looks",
+    "description": "L Beauty · Makeup Looks.",
+    "image": "/catalogue/services/makeup-full-glam.jpg"
+  },
+  {
+    "id": "makeup-looks-special-effects-600",
+    "name": "Special Effects",
+    "price": 600,
+    "category": "Makeup Looks",
+    "description": "L Beauty · Makeup Looks. Starting price; final service price may vary. Bag totals use the base price.",
+    "priceFrom": true,
+    "image": "/catalogue/services/illustrative-special-effects.jpg"
+  },
+  {
+    "id": "makeup-looks-bridal-1000",
+    "name": "Bridal",
+    "price": 1000,
+    "category": "Makeup Looks",
+    "description": "L Beauty · Makeup Looks. Starting price; final service price may vary. Bag totals use the base price.",
+    "priceFrom": true,
+    "image": "/catalogue/services/portfolio-15.jpg"
+  }
+]
