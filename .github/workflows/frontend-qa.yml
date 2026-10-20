@@ -1,10 +1,13 @@
 name: L Beauty QA
 on:
   push:
-    branches: [main]
+    branches: [main, 'feat/hosted-login-stripe']
   pull_request:
     branches: [main]
   workflow_dispatch:
+concurrency:
+  group: qa-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -40,6 +43,8 @@ jobs:
             qa/ci-results.json
             qa/ci/
             test-results/
+            /tmp/lbeauty-api.log
+          if-no-files-found: ignore
   backend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
