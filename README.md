@@ -1,63 +1,63 @@
-# L Beauty Storefront
+# L Beauty
 
-L Beauty service catalogue and shopping-bag demo, maintained in the original Moya Glow repository. No booking, orders or payments are processed.
+The existing 46-service, 11-category catalogue and photo gallery, with customer accounts and Stripe **sandbox-only** checkout. Appointment scheduling is arranged separately. Bridal and Special Effects require a confirmed quote and cannot be purchased at their “From” base prices.
 
-## Stack
+## Run locally
 
-React, JavaScript, Vite, responsive CSS, Playwright, Git, and Vercel deployment configuration. The static storefront on `main` requires no backend or runtime secrets. The separate enterprise prototype branch contains FastAPI integration; its hosted backend acceptance remains pending.
-
-## Features
-
-46 services across 11 categories; individual SVG service artwork; L Beauty hero and vector wordmark; searchable and filterable catalogue; service detail pages; persistent shopping bag; quantity controls, removal, subtotal in ZAR, empty states, and graceful unknown routes. Special Effects and Bridal retain “From” pricing throughout cards, details and bag; totals are base estimates. Cart storage is best-effort when browser storage is unavailable. Quantities are capped at 99 per product.
-
-## Local development
+Use Node 22+ and Python 3.12. In the first terminal:
 
 ```sh
-npm install
+npm ci
+python -m venv .venv
+.venv/bin/pip install -r backend/requirements-dev.txt
+.venv/bin/uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000
+```
+
+In the second terminal:
+
+```sh
 npm run dev
 ```
 
-## Production build
+Vite proxies `/api` to the local backend. Local development uses an ignored SQLite file if no database URL is supplied. Hosted Vercel deployments require Postgres; they never fall back to an ephemeral SQLite database. No demo accounts or known public passwords are seeded. Create a customer account with a password of at least 12 characters.
+
+## Account and payment behavior
+
+- Passwords use salted scrypt; sessions are stored as hashes and expire after eight hours. Browser sessions use HttpOnly, SameSite=Lax cookies, Secure on Vercel. Logout revokes the session; unsafe browser requests require a matching Origin. Login and registration have database-backed rate limits.
+- Checkout accepts service IDs and integer quantities. The server loads prices from `backend/app/catalogue.json`, which is generated from the existing catalogue. It persists an order before requesting a hosted Stripe Checkout session and reuses its Stripe idempotency key after a network failure.
+- Only `sk_test_` Stripe keys are accepted. Real charges are deliberately unavailable. The browser never receives the Stripe secret key or card details.
+- Verified Stripe webhook events update payment status after matching order ID, session, amount, currency and sandbox mode. Duplicate and concurrent events are handled once; late failure/expiry events cannot undo a paid status. Returning to the success page does not mark an order paid.
+- Customers can only see their own orders. There is no public administrative role, password reset, email verification, appointment reservation or production payment activation in this test release.
+
+## Vercel setup
+
+The feature uses Vercel Services (currently beta) to deploy Vite and FastAPI together under one origin. Top-level `/api/*` routing precedes the storefront fallback. The existing project is `moya-glow-commerce` in `tmdev`.
+
+1. In the project's Storage tab, connect Neon Postgres. Choose a free plan if available. Connect Preview and Production to **separate database branches** if offered. The backend reads `DATABASE_URL` or `POSTGRES_URL`; keep credentials server-only.
+2. In Stripe, use a sandbox/test environment. Add its test secret key as `STRIPE_SECRET_KEY` in Vercel project environment variables for Preview and Production. Do not use a `VITE_` prefix. This hosted Checkout integration does not need a publishable key.
+3. Create a Stripe sandbox webhook endpoint at `https://moya-glow-commerce.vercel.app/api/stripe/webhook`. Subscribe to `checkout.session.completed`, `checkout.session.expired`, `checkout.session.async_payment_succeeded` and `checkout.session.async_payment_failed`. Add its signing secret as `STRIPE_WEBHOOK_SECRET` in Vercel. Configure a separate destination/signing secret for any public preview endpoint you use. Vercel-protected previews cannot receive Stripe webhooks without an appropriate protection bypass; the production endpoint is the stable test target after promotion.
+4. Redeploy after changing environment variables. Schema version 1 creates only additive `lb_*` tables on first database use, serialized by a Postgres advisory lock. Existing prototype tables are untouched. Future schema changes require versioned migrations.
+5. Confirm `/api/health` returns 200 and `/api/readiness` returns 200. Readiness returns 503 until the database and both sandbox settings are present. It reports configuration readiness, not a verified charge.
+6. Create your customer account, add Full Body (R450), and use the Stripe test card `4242 4242 4242 4242`, a future expiry and any three-digit CVC. Check the order becomes “Test payment confirmed” and that Stripe recorded a successful webhook delivery. Also check cancellation, declines and 3D Secure before accepting hosted payments.
+
+Account access and provider availability must be confirmed in the actual dashboard. Stripe lists South Africa through the Paystack extended network; a Paystack key does not work with this Stripe integration. If direct Stripe sandbox access is unavailable, stop provider setup and decide on Paystack integration before supplying credentials.
+
+## Validation
 
 ```sh
+node scripts/sync-catalogue.mjs --check
+.venv/bin/python -m pytest backend/tests -q
 npm run build
-npm run preview
-```
-
-## Testing
-
-```sh
 npx playwright install chromium
 npm test
 ```
 
-Tests run against the production preview on port 4173. To test a deployed site, run `BASE_URL=https://your-site.vercel.app npm test`. Results are written to `qa/smoke-results.json`; mobile and desktop screenshots are saved in `qa/`. No lint script is configured. If using an existing Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/absolute/path/to/chrome` when running `npm test`.
+Keep the backend running on port 8000 for browser tests. Playwright starts the production Vite preview on port 4173. CI runs browser regression plus the backend suite on SQLite and dedicated Postgres 16, including concurrent checkout/webhook delivery. The Stripe SDK transport and real HMAC verification are tested locally; real hosted Stripe acceptance requires the dashboard configuration and a genuine sandbox checkout.
 
-## Deployment
-
-Vercel settings: Vite, build command `npm run build`, output directory `dist`. SPA rewrites are provided in `vercel.json`.
-
-```sh
-npx --yes vercel@61.1.0 login
-npx --yes vercel@61.1.0 link --yes --project moya-glow-commerce --scope tmdev
-npm run release:vercel
-```
+When editing service data, run `node scripts/sync-catalogue.mjs` and commit the generated JSON with the frontend change. Do not place real credentials in `.env.example` or version control.
 
 Production: https://moya-glow-commerce.vercel.app
 
 Repository: https://github.com/tmohoboko/moya-glow-commerce
 
-The original Moya Glow production deployment is recorded for 2026-09-26. Deployment of the subsequent L Beauty patches has not been confirmed. Automatic GitHub deployments are not connected according to the recorded release evidence; pushing `main` alone does not deploy. The existing release mechanism is `npx vercel --prod --yes`. Deployment evidence and pending gates are recorded in [release acceptance](qa/RELEASE_ACCEPTANCE.md).
-
-## QA status
-
-Release patch: 2026-10-09. **Full release sign-off: HOLD.**
-
-- Current patch: clean npm ci and production build **PASS**; local Playwright **16/16 PASS**, zero failures, skips or flaky results. New checks cover page titles/history, 320/375/768px layouts and vector branding. [Executed patch evidence](qa/FRONTEND_RELEASE_PATCH.md) · [Current machine report](qa/release-local-results.json).
-- Historical production Chromium result: **10/10 PASS** on 2026-09-26 for the earlier 30-product Moya Glow release; not current L Beauty hosted acceptance.
-- Limited visual review is documented. Completed manual exploratory, cross-browser and real-device acceptance is not verified. Relevant Google Drive QA evidence was not found during the 2026-10-09 connected search.
-- Pending: deployment identity and hosted regression, completed manual acceptance; persistent HTTPS FastAPI hosting and hosted integration checks for the enterprise scope.
-
-Evidence: [test evidence](qa/TEST_EVIDENCE.md), [catalogue patch](qa/LBEAUTY_CATALOGUE_PATCH.md), [artwork verification](qa/LBEAUTY_SERVICE_ARTWORK.md), [machine report](qa/smoke-results.json), [release gates](qa/RELEASE_ACCEPTANCE.md), [defect log](qa/DEFECT_LOG.csv).
-
-Build and local regression were executed for this patch. Production deployment is blocked by missing Vercel authentication; backend provisioning and hosted regression were not performed. The new CI workflow runs build/regression on main and PRs; check its Actions result separately.
+Official references: [Vercel Services](https://vercel.com/docs/services), [Neon integration](https://vercel.com/marketplace/neon), [Stripe Checkout](https://docs.stripe.com/checkout/quickstart), [webhook fulfillment](https://docs.stripe.com/checkout/fulfillment), [Stripe testing](https://docs.stripe.com/testing), [Stripe availability](https://stripe.com/global).
