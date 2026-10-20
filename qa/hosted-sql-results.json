@@ -1,0 +1,35 @@
+{
+  "database": "lbeauty",
+  "branch": "production",
+  "schema_version": 1,
+  "orders": [
+    {
+      "id": "08e864eb-5d99-4c74-8eef-cfc66fded19f",
+      "status": "pending",
+      "amount": 45000,
+      "currency": "zar",
+      "verified_webhook_events": 0
+    },
+    {
+      "id": "0c69c3ec-fc0a-4d64-ab61-ac9cfccc3ad6",
+      "status": "pending",
+      "amount": 45000,
+      "currency": "zar",
+      "verified_webhook_events": 0
+    },
+    {
+      "id": "3d2a2607-2818-41be-9cff-4c33f614ff70",
+      "status": "paid",
+      "amount": 45000,
+      "currency": "zar",
+      "verified_webhook_events": 1
+    },
+    {
+      "id": "93c7352d-ccf7-4fbe-a98b-da630c48180f",
+      "status": "paid",
+      "amount": 45000,
+      "currency": "zar",
+      "verified_webhook_events": 1
+    }
+  ]
+}

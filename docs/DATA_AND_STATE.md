@@ -1,6 +1,6 @@
 # L Beauty — persistence, entities and browser state
 
-Status: implemented model on `feat/hosted-login-stripe`; Neon production and preview databases are provisioned and schema v1 is verified. Vercel secret binding awaits explicit credential-transfer approval. The user accepted the header login action and login/register UI on 2026-10-20. This document records the implementation, not a claim that hosted database acceptance has passed.
+Status: deployed on the public Vercel site with Neon schema v1 and isolated Preview/Production databases. The account owner approved private secret binding on 2026-10-20. Hosted login/session/origin checks, 23 hosted Chromium tests, and genuine Stripe sandbox success/3D Secure payments passed. See [hosted release acceptance](../qa/HOSTED_RELEASE_ACCEPTANCE.md) for evidence. Manual business acceptance remains with the owner.
 
 ## Entity relationship diagram
 

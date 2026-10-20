@@ -1,0 +1,117 @@
+{
+  "base_url": "https://moya-glow-commerce.vercel.app",
+  "payment_mode": "test",
+  "checked_at": 1792479628,
+  "checks": [
+    {
+      "name": "account can log in again",
+      "passed": true
+    },
+    {
+      "name": "order history remains available",
+      "passed": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "3d2a2607-2818-41be-9cff-4c33f614ff70",
+      "items": [
+        {
+          "id": "massage-full-body-450",
+          "name": "Full Body",
+          "quantity": 1,
+          "unit_amount": 45000
+        }
+      ],
+      "amount": 45000,
+      "currency": "zar",
+      "status": "paid",
+      "created_at": 1792479078
+    },
+    {
+      "id": "08e864eb-5d99-4c74-8eef-cfc66fded19f",
+      "items": [
+        {
+          "id": "massage-full-body-450",
+          "name": "Full Body",
+          "quantity": 1,
+          "unit_amount": 45000
+        }
+      ],
+      "amount": 45000,
+      "currency": "zar",
+      "status": "pending",
+      "created_at": 1792479077
+    },
+    {
+      "id": "0c69c3ec-fc0a-4d64-ab61-ac9cfccc3ad6",
+      "items": [
+        {
+          "id": "massage-full-body-450",
+          "name": "Full Body",
+          "quantity": 1,
+          "unit_amount": 45000
+        }
+      ],
+      "amount": 45000,
+      "currency": "zar",
+      "status": "pending",
+      "created_at": 1792479077
+    },
+    {
+      "id": "93c7352d-ccf7-4fbe-a98b-da630c48180f",
+      "items": [
+        {
+          "id": "massage-full-body-450",
+          "name": "Full Body",
+          "quantity": 1,
+          "unit_amount": 45000
+        }
+      ],
+      "amount": 45000,
+      "currency": "zar",
+      "status": "paid",
+      "created_at": 1792479075
+    }
+  ],
+  "cases": {
+    "success": {
+      "order_id": "93c7352d-ccf7-4fbe-a98b-da630c48180f"
+    },
+    "cancel": {
+      "order_id": "08e864eb-5d99-4c74-8eef-cfc66fded19f"
+    },
+    "decline": {
+      "order_id": "0c69c3ec-fc0a-4d64-ab61-ac9cfccc3ad6"
+    },
+    "three_d_secure": {
+      "order_id": "3d2a2607-2818-41be-9cff-4c33f614ff70"
+    }
+  },
+  "payment_assertions": [
+    {
+      "case": "success",
+      "expected": "paid",
+      "observed": "paid",
+      "passed": true
+    },
+    {
+      "case": "three_d_secure",
+      "expected": "paid",
+      "observed": "paid",
+      "passed": true
+    },
+    {
+      "case": "cancel",
+      "expected": "pending",
+      "observed": "pending",
+      "passed": true
+    },
+    {
+      "case": "decline",
+      "expected": "pending",
+      "observed": "pending",
+      "passed": true
+    }
+  ]
+}

@@ -47,8 +47,9 @@ with client() as api:
         response = api.get('/api/orders')
         check('order history remains available', response.status_code == 200)
         report['orders'] = response.json()
-        report['cases'] = state['orders']
+        report['cases'] = {name: {'order_id': value['order_id']} for name, value in state['orders'].items()}
         report_path.write_text(json.dumps(report, indent=2) + '\n')
+        api.post('/api/auth/logout')
         print(json.dumps({'order_states': {o['id']: o['status'] for o in report['orders']}}))
         raise SystemExit(0)
 

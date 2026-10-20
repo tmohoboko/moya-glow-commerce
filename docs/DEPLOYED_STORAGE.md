@@ -27,19 +27,21 @@ Verified in separate database calls after commit, for **both branches**:
 - Schema version is 1.
 - Sessions and orders reference users; payment events reference orders.
 - Unique email, Stripe session and `(user_id, request_key)` constraints are present.
-- User and order counts are zero. No known public customer passwords were seeded.
+- At provisioning, user and order counts were zero. Subsequent acceptance tests created artificial customers and sandbox orders; no known public customer passwords were seeded.
 
-## Vercel connection pending
+## Vercel connection verified
 
 The target is the existing `moya-glow-commerce` project, ID `prj_bh0BVwyX51a47jBCDXIR8wmmVct4`.
 
 | Target | Server-only variable | Neon branch | Git scope |
 |---|---|---|---|
-| Preview | `DATABASE_URL` as sensitive/Secret | `preview-login-stripe` | `feat/hosted-login-stripe` |
+| Preview | `DATABASE_URL` as sensitive/Secret | `preview-login-stripe` | Preview environment |
 | Production | `DATABASE_URL` as sensitive/Secret | `production` | Production |
 
 Application connections use Neon pooled hosts. Database credentials are not included in source or this document. The temporary local credential file was removed.
 
-Automatic approval review rejected the attempted Preview secret write because transferring the specific Neon credential to Vercel requires explicit account-owner permission. Production secret creation was not attempted after that rejection. The next action is approval of the two environment-specific Neon-to-Vercel `DATABASE_URL` secret writes, followed by deployment and hosted registration/login/session/logout acceptance. No workaround for the rejected transfer was used.
+The account owner explicitly approved the Neon and Stripe secret transfers on 2026-10-20. Both environment-specific pooled database URLs were then saved successfully as private Vercel secrets. Branch-specific Preview scoping was rejected by Vercel because this project has no connected Git repository; the separate preview database is therefore scoped to the Preview environment. The Production URL is scoped only to Production.
 
-The existing database and ERD are implemented. Hosted connectivity and functional login acceptance remain pending. Stripe sandbox configuration and payment acceptance are a later gate; schema provisioning alone does not validate them.
+Hosted registration, login, fresh-client session restoration, logout/revocation, ownership and origin checks passed. Production readiness returns HTTP 200 with database and Stripe true. Stripe sandbox success and 3D Secure orders each persisted as paid with one verified webhook event; cancellation and decline remained unpaid. See [hosted release acceptance](../qa/HOSTED_RELEASE_ACCEPTANCE.md) for deployment and test evidence.
+
+Production also has private `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` values. Preview remains protected and has no Stripe secrets: its database works, but payment readiness is intentionally false. The public production URL is the sandbox payment test target. Live keys are rejected by the application.

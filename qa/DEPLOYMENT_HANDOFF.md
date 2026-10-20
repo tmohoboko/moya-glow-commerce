@@ -1,5 +1,7 @@
 # Hosted backend handoff — 20 October 2026
 
+**Historical setup checkpoint.** The credential-transfer approval was subsequently granted, the backend deployed, and hosted login and Stripe sandbox acceptance completed. Use [HOSTED_RELEASE_ACCEPTANCE.md](HOSTED_RELEASE_ACCEPTANCE.md) for the current release state.
+
 ## Confirmed
 
 - Neon Free project `lbeauty-commerce` has separate preview and production branches with schema v1 applied. See [storage record](../docs/DEPLOYED_STORAGE.md).
