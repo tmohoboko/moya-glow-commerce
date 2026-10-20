@@ -217,15 +217,20 @@ def test_cancelled_invoice_blocks_checkout_and_late_payment_requires_refund(clie
 
 
 def test_parallel_reservations_have_one_winner(client):
-    register(client); staff = setup_staff(); quotes = [quoted(client,staff),quoted(client,staff)]
-    start = slots(client,quotes[0])[0]; token = client.cookies.get('lb_session')
-    def attempt(quote):
-        with TestClient(app,headers=ORIGIN) as other:
-            other.cookies.set('lb_session',token)
-            return reserve(other,quote,start).status_code
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        results = list(executor.map(attempt,quotes))
-    assert sorted(results) == [201,409]
+    register(client); staff = setup_staff()
+    with TestClient(app,headers=ORIGIN) as second:
+        register(second, 'second-booker@example.com')
+        first_quote, second_quote = quoted(client,staff), quoted(second,staff)
+        start = slots(client,first_quote)[0]
+        attempts = [(first_quote,client.cookies.get('lb_session')),(second_quote,second.cookies.get('lb_session'))]
+        def attempt(value):
+            quote,token = value
+            with TestClient(app,headers=ORIGIN) as other:
+                other.cookies.set('lb_session',token)
+                return reserve(other,quote,start).status_code
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(attempt,attempts))
+        assert sorted(results) == [201,409]
 
 
 def test_invalid_hours_and_client_price_are_rejected(client):
@@ -239,3 +244,26 @@ def test_invalid_hours_and_client_price_are_rejected(client):
 def test_legacy_unlinked_checkout_is_parked(client,monkeypatch):
     monkeypatch.delenv('ENABLE_LEGACY_COMMERCE')
     assert client.post('/api/checkout',json={'request_key':str(uuid.uuid4()),'items':[{'id':SERVICE,'quantity':1}]}).status_code == 410
+
+
+def test_booking_and_invoice_survive_fresh_api_process(client):
+    import json
+    import os
+    import subprocess
+    import sys
+    register(client); staff = setup_staff(); quote = quoted(client,staff)
+    booking = reserve(client,quote,slots(client,quote)[0]).json()
+    code = """
+import json,sys
+from fastapi.testclient import TestClient
+from backend.app.main import app
+state=json.load(sys.stdin)
+with TestClient(app,headers={'Origin':'http://testserver'}) as client:
+    client.cookies.set('lb_session',state['token'])
+    bookings=client.get('/api/bookings').json()
+    assert len(bookings)==1 and bookings[0]['id']==state['booking_id']
+    invoice=client.get('/api/invoices/'+state['invoice_id'])
+    assert invoice.status_code==200 and invoice.json()['amount']==45000
+"""
+    result = subprocess.run([sys.executable,'-c',code],input=json.dumps({'token':client.cookies.get('lb_session'),'booking_id':booking['id'],'invoice_id':booking['invoice']['id']}),capture_output=True,text=True,timeout=25,env=os.environ.copy())
+    assert result.returncode == 0, result.stderr

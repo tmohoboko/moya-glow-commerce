@@ -1,3 +1,17 @@
+# L Beauty — services and appointments
+
+Current workflow: service → quotation → acceptance → available appointment → invoice → sandbox receipt.
+
+See [CR-002: scope, ERD and acceptance](docs/CR-002_SERVICE_BOOKING.md).
+Staff use `/salon` to set actual opening hours and issue quotations. The shared
+calendar starts closed; no client business hours are assumed. Accounts and prior
+commerce payment history are preserved. Calendar downloads are snapshots, not live
+Google Calendar synchronization. The commerce baseline is preserved at
+`archive/commerce-sandbox-2026-10-20`.
+
+The earlier setup and commerce documentation below is retained for provenance.
+Its old cart instructions apply to the archived release, not the current customer flow.
+
 # L Beauty
 
 The existing 46-service, 11-category catalogue and photo gallery, with customer accounts and Stripe **sandbox-only** checkout. Appointment scheduling is arranged separately. Bridal and Special Effects require a confirmed quote and cannot be purchased at their “From” base prices.
