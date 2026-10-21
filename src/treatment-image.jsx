@@ -26,7 +26,9 @@ const crops = {
 };
 export function imageCrop(src) {return crops[src.split('/').pop()] || null}
 export function TreatmentImage({src,alt,loading,style,className = ''}) {
+  const client = src.includes('/client-oct21/');
+  const rotation = /client-(08|09|11)\.jpg$/.test(src)?90:/client-10\.jpg$/.test(src)?180:0;
   const crop = imageCrop(src);
   const frame = crop ? {'--photo-width':`${100/crop[2]}%`,'--photo-left':`${-crop[0]*100/crop[2]}%`,'--photo-top':`${-crop[1]*100/crop[2]}%`} : {};
-  return <span className={`treatment-photo ${crop ? 'treatment-photo--focused' : ''} ${className}`} style={frame} data-focused={Boolean(crop)}><img src={src} alt={alt} loading={loading} style={crop ? undefined : style}/></span>;
+  return <span className={`treatment-photo ${crop ? 'treatment-photo--focused' : ''} ${client ? `client-treatment-photo client-treatment-photo--${rotation} client-treatment-photo--${src.split('/').pop().replace('.jpg','')}` : ''} ${className}`} style={frame} data-focused={Boolean(crop)}><img src={src} alt={alt} loading={loading} style={crop ? undefined : style}/></span>;
 }

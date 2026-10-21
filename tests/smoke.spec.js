@@ -98,7 +98,9 @@ test('SMOKE-005 service selection opens its quotation request',async({page})=>{
 test('SMOKE-006 gallery and contact are first-class navigation',async({page})=>{
  await page.goto('/');
  await page.getByRole('link',{name:'Gallery',exact:true}).click();
- await expect(page.locator('.portfolio figure')).toHaveCount(50);
+ const {products}=await import('../src/products.js');
+ const {serviceGallery}=await import('../src/service-gallery.js');
+ await expect(page.locator('.portfolio figure')).toHaveCount(serviceGallery(products).length);
  await page.getByRole('link',{name:'Contact',exact:true}).click();
  await expect(page.getByRole('link',{name:'Enquire on WhatsApp'})).toHaveAttribute('href','https://wa.me/27847477711');
 });

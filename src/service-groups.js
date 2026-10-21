@@ -1,6 +1,6 @@
 // Presentation groups preserve every authoritative service ID and price.
 export const GROUPS = {
-  'Nails': ['Gel & Acrylic Nail Enhancements', 'Others / Nails (Per Nail)'],
+  'Nails': ['Gel & Acrylic Nail Enhancements', 'Others / Nails (Per Nail)', 'Natural Nails', 'Cat eye'],
   'Makeup': ['Makeup Looks'],
   'Lashes & Brows': ['Lash Extensions', 'Lash and Brow'],
   'Hands & Feet': ['Hand and Foot Treatments', 'Toes'],

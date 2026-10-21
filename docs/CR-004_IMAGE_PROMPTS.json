@@ -1,0 +1,58 @@
+{
+  "mode": "built-in image generation",
+  "shared_style": "Square 1254px or larger photorealistic L Beauty salon detail, warm cream/sage palette, soft natural light, no text/logo/collage. Equipment photos: no people, skin or body parts. Nail photos: hands only.",
+  "subjects": [
+    {
+      "slug": "natural-acrylic",
+      "subject": "Macro photograph of a Black woman's short natural oval nails with a thin clear acrylic overlay in sheer blush pink, visible natural free edge, NO extensions, no tips, no nail art. Relaxed hand on sage linen, realistic fingers, freshly moisturised hands."
+    },
+    {
+      "slug": "wax-full-arm",
+      "subject": "Full-arm waxing equipment: broad flat wooden spatulas fanned beside a roll of white nonwoven waxing strips and a closed amber wax tin on a sage salon trolley. Top down still life."
+    },
+    {
+      "slug": "wax-half-arm",
+      "subject": "Half-arm waxing equipment: compact professional roll-on wax cartridge heater with translucent honey cartridge, cotton waxing strips and two spatulas on cream stone. Side-lit macro photograph."
+    },
+    {
+      "slug": "wax-full-leg",
+      "subject": "Full-leg waxing equipment: large double professional wax warmer filled with amber wax, broad waxing strips neatly stacked, sage towel. Wide overhead detail."
+    },
+    {
+      "slug": "wax-half-leg",
+      "subject": "Half-leg waxing supplies: amber hard-wax beads spilling gently from a clear jar into a small cream ceramic bowl, broad spatula beside folded waxing strips. Low angle close-up."
+    },
+    {
+      "slug": "wax-back",
+      "subject": "Back-waxing preparation equipment: wide disposable waxing strips, extra-wide wooden applicators and a stainless steel wax bowl with glossy amber wax, on a sage towel. No treatment recipient."
+    },
+    {
+      "slug": "wax-underarms",
+      "subject": "Underarm waxing preparation supplies: petite white wax warmer with green hard wax, short rounded wooden spatulas and cotton pads, clean compact arrangement on cream counter."
+    },
+    {
+      "slug": "wax-bikini",
+      "subject": "Bikini waxing preparation equipment: purple hard-wax beads in a glass jar, small violet wax warmer bowl, hygienic sealed applicators on sage linen. No people."
+    },
+    {
+      "slug": "wax-buttock",
+      "subject": "Professional body waxing equipment: large flat wooden applicators laid diagonally across a stainless salon tray, peach hard-wax pearls in a bowl and folded white towel. Macro still life."
+    },
+    {
+      "slug": "wax-face-single",
+      "subject": "Precision facial waxing supplies: very fine wooden applicator sticks, angled brow tweezers, spoolie and tiny amber wax pot on a cream ceramic dish. Top-down close-up."
+    },
+    {
+      "slug": "wax-face-combo",
+      "subject": "Facial waxing combo preparation: three small applicator spatulas different widths, honey coloured wax in a little white warmer, cotton rounds and soft sage towel. Three-quarter overhead."
+    },
+    {
+      "slug": "wax-full-face",
+      "subject": "Full-face waxing equipment setup: professional small white wax warmer with pale pink hard wax, fine facial applicators neatly arranged radially, cotton pads, clean treatment tray. Side angle."
+    },
+    {
+      "slug": "french-gel",
+      "subject": "Short natural rounded nails, sheer pink gel manicure with delicate thin white French tips, no acrylic extensions; Black woman's hand on cream linen and sage accent."
+    }
+  ]
+}
