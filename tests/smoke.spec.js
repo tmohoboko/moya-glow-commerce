@@ -39,7 +39,7 @@ test('SMOKE-013 all 46 service images and prices are preserved without cart cont
  const {products,money}=await import('../src/products.js');
  expect(products).toHaveLength(46);
  expect(new Set(products.map(p=>p.image)).size).toBe(46);
- expect(new Set(products.map(p=>p.category)).size).toBe(11);
+ expect(new Set(products.map(p=>p.category)).size).toBe(12);
  await page.goto('/services');
  for(const product of products){
   const card=page.locator(`.product[data-service-id="${product.id}"]`);
