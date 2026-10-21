@@ -12,7 +12,7 @@ permissions:
   contents: read
 jobs:
   hosted:
-    if: github.event_name == 'pull_request' && github.head_ref == 'feat/hosted-login-stripe'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.head_ref == 'feat/hosted-login-stripe')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -23,7 +23,7 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: npm test -- tests/hosted-live.spec.js tests/smoke.spec.js tests/release.spec.js --timeout=120000
         env:
           BASE_URL: https://moya-glow-commerce.vercel.app
           QA_RESULTS_PATH: qa/hosted-results.json

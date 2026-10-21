@@ -24,3 +24,10 @@ Initial browser run: 31 passed, two failed in health precondition because API st
 
 ## Assessment
 HOLD until hosted customer and staff journeys have evidence. Commercial owner acceptance remains separate.
+
+## Hosted verification and failure investigation
+- Production dpl_7eF8d4irDY5iCSfgQR2hZS9pdWYu runs d6eb263. Hosted registration → quotation → refresh → logout → fresh browser context login/persistence PASS; artificial quote 1eec7ab7-5039-4f9d-86a8-9456340872b0. No staff privileges, real bookings or payment statuses altered.
+- CI https://github.com/tmohoboko/moya-glow-commerce/actions/runs/39679449572: SQLite 57 PASS/one Postgres-only skip, Postgres 58 PASS, local browser 33 PASS. Independently rerun local Postgres 58 PASS.
+- Hosted full-browser regression caught long navigation/reload waits: all 46 catalogue treatment images were loaded eagerly, leaving dozens of requests in flight across navigation. Reproduced with network events and a 20-second product reload timeout; image endpoints themselves return valid image bytes. This was an initial performance hypothesis; the subsequent browser crash explicitly reported ENOSPC. Removed only the task disposable Postgres image/container and duplicate dependency install to recover disk space. Reverted the experimental lazy-loading change; preserve the approved image behavior and rerun unchanged assertions. Do not ignore failed runs.
+- New hosted test initially used an incorrect account-button label; corrected to the existing UI label. Its actual deployed journey then passed.
+- Calendar remains explicitly disabled with no weekdays configured; owner schedule/staff access answer still pending. Invoice/payment hosted journey remains HOLD.
