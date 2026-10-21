@@ -33,7 +33,7 @@
 .portfolio figure>a:focus-visible img{transform:scale(1.04)}
 @media(hover:hover) and (pointer:fine){
  .product:hover{transform:translateY(-4px)}
- .product:hover .photo-frame img{transform:scale(1.055);filter:saturate(1.07)}
+ .product:hover .photo-frame .treatment-photo{transform:scale(1.055);filter:saturate(1.07)}
  .product:hover .photo-frame:after,.product:hover .photo-action{opacity:1;transform:none}
  .product-bottom button:hover{box-shadow:0 5px 12px rgba(32,63,50,.15)}
  .portfolio figure>a:hover img{transform:scale(1.045);filter:saturate(1.06)}
@@ -74,3 +74,5 @@ main{padding-top:28px}nav{gap:22px}.muted{font-size:14px;color:#536358}.booking-
 .calendar-dates--day{grid-template-columns:1fr;max-width:300px}.calendar-schedule--day .calendar-column{min-height:180px}.calendar-event--confirmed,.slot-grid button[aria-pressed=true]{background:#e1e3e1;color:#49514b;border-color:#879088;outline:2px solid #879088}.gallery-collections{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.gallery-collections button{background:#e8ecdf;color:#203f32}.gallery-collections button[aria-pressed=true]{background:#254d3c;color:white}.client-treatment-photo img{object-fit:contain!important;background:#f4f2ed}.client-treatment-photo--90 img{transform:rotate(90deg)}.client-treatment-photo--180 img{transform:rotate(180deg)}
 
 .client-treatment-photo--client-05 img{object-fit:cover!important;object-position:50% 36%;transform:scale(2.5);transform-origin:50% 36%}.client-treatment-photo--client-06 img,.client-treatment-photo--client-07 img{object-fit:cover!important;object-position:50% 43%;transform:scale(1.6);transform-origin:50% 43%}.client-treatment-photo--client-10 img{transform:rotate(180deg) scale(1.6);transform-origin:center}
+
+.photo-frame>.treatment-photo{transition:transform .45s ease,filter .45s ease}@media(prefers-reduced-motion:reduce){.photo-frame>.treatment-photo{transition:none!important;transform:none!important}}

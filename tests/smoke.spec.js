@@ -74,7 +74,7 @@ test('SMOKE-015 photo interactions support hover, keyboard and reduced motion',a
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/shop');
  const card=page.locator('.product').first();
- const image=card.locator('.photo-frame img');
+ const image=card.locator('.photo-frame .treatment-photo');
  const cue=card.locator('.photo-action');
  await expect(cue).toHaveCSS('opacity','0');
  await card.hover();
