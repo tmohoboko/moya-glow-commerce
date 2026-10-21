@@ -278,7 +278,7 @@ def test_week_availability_returns_seven_days_without_customer_details(client):
     assert body['view']=='week' and len(body['days'])==7
     assert datetime.fromisoformat(body['days'][0]['day']).weekday()==0
     assert body['slots']==next(d['slots'] for d in body['days'] if d['day']==day)
-    assert all(set(d)=={'day','slots','unavailable','closed'} for d in body['days'])
+    assert all(set(d)=={'day','slots','unavailable','booked','closed'} for d in body['days'])
     assert 'phone' not in response.text and 'contact_name' not in response.text
 
 
@@ -334,3 +334,32 @@ def test_public_closed_day_has_no_available_times_and_validates_view(client):
     assert result.status_code==200
     assert result.json()['slots']==[] and result.json()['days'][0]['closed'] is True
     assert client.get('/api/calendar/availability',params={'day':tomorrow(),'view':'month'}).status_code==422
+
+
+def test_day_boundaries_respect_configured_hours_duration_and_buffer(client):
+    register(client); staff = setup_staff()
+    quote = quoted(client, staff, duration=60, buffer=15)
+    for window, first, last in [([480,1080], '09:00', '15:45'), ([600,960], '10:00', '14:45')]:
+        assert staff.put('/api/staff/calendar', json={'enabled':True,'week':[window]*7}).status_code == 200
+        choices = slots(client, quote)
+        assert datetime.fromtimestamp(choices[0], TZ).strftime('%H:%M') == first
+        assert datetime.fromtimestamp(choices[-1], TZ).strftime('%H:%M') == last
+        assert reserve(client, quote, choices[-1]+900).status_code == 409
+        assert reserve(client, quote, choices[0]-900).status_code == 409
+    assert reserve(client, quote, choices[-1]).status_code == 201
+
+
+def test_public_booked_state_survives_new_session_and_blocks_stay_unavailable(client):
+    register(client); staff = setup_staff(); quote = quoted(client, staff)
+    start = slots(client, quote)[0]
+    assert reserve(client, quote, start).status_code == 201
+    assert staff.post('/api/staff/blocks', json={'starts_at':start+4500,'ends_at':start+5400,'label':'Private reason'}).status_code == 201
+    with TestClient(app, headers=ORIGIN) as anonymous:
+        result = anonymous.get('/api/calendar/availability', params={'day':tomorrow()})
+        day = result.json()['days'][0]
+        assert day['booked'] == [start+i*900 for i in range(5)]
+        assert start+4500 in day['unavailable'] and start+4500 not in day['booked']
+        assert 'Private reason' not in result.text
+        assert anonymous.get('/api/availability', params={'quote_id':quote['id'],'day':tomorrow()}).status_code == 401
+        assert reserve(anonymous, quote, start+5400).status_code == 401
+        assert anonymous.get('/api/bookings').status_code == 401

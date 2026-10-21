@@ -168,3 +168,34 @@ test('PATCH-008 an accepted quotation can be booked directly in Day calendar',as
  expect(submitted).toEqual({quote_id:quoteId,starts_at:start,revision:1});
  await expect(form.getByRole('button',{name:'Confirm appointment',exact:true})).toBeDisabled();
 });
+
+test('BUG-LB-021 booked Day states persist on reload and navigation without private data',async({page})=>{
+ const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(Date.now()+86400000));
+ const start=Math.floor(new Date(day+'T09:00:00+02:00').getTime()/1000);
+ await page.route('**/api/auth/me',r=>r.fulfill({status:401,json:{detail:'Please log in.'}}));
+ await page.route('**/api/calendar/availability?*',r=>{
+  const date=new URL(r.request().url()).searchParams.get('day');
+  return r.fulfill({json:{day:date,view:'day',interval_minutes:15,slots:date===day?[start+900]:[],days:[{day:date,closed:false,slots:date===day?[start+900]:[],booked:date===day?[start]:[],unavailable:[]}]}});
+ });
+ await page.goto('/calendar');
+ await page.getByLabel('Calendar date',{exact:true}).fill(day);
+ await page.getByRole('button',{name:'Day',exact:true}).click();
+ const grid=page.getByRole('group',{name:'Day time slots'});
+ await expect(grid.getByRole('button',{name:'09:00 booked',exact:true})).toBeDisabled();
+ await expect(grid.getByRole('button',{name:'09:15',exact:true})).toBeEnabled();
+ await expect(grid.getByRole('button',{name:'09:30 unavailable',exact:true})).toBeDisabled();
+ expect(await grid.getByRole('button',{name:'09:00 booked',exact:true}).evaluate(e=>getComputedStyle(e).backgroundColor)).not.toBe(await grid.getByRole('button',{name:'09:30 unavailable',exact:true}).evaluate(e=>getComputedStyle(e).backgroundColor));
+ await page.reload();
+ await expect(grid.getByRole('button',{name:'09:00 booked',exact:true})).toBeDisabled();
+ await page.getByRole('button',{name:'Next day'}).click();
+ await expect(grid.locator('[data-state="booked"]')).toHaveCount(0);
+ await page.getByRole('button',{name:'Previous day'}).click();
+ await expect(grid.locator('[data-state="booked"]')).toHaveCount(1);
+ for(const width of [320,375,768,1280]){
+  await page.setViewportSize({width,height:812});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ }
+ await page.getByRole('button',{name:'Week',exact:true}).click();
+ await expect(grid).toHaveCount(0);
+ await expect(page.locator('.calendar-column')).toHaveCount(7);
+});

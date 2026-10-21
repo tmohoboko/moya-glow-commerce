@@ -140,6 +140,9 @@ def hours(connection, day):
     window = settings["week"][day.weekday()] if settings["enabled"] else None
     if not window:
         return None
+    window = [max(window[0], 540), min(window[1], 1020)]
+    if window[0] >= window[1]:
+        return None
     midnight = datetime.combine(day, day_time(), TZ)
     return tuple(int((midnight + timedelta(minutes=minute)).timestamp()) for minute in window)
 
@@ -274,7 +277,8 @@ def decline_quote(quote_id: uuid.UUID, request: Request):
 
 
 @router.get("/availability")
-def availability(quote_id: uuid.UUID, day: date, request: Request, view: Literal["day", "week"] = "day"):
+def availability(quote_id: uuid.UUID, day: date, request: Request, response: Response, view: Literal["day", "week"] = "day"):
+    response.headers["Cache-Control"] = "no-store"
     with db.transaction() as connection:
         user = current_user(connection, request)
         quote = owned(connection, db.quotes, quote_id, user["id"])
@@ -300,7 +304,8 @@ def calendar_availability(connection, day, view, duration, exclude_booking=None)
         db.bookings.c.starts_at < range_end, db.bookings.c.blocked_until > range_start)
     if exclude_booking:
         query = query.where(db.bookings.c.id != exclude_booking)
-    busy = [tuple(row) for row in connection.execute(query)]
+    booked_intervals = [tuple(row) for row in connection.execute(query)]
+    busy = list(booked_intervals)
     busy += [tuple(row) for row in connection.execute(select(db.calendar_blocks.c.starts_at, db.calendar_blocks.c.ends_at).where(
         db.calendar_blocks.c.status == "active", db.calendar_blocks.c.starts_at < range_end, db.calendar_blocks.c.ends_at > range_start))]
     today = datetime.now(TZ).date()
@@ -308,15 +313,18 @@ def calendar_availability(connection, day, view, duration, exclude_booking=None)
     now = time.time()
     for date_value in days:
         window = hours(connection,date_value) if today <= date_value <= today+timedelta(days=90) else None
-        available, unavailable = [], []
+        available, unavailable, booked = [], [], []
         if window:
             for start in range(window[0],window[1]-duration+1,15*60):
                 occupied = start <= now or any(a < start+duration and b > start for a,b in busy)
                 (unavailable if occupied else available).append(start)
-        result.append({"day":date_value.isoformat(),"slots":available,"unavailable":unavailable,"closed":window is None})
+        midnight = int(datetime.combine(date_value, day_time(), TZ).timestamp())
+        booked = [start for start in range(midnight+540*60, midnight+1020*60, 900)
+                  if any(a < start+900 and b > start for a,b in booked_intervals)]
+        result.append({"day":date_value.isoformat(),"slots":available,"unavailable":unavailable,"booked":booked,"closed":window is None})
     selected = next(row for row in result if row["day"] == day.isoformat())
     return {"day":day.isoformat(),"view":view,"timezone":str(TZ),"slots":selected["slots"],
-            "days":result}
+            "days":result,"interval_minutes":15}
 
 
 @router.get("/calendar/availability")

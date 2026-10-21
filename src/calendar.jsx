@@ -24,12 +24,14 @@ export function CalendarSchedule({day,view,bookings=[],blocks=[],onDay,onInvoice
 }
 
 
-export function DayTimeSlots({day,available=[],selected='',onSelect,loading=false,disabled=false}) {
+export function DayTimeSlots({day,available=[],booked=[],interval=15,selected='',onSelect,loading=false,disabled=false}) {
   const first=Math.floor(new Date(`${day}T09:00:00+02:00`).getTime()/1000);
-  const times=Array.from({length:33},(_,i)=>first+i*900);
-  return <div className="day-time-slots"><p className="muted">09:00–17:00 · South African time · 15-minute intervals</p><div className="slot-grid" role="group" aria-label="Day time slots">{times.map((start,i)=>{
-    const free=i<32&&available.includes(start)&&!loading&&!disabled;
+  const times=Array.from({length:Math.floor(480/interval)+1},(_,i)=>first+i*interval*60);
+  return <div className="day-time-slots"><p className="muted">09:00–17:00 · South African time · {interval}-minute intervals</p><div className="slot-grid" role="group" aria-label="Day time slots">{times.map(start=>{
+    const closing=start>=first+480*60;
+    const occupied=!loading&&booked.includes(start);
+    const free=!closing&&!occupied&&available.includes(start)&&!loading&&!disabled;
     const picked=free&&Number(selected)===start;
-    return <button type="button" key={start} disabled={!free} aria-pressed={picked} aria-label={`${timeLabel(start)}${free?'':' unavailable'}`} onClick={()=>onSelect(start)}>{timeLabel(start)}<small>{picked?'Selected':i===32?'Closing time':loading?'Checking…':free?'Available':'Unavailable'}</small></button>;
+    return <button type="button" key={start} data-state={picked?'selected':occupied?'booked':free?'available':'unavailable'} disabled={!free} aria-pressed={picked} aria-label={`${timeLabel(start)}${occupied?' booked':free?'':' unavailable'}`} onClick={()=>onSelect(start)}>{timeLabel(start)}<small>{picked?'Selected':closing?'Closing time':loading?'Checking…':occupied?'Booked':free?'Available':'Unavailable'}</small></button>;
   })}</div></div>;
 }
