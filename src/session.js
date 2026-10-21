@@ -19,6 +19,7 @@ export function useAccountSession(){
  const setUser=useCallback(user=>{
   // A stale session lookup must never overwrite a newer login/logout result.
   pending.current?.abort();
+  if(!user) {try {Object.keys(sessionStorage).filter(key=>key.startsWith('lb:slot:')||key.startsWith('lb:calendar:')).forEach(key=>sessionStorage.removeItem(key))} catch {}}
   setState({status:user?'authenticated':'anonymous',user,message:''});
  },[]);
  useEffect(()=>{refresh();return()=>pending.current?.abort()},[refresh]);

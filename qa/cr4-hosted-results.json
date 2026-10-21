@@ -1,0 +1,132 @@
+{
+  "runtime_commit": "4dc80d32346f48c1b9699bbd5d690ccb12a9b008",
+  "deployment": "dpl_9F9XuPzauvTaeGCKyDHbjU2M9aq3",
+  "checked_at": "2026-10-21T04:09:18.279587+00:00",
+  "checks": [
+    {
+      "check": "/services",
+      "passed": true
+    },
+    {
+      "check": "/gallery",
+      "passed": true
+    },
+    {
+      "check": "/calendar",
+      "passed": true
+    },
+    {
+      "check": "/appointments",
+      "passed": true
+    },
+    {
+      "check": "/api/readiness",
+      "passed": true
+    },
+    {
+      "check": "Published catalogue equals checked source",
+      "passed": true
+    },
+    {
+      "check": "Natural Nails correction",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-buttock.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-natural-acrylic.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-back.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-bikini.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-half-arm.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-face-single.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-full-arm.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-full-face.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-full-leg.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-face-combo.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-underarms.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-wax-half-leg.jpg",
+      "passed": true
+    },
+    {
+      "check": "refresh-french-gel.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-01.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-02.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-03.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-04.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-05.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-06.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-07.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-08.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-09.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-10.jpg",
+      "passed": true
+    },
+    {
+      "check": "client-11.jpg",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

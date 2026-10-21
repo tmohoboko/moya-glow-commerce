@@ -1,9 +1,9 @@
 name: L Beauty QA
 on:
   push:
-    branches: [main, 'feat/hosted-login-stripe']
+    branches: [main, 'feat/hosted-login-stripe', 'feat/booking-workflow']
   pull_request:
-    branches: [main]
+    branches: [main, 'feat/hosted-login-stripe']
   workflow_dispatch:
 concurrency:
   group: qa-${{ github.workflow }}-${{ github.ref }}
@@ -12,7 +12,7 @@ permissions:
   contents: read
 jobs:
   hosted:
-    if: github.event_name == 'pull_request' && github.head_ref == 'feat/hosted-login-stripe'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.head_ref == 'feat/hosted-login-stripe')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -23,7 +23,7 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: npm test -- tests/hosted-live.spec.js tests/smoke.spec.js tests/release.spec.js --timeout=120000
         env:
           BASE_URL: https://moya-glow-commerce.vercel.app
           QA_RESULTS_PATH: qa/hosted-results.json
@@ -37,6 +37,8 @@ jobs:
             qa/hosted/
             test-results/
   regression:
+    env:
+      DATABASE_URL: sqlite:////tmp/lbeauty-browser-qa.sqlite3
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -55,6 +57,7 @@ jobs:
       - run: node scripts/sync-catalogue.mjs --check
       - run: npm run build
       - run: npx playwright install --with-deps chromium
+      - run: python scripts/seed-booking-qa.py
       - run: uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 > /tmp/lbeauty-api.log 2>&1 &
       - run: npm test
         env:

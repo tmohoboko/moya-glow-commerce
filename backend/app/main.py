@@ -19,7 +19,7 @@ from .security import (COOKIE, DUMMY_HASH, check_origin, current_user, digest,
 
 CATALOGUE = json.loads((Path(__file__).parent / "catalogue.json").read_text())
 BY_ID = {item["id"]: item for item in CATALOGUE}
-app = FastAPI(title="L Beauty account and checkout", docs_url=None, redoc_url=None, openapi_url=None)
+app = FastAPI(title="L Beauty services and appointments", docs_url=None, redoc_url=None, openapi_url=None)
 
 
 class Credentials(BaseModel):
@@ -42,8 +42,9 @@ class Checkout(BaseModel):
 
 @app.exception_handler(RequestValidationError)
 async def validation_error(request, exc):
-    # Never echo submitted passwords in validation errors.
-    return JSONResponse({"detail": "Please check your entries. Use a valid email and a password of 12–128 characters."}, status_code=422)
+    # Never echo submitted credentials or private booking details.
+    detail = "Please check your entries. Use a valid email and a password of 12–128 characters." if request.url.path.startswith("/api/auth/") else "Please check the required fields and try again."
+    return JSONResponse({"detail": detail}, status_code=422)
 
 
 @app.middleware("http")
@@ -156,6 +157,8 @@ def get_order(order_id: uuid.UUID, request: Request):
 
 @app.post("/api/checkout")
 def checkout(body: Checkout, request: Request):
+    if os.getenv("ENABLE_LEGACY_COMMERCE") != "1":
+        raise HTTPException(410, "Choose a service and book an appointment before paying its invoice.")
     rate_limit(request, "checkout", 30)
     items, seen = [], set()
     for item in sorted(body.items, key=lambda row: row.id):
@@ -230,3 +233,7 @@ def apply_event(event):
         connection.execute(update(orders).where(orders.c.id == order["id"]).values(status=status))
         connection.execute(events.insert().values(id=event["id"], order_id=order["id"], created_at=int(time.time())))
     return {"received": True}
+
+
+from .bookings import router as booking_router
+app.include_router(booking_router)

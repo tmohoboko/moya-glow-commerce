@@ -33,6 +33,44 @@ limits = Table("lb_rate_limits", metadata,
     Column("key", String(64), primary_key=True), Column("count", Integer, nullable=False),
     Column("expires_at", BigInteger, nullable=False, index=True))
 schema = Table("lb_schema", metadata, Column("version", Integer, primary_key=True))
+staff = Table("lb_staff", metadata,
+    Column("user_id", String(36), ForeignKey("lb_users.id"), primary_key=True),
+    Column("created_at", BigInteger, nullable=False))
+calendar_settings = Table("lb_calendar_settings", metadata,
+    Column("id", String(20), primary_key=True), Column("value", JSON, nullable=False))
+quotes = Table("lb_quotes", metadata,
+    Column("id", String(36), primary_key=True),
+    Column("user_id", String(36), ForeignKey("lb_users.id"), index=True),
+    Column("request_key", String(36), nullable=False),
+    Column("service_id", String(120), nullable=False), Column("service_name", String(200), nullable=False),
+    Column("contact_name", String(100), nullable=False), Column("phone", String(40), nullable=False),
+    Column("notes", String(2000), nullable=False), Column("source", String(20), nullable=False),
+    Column("amount", Integer), Column("duration", Integer), Column("buffer", Integer),
+    Column("terms", String(2000)), Column("status", String(20), nullable=False),
+    Column("revision", Integer, nullable=False), Column("created_at", BigInteger, nullable=False),
+    Column("expires_at", BigInteger), UniqueConstraint("user_id", "request_key"))
+bookings = Table("lb_bookings", metadata,
+    Column("id", String(36), primary_key=True),
+    Column("quote_id", String(36), ForeignKey("lb_quotes.id"), unique=True, nullable=False),
+    Column("user_id", String(36), ForeignKey("lb_users.id"), index=True),
+    Column("starts_at", BigInteger, nullable=False, index=True), Column("ends_at", BigInteger, nullable=False),
+    Column("blocked_until", BigInteger, nullable=False), Column("status", String(20), nullable=False),
+    Column("created_at", BigInteger, nullable=False))
+invoices = Table("lb_invoices", metadata,
+    Column("id", String(36), primary_key=True), Column("number", String(40), unique=True, nullable=False),
+    Column("booking_id", String(36), ForeignKey("lb_bookings.id"), unique=True, nullable=False),
+    Column("user_id", String(36), ForeignKey("lb_users.id"), index=True),
+    Column("order_id", String(36), ForeignKey("lb_orders.id"), unique=True),
+    Column("amount", Integer, nullable=False), Column("currency", String(3), nullable=False),
+    Column("status", String(20), nullable=False), Column("created_at", BigInteger, nullable=False))
+calendar_blocks = Table("lb_calendar_blocks", metadata,
+    Column("id", String(36), primary_key=True), Column("starts_at", BigInteger, nullable=False),
+    Column("ends_at", BigInteger, nullable=False), Column("label", String(100), nullable=False),
+    Column("status", String(20), nullable=False))
+booking_audit = Table("lb_booking_audit", metadata,
+    Column("id", String(36), primary_key=True), Column("actor_id", String(36), ForeignKey("lb_users.id"), nullable=False),
+    Column("entity_id", String(36), nullable=False), Column("action", String(40), nullable=False),
+    Column("created_at", BigInteger, nullable=False))
 _lock = threading.Lock()
 
 
@@ -54,14 +92,18 @@ def engine():
         @event.listens_for(result, "connect")
         def enable_foreign_keys(connection, record):
             connection.execute("PRAGMA foreign_keys=ON")
-    # Version 1 is additive and serialized across serverless instances. Future
-    # schema changes need explicit versioned migrations, never drop/recreate.
+    # Additive bootstrap for local development. Hosted changes are also shipped
+    # as explicit versioned migrations and applied before the new release.
     with _lock, result.begin() as connection:
         if result.dialect.name == "postgresql":
             connection.execute(text("SELECT pg_advisory_xact_lock(69020261020)"))
         metadata.create_all(connection)
         insert = dialect_insert(connection, schema).values(version=1).on_conflict_do_nothing()
         connection.execute(insert)
+        connection.execute(dialect_insert(connection, calendar_settings).values(
+            id="salon", value={"enabled": False, "week": [None] * 7}
+        ).on_conflict_do_nothing())
+        connection.execute(dialect_insert(connection, schema).values(version=2).on_conflict_do_nothing())
     return result
 
 

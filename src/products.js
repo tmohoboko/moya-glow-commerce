@@ -227,7 +227,7 @@ export const products = [
   },
   {
     "id": "nails-french-250",
-    "name": "French",
+    "name": "French (Gel)",
     "price": 250,
     "category": "Gel & Acrylic Nail Enhancements",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement."
@@ -236,8 +236,8 @@ export const products = [
     "id": "gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150",
     "name": "Acrylic Overlay (1 / Any colour)",
     "price": 150,
-    "category": "Gel & Acrylic Nail Enhancements",
-    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement."
+    "category": "Natural Nails",
+    "description": "L Beauty · Natural Nails. Acrylic overlay on your natural nails; no extensions."
   },
   {
     "id": "gel-acrylic-nail-enhancements-tips-any-size-230",
@@ -248,7 +248,7 @@ export const products = [
   },
   {
     "id": "nails-french-280",
-    "name": "French",
+    "name": "French (Acrylic)",
     "price": 280,
     "category": "Gel & Acrylic Nail Enhancements",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement."
