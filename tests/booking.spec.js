@@ -43,7 +43,9 @@ test('BOOKING-001 customer request → staff quote → acceptance → slot → i
   await expect(bookingForm.getByRole('button',{name:'Confirm appointment',exact:true})).toBeDisabled();
   await bookingForm.getByRole('button',{name:'Week',exact:true}).click();
   await expect(bookingForm.locator('[data-slot-day]')).toHaveCount(7);
-  await bookingForm.locator(`[data-slot-day="${day()}"]`).getByRole('button').first().click();
+  const timePicker=bookingForm.getByLabel('Available time',{exact:true});
+  const firstTime=await timePicker.locator('option').nth(1).getAttribute('value');
+  await timePicker.selectOption(firstTime);
   await expect(bookingForm.getByRole('button',{name:'Confirm appointment',exact:true})).toBeEnabled();
   await page.getByRole('button',{name:'Confirm appointment',exact:true}).click();
   await expect(page.getByText('Confirmed',{exact:true})).toBeVisible();

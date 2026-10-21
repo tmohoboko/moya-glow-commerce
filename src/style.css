@@ -67,3 +67,5 @@ main{padding-top:28px}nav{gap:22px}.muted{font-size:14px;color:#536358}.booking-
 @media(max-width:520px){.booking-service>.treatment-photo{width:90px}.calendar-dates{gap:3px}.calendar-dates button{padding:12px 2px}.calendar-dates span{font-size:9px}.calendar-schedule--week{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-controls label{max-width:none;width:100%}.booking-slot-days--week{grid-template-columns:1fr}.customer-calendar h1{font-size:34px}.category-nav button{min-width:calc(50% - 10px);font-size:12px}.calendar-event{font-size:12px}.category-nav small{font-size:10px}}
 
 .calendar-dates strong{display:block;font-size:18px;line-height:1.6}
+
+.available-time-control{display:flex;align-items:end;gap:16px;flex-wrap:wrap;margin:20px 0 8px}.available-time-control label{display:grid;gap:8px;flex:1;min-width:0;max-width:420px}.available-time-control select{font:inherit;color:inherit;background:#fff;border:1px solid #a7b5a4;border-radius:4px;padding:12px;width:100%;min-width:0}.available-time-control select:focus-visible{outline:2px solid #254d3c;outline-offset:2px}
