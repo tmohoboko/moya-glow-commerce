@@ -65,3 +65,5 @@ main{padding-top:28px}nav{gap:22px}.muted{font-size:14px;color:#536358}.booking-
 @media(min-width:1050px){.customer-calendar .calendar-event{padding:16px;font-size:14px}.customer-calendar .calendar-event strong{font-size:12px}}
 @media(max-width:800px){.calendar-schedule--week{grid-template-columns:repeat(3,minmax(0,1fr))}.calendar-controls{gap:12px}.calendar-dates small{display:none}.calendar-dates span{font-size:10px}.category-nav button{min-width:100px}}
 @media(max-width:520px){.booking-service>.treatment-photo{width:90px}.calendar-dates{gap:3px}.calendar-dates button{padding:12px 2px}.calendar-dates span{font-size:9px}.calendar-schedule--week{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-controls label{max-width:none;width:100%}.booking-slot-days--week{grid-template-columns:1fr}.customer-calendar h1{font-size:34px}.category-nav button{min-width:calc(50% - 10px);font-size:12px}.calendar-event{font-size:12px}.category-nav small{font-size:10px}}
+
+.calendar-dates strong{display:block;font-size:18px;line-height:1.6}

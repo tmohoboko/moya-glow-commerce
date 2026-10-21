@@ -40,7 +40,8 @@
 | 6 | Waxing | 13 | 13 |
 
 Waxing is last by the user's explicit instruction, overriding its photo count.
-The gallery contains 51 distinct displayed photographs. The 46 service image
+The gallery contains 50 distinct displayed photographs. One hand/nail image
+belongs to two groups, so the per-group counts sum to 51. The 46 service image
 paths remain unique. Filters and gallery use the same grouping functions.
 
 ## Image preparation

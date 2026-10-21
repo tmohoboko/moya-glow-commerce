@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client';
 import {products, servicePrice} from './products';
 import './style.css';
 import {serviceGallery} from './service-gallery';
-import {groupStats,inGroup,orderedServices,serviceGroup,GROUPS} from './service-groups';
+import {groupStats,inGroup,orderedServices,serviceGroup} from './service-groups';
 import {TreatmentImage} from './treatment-image';
 const allPhotos=serviceGallery(products);
 const groups=groupStats(products,allPhotos);

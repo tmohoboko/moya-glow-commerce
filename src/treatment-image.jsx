@@ -4,6 +4,7 @@ import React from 'react';
 // treatment. All framed sources are square 1254px images; rectangles stay square
 // to preserve anatomy/proportions. No image pixel data is modified.
 const crops = {
+  'service-back-wax.jpg': [0.10,0.34,0.65],
   'service-full-body.jpg': [0.48,0.36,0.38],
   'illustrative-massage.jpg': [0.26,0.45,0.28],
   'service-aromatherapy.jpg': [0.23,0.42,0.45],
