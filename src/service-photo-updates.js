@@ -1,7 +1,7 @@
 // Each service receives its own photograph instead of a shared category image.
 export const servicePhotoUpdates = {
   "massage-full-body-450": "/catalogue/services/service-full-body.jpg",
-  "massage-colon-cleans-150": "/catalogue/services/service-colon-care.jpg",
+  "massage-colon-cleans-150": "/catalogue/services/focus-massage-compress.jpg",
   "massage-aromatherapy-massage-500": "/catalogue/services/service-aromatherapy.jpg",
   "hand-and-foot-treatments-leg-exfoliation-massage-150": "/catalogue/services/service-leg-exfoliation.jpg",
   "hand-and-foot-treatments-full-pedicure-220": "/catalogue/services/service-full-pedicure.jpg",
@@ -10,7 +10,7 @@ export const servicePhotoUpdates = {
   "body-wax-half-arm-130": "/catalogue/services/service-half-arm-wax.jpg",
   "body-wax-half-leg-150": "/catalogue/services/service-half-leg-wax.jpg",
   "body-wax-back-190": "/catalogue/services/service-back-wax.jpg",
-  "body-wax-chest-165": "/catalogue/services/service-chest-wax.jpg",
+  "body-wax-chest-165": "/catalogue/services/focus-body-wax.jpg",
   "intimate-wax-underarms-180": "/catalogue/services/service-underarm-care.jpg",
   "intimate-wax-bikini-200": "/catalogue/services/service-bikini-care.jpg",
   "intimate-wax-buttock-85": "/catalogue/services/service-body-care.jpg",

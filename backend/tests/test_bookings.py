@@ -267,3 +267,45 @@ with TestClient(app,headers={'Origin':'http://testserver'}) as client:
 """
     result = subprocess.run([sys.executable,'-c',code],input=json.dumps({'token':client.cookies.get('lb_session'),'booking_id':booking['id'],'invoice_id':booking['invoice']['id']}),capture_output=True,text=True,timeout=25,env=os.environ.copy())
     assert result.returncode == 0, result.stderr
+
+
+def test_week_availability_returns_seven_days_without_customer_details(client):
+    register(client); staff=setup_staff(); quote=quoted(client,staff)
+    day=tomorrow()
+    response=client.get('/api/availability',params={'quote_id':quote['id'],'day':day,'view':'week'})
+    assert response.status_code==200, response.text
+    body=response.json()
+    assert body['view']=='week' and len(body['days'])==7
+    assert datetime.fromisoformat(body['days'][0]['day']).weekday()==0
+    assert body['slots']==next(d['slots'] for d in body['days'] if d['day']==day)
+    assert all(set(d)=={'day','slots','unavailable','closed'} for d in body['days'])
+    assert 'phone' not in response.text and 'contact_name' not in response.text
+
+
+def test_week_slots_mark_occupied_intervals_and_keep_free_slots(client):
+    register(client); staff=setup_staff(); first=quoted(client,staff)
+    start=slots(client,first)[0]
+    assert reserve(client,first,start).status_code==201
+    second=quoted(client,staff)
+    response=client.get('/api/availability',params={'quote_id':second['id'],'day':tomorrow(),'view':'week'})
+    selected=next(d for d in response.json()['days'] if d['day']==tomorrow())
+    assert start in selected['unavailable'] and start not in selected['slots']
+    assert start+3600 in selected['unavailable']
+    assert start+4500 in selected['slots']
+
+
+def test_staff_week_calendar_uses_monday_boundary_and_contains_bookings(client):
+    register(client); staff=setup_staff(); quote=quoted(client,staff)
+    booking=reserve(client,quote,slots(client,quote)[0]).json()
+    result=staff.get('/api/staff/calendar',params={'day':tomorrow(),'view':'week'})
+    assert result.status_code==200
+    body=result.json()
+    assert body['view']=='week' and datetime.fromisoformat(body['first_day']).weekday()==0
+    assert booking['id'] in [b['id'] for b in body['bookings']]
+    assert client.get('/api/staff/calendar',params={'day':tomorrow(),'view':'week'}).status_code==403
+
+
+def test_calendar_view_is_validated(client):
+    register(client); staff=setup_staff(); quote=quoted(client,staff)
+    assert client.get('/api/availability',params={'quote_id':quote['id'],'day':tomorrow(),'view':'year'}).status_code==422
+    assert staff.get('/api/staff/calendar',params={'day':tomorrow(),'view':'year'}).status_code==422

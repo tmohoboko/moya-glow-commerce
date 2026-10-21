@@ -21,7 +21,7 @@
     "price": 150,
     "category": "Massage",
     "description": "L Beauty · Massage. 30 min.",
-    "image": "/catalogue/services/service-colon-care.jpg"
+    "image": "/catalogue/services/focus-massage-compress.jpg"
   },
   {
     "id": "massage-aromatherapy-massage-500",
@@ -109,7 +109,7 @@
     "price": 165,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-chest-wax.jpg"
+    "image": "/catalogue/services/focus-body-wax.jpg"
   },
   {
     "id": "intimate-wax-underarms-180",
@@ -133,7 +133,7 @@
     "price": 260,
     "category": "Intimate Wax",
     "description": "L Beauty · Intimate Wax.",
-    "image": "/catalogue/services/illustrative-intimate-wax.jpg"
+    "image": "/catalogue/services/focus-intimate-wax.jpg"
   },
   {
     "id": "intimate-wax-buttock-85",

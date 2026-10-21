@@ -39,7 +39,12 @@ test('BOOKING-001 customer request → staff quote → acceptance → slot → i
   await page.getByRole('button',{name:'Refresh appointments',exact:true}).click();
   await page.getByRole('button',{name:'Accept quotation',exact:true}).click();
   await page.getByLabel('Appointment date',{exact:true}).fill(day());
-  await page.getByRole('group',{name:'Available appointment times'}).getByRole('button').first().click();
+  const bookingForm=page.getByRole('form',{name:'Appointment booking form'});
+  await expect(bookingForm.getByRole('button',{name:'Confirm appointment',exact:true})).toBeDisabled();
+  await bookingForm.getByRole('button',{name:'Week',exact:true}).click();
+  await expect(bookingForm.locator('[data-slot-day]')).toHaveCount(7);
+  await bookingForm.locator(`[data-slot-day="${day()}"]`).getByRole('button').first().click();
+  await expect(bookingForm.getByRole('button',{name:'Confirm appointment',exact:true})).toBeEnabled();
   await page.getByRole('button',{name:'Confirm appointment',exact:true}).click();
   await expect(page.getByText('Confirmed',{exact:true})).toBeVisible();
   await page.reload();
@@ -66,6 +71,9 @@ test('BOOKING-001 customer request → staff quote → acceptance → slot → i
    await staff.setViewportSize({width,height:812});
    expect(await staff.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   }
+  await staff.getByRole('button',{name:'Week',exact:true}).click();
+  await expect(staff.getByRole('region',{name:'Week appointment calendar'}).locator('.calendar-column')).toHaveCount(7);
+  expect(await staff.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await staff.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/booking-salon.png`,fullPage:true});
  }finally{await staffContext.close()}
 });

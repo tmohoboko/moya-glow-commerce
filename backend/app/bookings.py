@@ -1,6 +1,7 @@
 """Quote-led, single-calendar salon booking. All money is integer ZAR cents."""
 import time
 import uuid
+from typing import Literal
 from contextlib import contextmanager
 from datetime import date, datetime, time as day_time, timedelta, timezone
 from zoneinfo import ZoneInfo
@@ -273,7 +274,7 @@ def decline_quote(quote_id: uuid.UUID, request: Request):
 
 
 @router.get("/availability")
-def availability(quote_id: uuid.UUID, day: date, request: Request):
+def availability(quote_id: uuid.UUID, day: date, request: Request, view: Literal["day", "week"] = "day"):
     with db.transaction() as connection:
         user = current_user(connection, request)
         quote = owned(connection, db.quotes, quote_id, user["id"])
@@ -282,14 +283,36 @@ def availability(quote_id: uuid.UUID, day: date, request: Request):
             active_quote(quote)
         elif existing["status"] != "confirmed":
             raise HTTPException(409, "This appointment cannot be rescheduled.")
-        window = hours(connection, day)
-        duration = (quote["duration"] + quote["buffer"]) * 60
-        slots = []
-        if window:
-            for start in range(window[0], window[1]-duration+1, 15*60):
-                if start > time.time() and not overlaps(connection, start, start+duration, existing["id"] if existing else None):
-                    slots.append(start)
-        return {"day": day.isoformat(), "timezone": str(TZ), "slots": slots, "duration": quote["duration"], "buffer": quote["buffer"]}
+        validate_date(day)
+        first = day-timedelta(days=day.weekday()) if view == "week" else day
+        days = [first+timedelta(days=i) for i in range(7 if view == "week" else 1)]
+        range_start = int(datetime.combine(first, day_time(), TZ).timestamp())
+        range_end = range_start+len(days)*86400
+        # Fetch busy intervals once for the whole range rather than querying for
+        # every candidate slot; only times, never customer details, are returned.
+        query = select(db.bookings.c.starts_at, db.bookings.c.blocked_until).where(
+            db.bookings.c.status.in_(["confirmed", "completed"]),
+            db.bookings.c.starts_at < range_end, db.bookings.c.blocked_until > range_start)
+        if existing:
+            query = query.where(db.bookings.c.id != existing["id"])
+        busy = [tuple(row) for row in connection.execute(query)]
+        busy += [tuple(row) for row in connection.execute(select(db.calendar_blocks.c.starts_at, db.calendar_blocks.c.ends_at).where(
+            db.calendar_blocks.c.status == "active", db.calendar_blocks.c.starts_at < range_end, db.calendar_blocks.c.ends_at > range_start))]
+        duration = (quote["duration"]+quote["buffer"])*60
+        today = datetime.now(TZ).date()
+        result = []
+        now = time.time()
+        for date_value in days:
+            window = hours(connection,date_value) if today <= date_value <= today+timedelta(days=90) else None
+            available, unavailable = [], []
+            if window:
+                for start in range(window[0],window[1]-duration+1,15*60):
+                    occupied = start <= now or any(a < start+duration and b > start for a,b in busy)
+                    (unavailable if occupied else available).append(start)
+            result.append({"day":date_value.isoformat(),"slots":available,"unavailable":unavailable,"closed":window is None})
+        selected = next(row for row in result if row["day"] == day.isoformat())
+        return {"day":day.isoformat(),"view":view,"timezone":str(TZ),"slots":selected["slots"],
+                "days":result,"duration":quote["duration"],"buffer":quote["buffer"]}
 
 
 @router.post("/bookings", status_code=201)
@@ -365,18 +388,19 @@ def configure_calendar(body: Settings, request: Request):
 
 
 @router.get("/staff/calendar")
-def staff_calendar(day: date, request: Request):
+def staff_calendar(day: date, request: Request, view: Literal["day", "week"] = "day"):
     with db.transaction() as connection:
         require_staff(connection, request)
-        start = int(datetime.combine(day, day_time(), TZ).timestamp())
-        end = start + 86400
+        first = day-timedelta(days=day.weekday()) if view == "week" else day
+        start = int(datetime.combine(first, day_time(), TZ).timestamp())
+        end = start + (7 if view == "week" else 1)*86400
         appointments = [booking_view(connection, row) for row in connection.execute(select(db.bookings).where(
             db.bookings.c.starts_at < end, db.bookings.c.blocked_until > start).order_by(db.bookings.c.starts_at)).mappings()]
         blocks = [dict(row) for row in connection.execute(select(db.calendar_blocks).where(
             db.calendar_blocks.c.starts_at < end, db.calendar_blocks.c.ends_at > start, db.calendar_blocks.c.status == "active")).mappings()]
         pending = [quote_view(row) for row in connection.execute(select(db.quotes).where(
             db.quotes.c.status.in_(["requested", "issued"])).order_by(db.quotes.c.created_at).limit(200)).mappings()]
-        return {"settings": settings_view(connection), "bookings": appointments, "blocks": blocks, "quotes": pending, "timezone": str(TZ)}
+        return {"settings": settings_view(connection), "bookings": appointments, "blocks": blocks, "quotes": pending, "timezone": str(TZ), "view": view, "first_day": first.isoformat()}
 
 
 @router.post("/staff/blocks", status_code=201)

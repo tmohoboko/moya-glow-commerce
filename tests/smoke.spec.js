@@ -3,16 +3,17 @@ const name='Full Body';
 test('SMOKE-001 homepage loads without fatal JavaScript errors',async({page})=>{const errors=[];page.on('pageerror',error=>errors.push(error.message));await page.goto('/');await expect(page.getByRole('heading',{name:'Feel good. Glow your way.'})).toBeVisible();expect(errors).toEqual([]);});
 test('SMOKE-002 catalogue renders 46 services and detail',async({page})=>{await page.goto('/shop');await expect(page.locator('.product')).toHaveCount(46);await page.getByRole('heading',{name,exact:true}).click();await expect(page.getByRole('heading',{name,exact:true})).toBeVisible();await expect(page.getByText(/L Beauty · Massage/)).toBeVisible();});
 test('SMOKE-003 search locates product and handles no results',async({page})=>{await page.goto('/shop');await page.getByRole('searchbox').fill('Aromatherapy');await expect(page.locator('.product')).toHaveCount(1);await expect(page.getByRole('heading',{name:'Aromatherapy Massage'})).toBeVisible();await page.getByRole('searchbox').fill('nonexistent');await expect(page.getByText(/No services match/)).toBeVisible();});
-test('SMOKE-004 category filters products',async({page})=>{await page.goto('/shop');await page.getByLabel('Category',{exact:true}).selectOption('Makeup Looks');await expect(page.locator('.product')).toHaveCount(4);await expect(page.locator('.product .category')).toHaveText(Array(4).fill('Makeup Looks'));});
+test('SMOKE-004 category filters products',async({page})=>{await page.goto('/shop');await page.getByLabel('Category',{exact:true}).selectOption('Makeup');await expect(page.locator('.product')).toHaveCount(4);await expect(page.locator('.product .category')).toHaveText(Array(4).fill('Makeup · Makeup Looks'));});
 test('SMOKE-010 unknown route and product fail gracefully',async({page})=>{for(const path of ['/missing','/product/missing']){await page.goto(path);await expect(page.getByRole('heading',{name:'Page not found'})).toBeVisible();await page.getByRole('link',{name:'Back to home'}).click();await expect(page.getByRole('heading',{name:'Feel good. Glow your way.'})).toBeVisible();}await page.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/desktop-home.png`,fullPage:true});});
 test('SMOKE-011 L Beauty artwork resolves and all categories filter',async({page,request})=>{
  const {products}=await import('../src/products.js');
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  expect(new Set(products.map(p=>p.id)).size).toBe(46);
  await page.goto('/shop');
- for(const category of new Set(products.map(p=>p.category))){
+ const {GROUPS,inGroup}=await import('../src/service-groups.js');
+ for(const category of Object.keys(GROUPS)){
   await page.getByLabel('Category',{exact:true}).selectOption(category);
-  await expect(page.locator('.product')).toHaveCount(products.filter(p=>p.category===category).length);
+  await expect(page.locator('.product')).toHaveCount(products.filter(p=>inGroup(p.category,category)).length);
  }
  await page.getByLabel('Category',{exact:true}).selectOption('All');
  await expect.poll(()=>page.locator('.product img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
@@ -51,30 +52,22 @@ test('SMOKE-013 all 46 service images and prices are preserved without cart cont
  await expect.poll(()=>page.locator('.product img').evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0))).toBe(true);
 });
 
-test('SMOKE-014 gallery filters categories and source captions are absent',async({page,request})=>{
- const {portfolioPhotos,featuredPortfolioPhotos}=await import('../src/photo-library.js');
- const {galleryInspiration}=await import('../src/service-artwork.js');
+test('SMOKE-014 gallery follows the same grouped categories and focused treatment framing',async({page,request})=>{
  const {products}=await import('../src/products.js');
- const inspiration=galleryInspiration(products);
- expect(portfolioPhotos).toHaveLength(30);
- expect(inspiration).toHaveLength(33);
- expect(featuredPortfolioPhotos).toHaveLength(17);
- await page.goto('/shop#photos');
- await expect(page.locator('.portfolio figure')).toHaveCount(50);
+ const {serviceGallery}=await import('../src/service-gallery.js');
+ const {groupStats,inGroup}=await import('../src/service-groups.js');
+ const photos=serviceGallery(products), groups=groupStats(products,photos);
+ await page.goto('/services#photos');
+ await expect(page.locator('.portfolio figure')).toHaveCount(photos.length);
  await expect(page.locator('body')).not.toContainText(/AI[ -]?generated/i);
- await expect(page.locator('.photo-caption')).toHaveCount(0);
- for(const photo of [...featuredPortfolioPhotos,...inspiration]){
-  const response=await request.get(photo.src);
-  expect(response.ok(),photo.src).toBe(true);
-  expect(response.headers()['content-type']).toContain('image/jpeg');
+ expect(new Set(photos.map(p=>p.src)).size).toBe(photos.length);
+ for(const group of groups){
+  await page.getByLabel('Category',{exact:true}).selectOption(group.name);
+  await expect(page.locator('.portfolio figure')).toHaveCount(photos.filter(p=>p.categories.some(c=>inGroup(c,group.name))).length);
  }
- for(const [category,count] of [['Makeup Looks',7],['Gel & Acrylic Nail Enhancements',11],['Others / Nails (Per Nail)',12],['Massage',4]]){
-  await page.getByLabel('Category',{exact:true}).selectOption(category);
-  await expect(page.locator('.portfolio figure')).toHaveCount(count);
- }
- await page.getByRole('heading',{name:'Full Body',exact:true}).click();
- await expect(page.locator('body')).not.toContainText(/AI[ -]?generated/i);
- await expect.poll(()=>page.locator('.detail img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
+ await page.getByLabel('Category',{exact:true}).selectOption('Lashes & Brows');
+ await expect(page.locator('.product .treatment-photo[data-focused="true"]')).toHaveCount(9);
+ for(const photo of photos)expect((await request.get(photo.src)).ok()).toBe(true);
 });
 
 test('SMOKE-015 photo interactions support hover, keyboard and reduced motion',async({page})=>{
@@ -105,7 +98,7 @@ test('SMOKE-005 service selection opens its quotation request',async({page})=>{
 test('SMOKE-006 gallery and contact are first-class navigation',async({page})=>{
  await page.goto('/');
  await page.getByRole('link',{name:'Gallery',exact:true}).click();
- await expect(page.locator('.portfolio figure')).toHaveCount(50);
+ await expect(page.locator('.portfolio figure')).toHaveCount(51);
  await page.getByRole('link',{name:'Contact',exact:true}).click();
  await expect(page.getByRole('link',{name:'Enquire on WhatsApp'})).toHaveAttribute('href','https://wa.me/27847477711');
 });

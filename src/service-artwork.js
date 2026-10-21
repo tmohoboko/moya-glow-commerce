@@ -3,6 +3,7 @@ import {servicePhotoUpdates} from './service-photo-updates.js';
 const supplied = number => `/catalogue/services/portfolio-${String(number).padStart(2, '0')}.jpg`;
 const illustration = slug => `/catalogue/services/illustrative-${slug}.jpg`;
 const servicePhotos = {
+  'intimate-wax-hollywood-260': '/catalogue/services/focus-intimate-wax.jpg',
   'makeup-looks-classic-nude-natural-350': '/catalogue/services/makeup-classic-nude-natural.jpg',
   'makeup-looks-full-glam-400': '/catalogue/services/makeup-full-glam.jpg',
   'makeup-looks-bridal-1000': supplied(15),
