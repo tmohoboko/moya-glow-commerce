@@ -284,35 +284,51 @@ def availability(quote_id: uuid.UUID, day: date, request: Request, view: Literal
         elif existing["status"] != "confirmed":
             raise HTTPException(409, "This appointment cannot be rescheduled.")
         validate_date(day)
-        first = day-timedelta(days=day.weekday()) if view == "week" else day
-        days = [first+timedelta(days=i) for i in range(7 if view == "week" else 1)]
-        range_start = int(datetime.combine(first, day_time(), TZ).timestamp())
-        range_end = range_start+len(days)*86400
-        # Fetch busy intervals once for the whole range rather than querying for
-        # every candidate slot; only times, never customer details, are returned.
-        query = select(db.bookings.c.starts_at, db.bookings.c.blocked_until).where(
-            db.bookings.c.status.in_(["confirmed", "completed"]),
-            db.bookings.c.starts_at < range_end, db.bookings.c.blocked_until > range_start)
-        if existing:
-            query = query.where(db.bookings.c.id != existing["id"])
-        busy = [tuple(row) for row in connection.execute(query)]
-        busy += [tuple(row) for row in connection.execute(select(db.calendar_blocks.c.starts_at, db.calendar_blocks.c.ends_at).where(
-            db.calendar_blocks.c.status == "active", db.calendar_blocks.c.starts_at < range_end, db.calendar_blocks.c.ends_at > range_start))]
-        duration = (quote["duration"]+quote["buffer"])*60
-        today = datetime.now(TZ).date()
-        result = []
-        now = time.time()
-        for date_value in days:
-            window = hours(connection,date_value) if today <= date_value <= today+timedelta(days=90) else None
-            available, unavailable = [], []
-            if window:
-                for start in range(window[0],window[1]-duration+1,15*60):
-                    occupied = start <= now or any(a < start+duration and b > start for a,b in busy)
-                    (unavailable if occupied else available).append(start)
-            result.append({"day":date_value.isoformat(),"slots":available,"unavailable":unavailable,"closed":window is None})
-        selected = next(row for row in result if row["day"] == day.isoformat())
-        return {"day":day.isoformat(),"view":view,"timezone":str(TZ),"slots":selected["slots"],
-                "days":result,"duration":quote["duration"],"buffer":quote["buffer"]}
+        result = calendar_availability(connection, day, view, (quote["duration"]+quote["buffer"])*60, existing["id"] if existing else None)
+        return {**result, "duration":quote["duration"], "buffer":quote["buffer"]}
+
+
+def calendar_availability(connection, day, view, duration, exclude_booking=None):
+    first = day-timedelta(days=day.weekday()) if view == "week" else day
+    days = [first+timedelta(days=i) for i in range(7 if view == "week" else 1)]
+    range_start = int(datetime.combine(first, day_time(), TZ).timestamp())
+    range_end = range_start+len(days)*86400
+    # Fetch busy intervals once for the whole range rather than querying for
+    # every candidate slot; only times, never customer details, are returned.
+    query = select(db.bookings.c.starts_at, db.bookings.c.blocked_until).where(
+        db.bookings.c.status.in_(["confirmed", "completed"]),
+        db.bookings.c.starts_at < range_end, db.bookings.c.blocked_until > range_start)
+    if exclude_booking:
+        query = query.where(db.bookings.c.id != exclude_booking)
+    busy = [tuple(row) for row in connection.execute(query)]
+    busy += [tuple(row) for row in connection.execute(select(db.calendar_blocks.c.starts_at, db.calendar_blocks.c.ends_at).where(
+        db.calendar_blocks.c.status == "active", db.calendar_blocks.c.starts_at < range_end, db.calendar_blocks.c.ends_at > range_start))]
+    today = datetime.now(TZ).date()
+    result = []
+    now = time.time()
+    for date_value in days:
+        window = hours(connection,date_value) if today <= date_value <= today+timedelta(days=90) else None
+        available, unavailable = [], []
+        if window:
+            for start in range(window[0],window[1]-duration+1,15*60):
+                occupied = start <= now or any(a < start+duration and b > start for a,b in busy)
+                (unavailable if occupied else available).append(start)
+        result.append({"day":date_value.isoformat(),"slots":available,"unavailable":unavailable,"closed":window is None})
+    selected = next(row for row in result if row["day"] == day.isoformat())
+    return {"day":day.isoformat(),"view":view,"timezone":str(TZ),"slots":selected["slots"],
+            "days":result}
+
+
+@router.get("/calendar/availability")
+def public_calendar_availability(day: date, response: Response, view: Literal["day", "week"] = "day"):
+    today = datetime.now(TZ).date()
+    if day < today-timedelta(days=365) or day > today+timedelta(days=90):
+        raise HTTPException(422, "Choose a calendar date within the last year or next 90 days.")
+    response.headers["Cache-Control"] = "no-store"
+    with db.transaction() as connection:
+        # Publish time availability only. Never return names, booking IDs or notes.
+        return calendar_availability(connection, day, view, 15*60)
+
 
 
 @router.post("/bookings", status_code=201)

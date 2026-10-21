@@ -125,3 +125,46 @@ test('PATCH-006 supplied photos, natural nails and cat-eye finish are correctly 
  for(const photo of photos) expect((await request.get(photo.src)).ok()).toBe(true);
  expect(serviceGallery(products).some(p=>p.src.includes('20261021-03'))).toBe(false);
 });
+
+test('PATCH-007 Day calendar shows 09:00–17:00 live slots and greys occupied times',async({page})=>{
+ const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(Date.now()+86400000));
+ const start=Math.floor(new Date(day+'T09:00:00+02:00').getTime()/1000);
+ let taken=false;
+ await page.route('**/api/auth/me',r=>r.fulfill({status:401,json:{detail:'Please log in.'}}));
+ await page.route('**/api/calendar/availability?*',route=>route.fulfill({json:{day,view:'day',slots:taken?[]:[start],days:[{day,closed:false,slots:taken?[]:[start],unavailable:[start+900]}]}}));
+ await page.goto('/calendar');
+ await page.getByLabel('Calendar date',{exact:true}).fill(day);
+ await page.getByRole('button',{name:'Day',exact:true}).click();
+ const grid=page.getByRole('group',{name:'Day time slots'});
+ await expect(grid.getByRole('button')).toHaveCount(33);
+ await expect(grid.getByRole('button',{name:'09:00',exact:true})).toBeEnabled();
+ await expect(grid.getByRole('button',{name:'09:15 unavailable',exact:true})).toBeDisabled();
+ await expect(grid.getByRole('button',{name:'17:00 unavailable',exact:true})).toContainText('Closing time');
+ await expect(grid.getByRole('button',{name:'09:15 unavailable',exact:true})).toHaveCSS('background-color','rgb(225, 227, 225)');
+ taken=true;
+ await page.getByRole('button',{name:'Refresh calendar availability',exact:true}).click();
+ await expect(grid.getByRole('button',{name:'09:00 unavailable',exact:true})).toBeDisabled();
+ for(const width of [320,375]){await page.setViewportSize({width,height:812});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)}
+ await page.screenshot({path:`${process.env.QA_SCREENSHOT_DIR||'qa'}/day-time-slots.png`,fullPage:true});
+});
+
+test('PATCH-008 an accepted quotation can be booked directly in Day calendar',async({page})=>{
+ const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(Date.now()+86400000));
+ const start=Math.floor(new Date(day+'T09:00:00+02:00').getTime()/1000),quoteId='123e4567-e89b-42d3-a456-426614174008';
+ const quote={id:quoteId,user_id:'calendar-customer',number:'LBQ-DAY',service_name:'Full Body',amount:45000,duration:60,buffer:15,status:'accepted',revision:1,expired:false,expires_at:start+86400,terms:'Agreed treatment'};
+ await page.route('**/api/auth/me',r=>r.fulfill({json:{id:'calendar-customer',email:'calendar@example.com'}}));
+ await page.route('**/api/quotes?*',r=>r.fulfill({json:[quote]}));
+ await page.route('**/api/calendar/availability?*',r=>r.fulfill({json:{day,slots:[start],days:[{day,closed:false}]}}));
+ await page.route('**/api/availability?*',r=>{const d=new URL(r.request().url()).searchParams.get('day');return r.fulfill({json:{day:d,view:'day',days:[{day:d,closed:false,slots:d===day?[start]:[],unavailable:[]}]}})});
+ let submitted=null;
+ await page.route('**/api/bookings**',r=>r.request().method()==='GET'?r.fulfill({json:[]}):(submitted=r.request().postDataJSON(),r.fulfill({status:409,json:{detail:'This time has just been taken. Choose another available slot.'}})));
+ await page.goto('/calendar');await page.getByLabel('Calendar date',{exact:true}).fill(day);await page.getByRole('button',{name:'Day',exact:true}).click();
+ const form=page.getByRole('form',{name:'Appointment booking form'});
+ await form.getByRole('group',{name:'Day time slots'}).getByRole('button',{name:'09:00',exact:true}).click();
+ await expect(form.getByRole('button',{name:'09:00',exact:true})).toContainText('Selected');
+ await page.reload();await expect(form.getByLabel('Available time',{exact:true})).toHaveValue(String(start));
+ await form.getByRole('button',{name:'Confirm appointment',exact:true}).click();
+ await expect(form.getByRole('alert')).toContainText('just been taken');
+ expect(submitted).toEqual({quote_id:quoteId,starts_at:start,revision:1});
+ await expect(form.getByRole('button',{name:'Confirm appointment',exact:true})).toBeDisabled();
+});

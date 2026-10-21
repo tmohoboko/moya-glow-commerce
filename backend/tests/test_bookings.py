@@ -309,3 +309,28 @@ def test_calendar_view_is_validated(client):
     register(client); staff=setup_staff(); quote=quoted(client,staff)
     assert client.get('/api/availability',params={'quote_id':quote['id'],'day':tomorrow(),'view':'year'}).status_code==422
     assert staff.get('/api/staff/calendar',params={'day':tomorrow(),'view':'year'}).status_code==422
+
+
+def test_public_day_slots_publish_times_only_and_remove_booked_buffer(client):
+    register(client); staff=setup_staff(); quote=quoted(client,staff)
+    start=slots(client,quote)[0]
+    assert reserve(client,quote,start).status_code==201
+    client.cookies.clear()
+    response=client.get('/api/calendar/availability',params={'day':tomorrow()})
+    assert response.status_code==200
+    assert response.headers['cache-control']=='no-store'
+    body=response.json()
+    assert body['view']=='day' and len(body['days'])==1
+    assert start in body['days'][0]['unavailable'] and start not in body['slots']
+    assert start+3600 in body['days'][0]['unavailable']
+    assert start+4500 in body['slots']
+    assert datetime.fromtimestamp(body['slots'][-1],TZ).strftime('%H:%M')=='16:45'
+    for private in ['Test Customer','0800000000',quote['id'],'user_id','contact_name','notes']:
+        assert private not in response.text
+
+
+def test_public_closed_day_has_no_available_times_and_validates_view(client):
+    result=client.get('/api/calendar/availability',params={'day':tomorrow()})
+    assert result.status_code==200
+    assert result.json()['slots']==[] and result.json()['days'][0]['closed'] is True
+    assert client.get('/api/calendar/availability',params={'day':tomorrow(),'view':'month'}).status_code==422
