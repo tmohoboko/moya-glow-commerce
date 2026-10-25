@@ -1,0 +1,9 @@
+{
+  "base_url": "https://moya-glow-commerce.vercel.app",
+  "checked_at": "2026-10-21T22:48:47.935Z",
+  "quote_id": "b3164347-d5a0-445a-b21a-4a24245f941c",
+  "passed": true,
+  "calendar_enabled": false,
+  "availability_slots": 0,
+  "scope": "Real browser + production HTTPS API + durable database; no staff fixture, no mocked route, no payment claim."
+}

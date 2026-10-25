@@ -1,0 +1,11 @@
+case,scenario,expected,status,actual,defect_reference
+MAN-BK-01,Owner staff access,Explicitly approved owner can open salon calendar,BLOCKED,Awaiting authorization,
+MAN-BK-02,Actual operating hours,Slots match client approved hours,NOT_RUN,,
+MAN-BK-03,Treatment quotation,Price inclusions duration buffer and terms agreed,NOT_RUN,,
+MAN-BK-04,Customer slot booking,One appointment and matching invoice,NOT_RUN,,
+MAN-BK-05,Conflicting booking,Second overlapping appointment refused,NOT_RUN,,
+MAN-BK-06,Walk-in,Same calendar capacity used,NOT_RUN,,
+MAN-BK-07,Reschedule,New slot reserved and original capacity released,NOT_RUN,,
+MAN-BK-08,Cancellation,Appointment cancelled invoice voided slot released,NOT_RUN,,
+MAN-BK-09,Sandbox invoice payment,Verified payment creates receipt and retains appointment,NOT_RUN,,
+MAN-BK-10,Client acceptance,Client confirms workflow fits salon operations,NOT_RUN,,

@@ -3,16 +3,17 @@ import {servicePhotoUpdates} from './service-photo-updates.js';
 const supplied = number => `/catalogue/services/portfolio-${String(number).padStart(2, '0')}.jpg`;
 const illustration = slug => `/catalogue/services/illustrative-${slug}.jpg`;
 const servicePhotos = {
+  'intimate-wax-hollywood-260': '/catalogue/services/focus-intimate-wax.jpg',
   'makeup-looks-classic-nude-natural-350': '/catalogue/services/makeup-classic-nude-natural.jpg',
   'makeup-looks-full-glam-400': '/catalogue/services/makeup-full-glam.jpg',
   'makeup-looks-bridal-1000': supplied(15),
   'makeup-looks-special-effects-600': illustration('special-effects'),
   'gel-acrylic-nail-enhancements-gel-overlay-1-any-colour-120': supplied(7),
   'gel-acrylic-nail-enhancements-tips-any-length-200': supplied(30),
-  'nails-french-250': supplied(29),
+  'nails-french-250': '/catalogue/services/refresh-french-gel.jpg',
   'gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150': supplied(10),
   'gel-acrylic-nail-enhancements-tips-any-size-230': supplied(28),
-  'nails-french-280': supplied(24),
+  'nails-french-280': supplied(29),
   'others-nails-per-nail-art-per-nail-5': supplied(11),
   'others-nails-per-nail-chrome-2': supplied(25),
   'others-nails-per-nail-charms-rhinestones-7': supplied(4),

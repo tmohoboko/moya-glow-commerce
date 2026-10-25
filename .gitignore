@@ -1,4 +1,4 @@
-node_modules/
+node_modules
 dist/
 .env
 .env.*
@@ -6,7 +6,7 @@ dist/
 .vercel/
 test-results/
 playwright-report/
-.venv/
+.venv
 __pycache__/
 .pytest_cache/
 *.sqlite3

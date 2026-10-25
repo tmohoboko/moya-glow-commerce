@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-10-21T03:23:32.031560+00:00",
+  "base_url": "https://moya-glow-commerce.vercel.app",
+  "runtime_commit": "5305ba3be9a5cc00c6383eaacf1bbc81b47e788d",
+  "deployment": "dpl_Agn8fqyZgFxx2BF2ebSJVeqorLmV",
+  "passed": true,
+  "checks": [
+    {
+      "check": "/services returns 200",
+      "passed": true
+    },
+    {
+      "check": "/gallery returns 200",
+      "passed": true
+    },
+    {
+      "check": "/calendar returns 200",
+      "passed": true
+    },
+    {
+      "check": "/book returns 200",
+      "passed": true
+    },
+    {
+      "check": "/api/health returns 200",
+      "passed": true
+    },
+    {
+      "check": "/api/readiness returns 200",
+      "passed": true
+    },
+    {
+      "check": "focus-massage-compress.jpg image/jpeg",
+      "passed": true
+    },
+    {
+      "check": "focus-body-wax.jpg image/jpeg",
+      "passed": true
+    },
+    {
+      "check": "focus-intimate-wax.jpg image/jpeg",
+      "passed": true
+    },
+    {
+      "check": "46 service identities/prices/source categories preserved",
+      "passed": true
+    },
+    {
+      "check": "Unconfigured business hours remain closed",
+      "passed": true
+    },
+    {
+      "check": "Weekly availability requires session",
+      "passed": true
+    },
+    {
+      "check": "Staff week calendar requires session",
+      "passed": true
+    },
+    {
+      "check": "Invalid view rejected",
+      "passed": true
+    }
+  ]
+}

@@ -21,7 +21,7 @@
     "price": 150,
     "category": "Massage",
     "description": "L Beauty · Massage. 30 min.",
-    "image": "/catalogue/services/service-colon-care.jpg"
+    "image": "/catalogue/services/focus-massage-compress.jpg"
   },
   {
     "id": "massage-aromatherapy-massage-500",
@@ -69,7 +69,7 @@
     "price": 180,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-full-arm-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-full-arm.jpg"
   },
   {
     "id": "body-wax-half-arm-130",
@@ -77,7 +77,7 @@
     "price": 130,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-half-arm-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-half-arm.jpg"
   },
   {
     "id": "body-wax-full-leg-200",
@@ -85,7 +85,7 @@
     "price": 200,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/illustrative-body-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-full-leg.jpg"
   },
   {
     "id": "body-wax-half-leg-150",
@@ -93,7 +93,7 @@
     "price": 150,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-half-leg-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-half-leg.jpg"
   },
   {
     "id": "body-wax-back-190",
@@ -101,7 +101,7 @@
     "price": 190,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-back-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-back.jpg"
   },
   {
     "id": "body-wax-chest-165",
@@ -109,7 +109,7 @@
     "price": 165,
     "category": "Body Wax",
     "description": "L Beauty · Body Wax.",
-    "image": "/catalogue/services/service-chest-wax.jpg"
+    "image": "/catalogue/services/focus-body-wax.jpg"
   },
   {
     "id": "intimate-wax-underarms-180",
@@ -117,7 +117,7 @@
     "price": 180,
     "category": "Intimate Wax",
     "description": "L Beauty · Intimate Wax.",
-    "image": "/catalogue/services/service-underarm-care.jpg"
+    "image": "/catalogue/services/refresh-wax-underarms.jpg"
   },
   {
     "id": "intimate-wax-bikini-200",
@@ -125,7 +125,7 @@
     "price": 200,
     "category": "Intimate Wax",
     "description": "L Beauty · Intimate Wax.",
-    "image": "/catalogue/services/service-bikini-care.jpg"
+    "image": "/catalogue/services/refresh-wax-bikini.jpg"
   },
   {
     "id": "intimate-wax-hollywood-260",
@@ -133,7 +133,7 @@
     "price": 260,
     "category": "Intimate Wax",
     "description": "L Beauty · Intimate Wax.",
-    "image": "/catalogue/services/illustrative-intimate-wax.jpg"
+    "image": "/catalogue/services/focus-intimate-wax.jpg"
   },
   {
     "id": "intimate-wax-buttock-85",
@@ -141,7 +141,7 @@
     "price": 85,
     "category": "Intimate Wax",
     "description": "L Beauty · Intimate Wax.",
-    "image": "/catalogue/services/service-body-care.jpg"
+    "image": "/catalogue/services/refresh-wax-buttock.jpg"
   },
   {
     "id": "facial-wax-brow-lip-chin-sideburns-80",
@@ -149,7 +149,7 @@
     "price": 80,
     "category": "Facial Wax",
     "description": "L Beauty · Facial Wax.",
-    "image": "/catalogue/services/illustrative-facial-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-face-single.jpg"
   },
   {
     "id": "facial-wax-brow-lip-chin-sideburns-combo-120",
@@ -157,7 +157,7 @@
     "price": 120,
     "category": "Facial Wax",
     "description": "L Beauty · Facial Wax.",
-    "image": "/catalogue/services/service-face-wax-combo.jpg"
+    "image": "/catalogue/services/refresh-wax-face-combo.jpg"
   },
   {
     "id": "facial-wax-full-face-200",
@@ -165,7 +165,7 @@
     "price": 200,
     "category": "Facial Wax",
     "description": "L Beauty · Facial Wax.",
-    "image": "/catalogue/services/service-full-face-wax.jpg"
+    "image": "/catalogue/services/refresh-wax-full-face.jpg"
   },
   {
     "id": "lash-extensions-classic-250",
@@ -257,19 +257,19 @@
   },
   {
     "id": "nails-french-250",
-    "name": "French",
+    "name": "French (Gel)",
     "price": 250,
     "category": "Gel & Acrylic Nail Enhancements",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Gel enhancement.",
-    "image": "/catalogue/services/portfolio-29.jpg"
+    "image": "/catalogue/services/refresh-french-gel.jpg"
   },
   {
     "id": "gel-acrylic-nail-enhancements-acrylic-overlay-1-any-colour-150",
     "name": "Acrylic Overlay (1 / Any colour)",
     "price": 150,
-    "category": "Gel & Acrylic Nail Enhancements",
-    "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement.",
-    "image": "/catalogue/services/portfolio-10.jpg"
+    "category": "Natural Nails",
+    "description": "L Beauty · Natural Nails. Acrylic overlay on your natural nails; no extensions.",
+    "image": "/catalogue/services/refresh-natural-acrylic.jpg"
   },
   {
     "id": "gel-acrylic-nail-enhancements-tips-any-size-230",
@@ -281,11 +281,11 @@
   },
   {
     "id": "nails-french-280",
-    "name": "French",
+    "name": "French (Acrylic)",
     "price": 280,
     "category": "Gel & Acrylic Nail Enhancements",
     "description": "L Beauty · Gel & Acrylic Nail Enhancements. Acrylic enhancement.",
-    "image": "/catalogue/services/portfolio-24.jpg"
+    "image": "/catalogue/services/portfolio-29.jpg"
   },
   {
     "id": "toes-gel-overlay-1-any-colour-150",

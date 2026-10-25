@@ -1,0 +1,128 @@
+{
+  "base_url": "https://moya-glow-commerce.vercel.app",
+  "checked_at": "2026-10-20T12:25:02.984330+00:00",
+  "checks": [
+    {
+      "check": "Public route /",
+      "passed": true
+    },
+    {
+      "check": "Public route /services",
+      "passed": true
+    },
+    {
+      "check": "Public route /gallery",
+      "passed": true
+    },
+    {
+      "check": "Public route /contact",
+      "passed": true
+    },
+    {
+      "check": "Public route /book?service=massage-full-body-450",
+      "passed": true
+    },
+    {
+      "check": "Public route /salon",
+      "passed": true
+    },
+    {
+      "check": "Health",
+      "passed": true
+    },
+    {
+      "check": "Readiness",
+      "passed": true
+    },
+    {
+      "check": "South African booking configuration",
+      "passed": true
+    },
+    {
+      "check": "Unconfigured calendar stays closed",
+      "passed": true
+    },
+    {
+      "check": "46 services and 11 categories preserved",
+      "passed": true
+    },
+    {
+      "check": "Anonymous quotations private",
+      "passed": true
+    },
+    {
+      "check": "Anonymous appointments private",
+      "passed": true
+    },
+    {
+      "check": "Unlinked commerce checkout parked",
+      "passed": true
+    },
+    {
+      "check": "Registration",
+      "passed": true
+    },
+    {
+      "check": "Private secure cookie",
+      "passed": true
+    },
+    {
+      "check": "Quotation request saved",
+      "passed": true
+    },
+    {
+      "check": "Published price is not invented into a final quote",
+      "passed": true
+    },
+    {
+      "check": "Duplicate request creates one quotation",
+      "passed": true
+    },
+    {
+      "check": "Client cannot inject price",
+      "passed": true
+    },
+    {
+      "check": "Customer cannot access staff calendar",
+      "passed": true
+    },
+    {
+      "check": "Unissued quote cannot be booked",
+      "passed": true
+    },
+    {
+      "check": "Foreign origin cannot mutate request",
+      "passed": true
+    },
+    {
+      "check": "Quotation still present",
+      "passed": true
+    },
+    {
+      "check": "Logout",
+      "passed": true
+    },
+    {
+      "check": "Session revoked",
+      "passed": true
+    },
+    {
+      "check": "Login again",
+      "passed": true
+    },
+    {
+      "check": "Quotation persists after login",
+      "passed": true
+    },
+    {
+      "check": "No fabricated appointment",
+      "passed": true
+    },
+    {
+      "check": "Final logout",
+      "passed": true
+    }
+  ],
+  "artificial_quote_id": "5d3703cf-a20c-43ae-8f0f-b77489bda63d",
+  "passed": true
+}

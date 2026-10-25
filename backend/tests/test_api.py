@@ -30,6 +30,7 @@ def database(tmp_path, monkeypatch):
     monkeypatch.delenv("VERCEL", raising=False)
     monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_unit_fixture")
     monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_unit_fixture")
+    monkeypatch.setenv("ENABLE_LEGACY_COMMERCE", "1")
     yield
     if db.engine.cache_info().currsize:
         engine = db.engine()
