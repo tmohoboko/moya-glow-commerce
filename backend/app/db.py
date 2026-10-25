@@ -101,9 +101,21 @@ def engine():
         insert = dialect_insert(connection, schema).values(version=1).on_conflict_do_nothing()
         connection.execute(insert)
         connection.execute(dialect_insert(connection, calendar_settings).values(
-            id="salon", value={"enabled": False, "week": [None] * 7}
+            id="salon", value={"enabled": True, "week": [[540, 1020] for _ in range(7)]}
         ).on_conflict_do_nothing())
         connection.execute(dialect_insert(connection, schema).values(version=2).on_conflict_do_nothing())
+        # One-time activation of the owner-approved 09:00–17:00 daily schedule.
+        # Preserve any calendar settings that were already customized.
+        version_three = connection.execute(select(schema.c.version).where(schema.c.version == 3)).first()
+        if not version_three:
+            current_hours = connection.execute(select(calendar_settings.c.value).where(
+                calendar_settings.c.id == "salon"
+            )).scalar_one_or_none()
+            if current_hours == {"enabled": False, "week": [None] * 7}:
+                connection.execute(update(calendar_settings).where(
+                    calendar_settings.c.id == "salon"
+                ).values(value={"enabled": True, "week": [[540, 1020] for _ in range(7)]}))
+            connection.execute(dialect_insert(connection, schema).values(version=3).on_conflict_do_nothing())
     return result
 
 

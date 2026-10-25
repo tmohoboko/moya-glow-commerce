@@ -157,9 +157,20 @@ def test_other_customer_cannot_read_or_change_booking_quote_invoice(client):
         assert stranger.post(f"/api/invoices/{booking['invoice']['id']}/checkout").status_code == 404
 
 
+def test_default_calendar_is_open_daily_from_09_to_17(client):
+    config = client.get('/api/booking/config')
+    assert config.status_code == 200
+    assert config.json()['enabled'] is True
+    assert config.json()['week'] == [[540,1020]]*7
+    assert config.json()['timezone'] == 'Africa/Johannesburg'
+    result = client.get('/api/calendar/availability', params={'day':tomorrow()})
+    assert result.status_code == 200
+    assert datetime.fromtimestamp(result.json()['slots'][0], TZ).strftime('%H:%M') == '09:00'
+    assert datetime.fromtimestamp(result.json()['slots'][-1], TZ).strftime('%H:%M') == '16:45'
+
+
 def test_closed_calendar_never_invents_availability(client):
     register(client)
-    assert client.get('/api/booking/config').json()['enabled'] is False
     staff = setup_staff(); quote = quoted(client,staff)
     assert staff.put('/api/staff/calendar',json={'enabled':False,'week':[None]*7}).status_code == 200
     assert slots(client,quote) == []
